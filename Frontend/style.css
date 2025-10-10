@@ -16,7 +16,6 @@ body {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   padding: 1rem 0;
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -472,6 +471,26 @@ body {
          .courses-section .section-badge {
           max-width: 300px;
         }
+        .sort_courses {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height:60px;
+            margin-bottom: 1rem;
+        }
+        .sort_courses select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .sort_courses select:hover {
+            border-color: #f56565;
+            box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.1);
+        }
         .courses-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -496,6 +515,28 @@ body {
             border: 1px solid rgba(226, 232, 240, 0.3);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+        .pagination-link {
+            padding:5px 10px;
+            border:1px solid #ccc;
+            cursor:pointer
+        }
+        .pagination-link.active {
+            background-color: #f56565;
+            color: white;
+            border-color: #f56565;
+        }
+        .pagination-link:hover {
+            background-color: #f56565;
+            color: white;
+            border-color: #f56565;
+        }
+
 
         .course-card:hover {
             transform: translateY(-8px);

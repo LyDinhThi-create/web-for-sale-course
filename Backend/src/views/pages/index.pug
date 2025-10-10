@@ -1,0 +1,277 @@
+extends ../layouts/main.pug
+
+block content
+  section.hero
+    .hero-container
+      .hero-content
+        h1.hero-title Nhà cung cấp dịch vụ đào tạo từ xa hàng đầu thế giới
+        p.hero-subtitle
+          | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          | eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
+          | ipsum suspendisse.
+        button.join-btn
+          i.fa.fa-user(aria-hidden="true")
+          |  Tham gia miễn phí
+        .bulbs-decoration
+          img(src="./img/bulb.png", alt="")
+      .hero-illustration
+        img(src="./img/banner-img4.png", alt="", style="width:100%")
+
+  section.features-section
+    .bg-decoration.bg-circle-1
+    .bg-decoration.bg-circle-2
+    .bg-decoration.bg-circle-3
+    .particle
+    .particle
+    .particle
+    .particle
+
+    .features-container
+      .section-badge Giáo dục cho mọi người
+      h2.section-title Bài học huấn luyện trực tuyến cho việc học từ xa
+      p.section-subtitle Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+      .features-grid
+        .feature-card
+          .feature-icon
+            svg(viewBox="0 0 24 24", fill="none")
+              path(d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+          h3.feature-title Học các kỹ năng mới nhất
+          p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          a.feature-link(href="#")
+            | Bắt đầu ngay!
+            svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
+              path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+
+        .feature-card
+          .feature-icon
+            svg(viewBox="0 0 24 24", fill="none")
+              path(d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+          h3.feature-title Học hỏi từ các chuyên gia trong ngành
+          p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          a.feature-link(href="#")
+            | Bắt đầu ngay!
+            svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
+              path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+
+        .feature-card
+          .feature-icon
+            svg(viewBox="0 0 24 24", fill="none")
+              circle(cx="12", cy="12", r="10", stroke="currentColor")
+              path(d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z", stroke="currentColor")
+          h3.feature-title Học ở bất cứ đâu trên thế giới
+          p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          a.feature-link(href="#")
+            | Bắt đầu ngay!
+            svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
+              path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+
+  section.courses-section
+    .bg-decoration.bg-circle-1
+    .bg-decoration.bg-circle-2
+
+    .courses-container
+      .section-badge Đi theo tốc độ của riêng bạn
+      h2.section-title Các khóa học bán chạy nhất
+      p.section-subtitle Khám phá tất cả các khóa học của chúng tôi và chọn khóa học phù hợp nhất để đăng ký và bắt đầu học cùng chúng tôi! Chúng tôi đảm bảo bạn sẽ không bao giờ hối tiếc!
+
+      .courses-grid
+        .course-card
+          .course-image.course-1
+            button.wishlist-btn
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+            .course-price $199
+          .course-content
+            .instructor
+              .instructor-avatar JD
+              span.instructor-name John Doe
+            h3.course-title Spa Relaxation Massage Certificate Course
+            p.course-description Wouldn't you just love to know how to do this incredible form of massage? Well, you
+            .course-stats
+              .stat-item
+                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                | 20 Lessons
+              .stat-item
+                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                  circle(cx="9", cy="7", r="4")
+                  path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+                | 15 Students
+
+        .course-card
+          .course-image.course-2
+            button.wishlist-btn
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+            .course-price $19
+          .course-content
+            .instructor
+              .instructor-avatar JD
+              span.instructor-name John Doe
+            h3.course-title Complete Listing Optimization Training
+            p.course-description Are you looking for a Google My Business (GMB) course that shows you how to
+            .course-stats
+              .stat-item
+                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                | 10 Lessons
+              .stat-item
+                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                  circle(cx="9", cy="7", r="4")
+                  path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+                | 18 Students
+
+        .course-card
+          .course-image.course-3
+            button.wishlist-btn
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+            .course-price $99
+          .course-content
+            .instructor
+              .instructor-avatar JD
+              span.instructor-name John Doe
+            h3.course-title Graphic Design Masterclass - Learn GREAT Design
+            p.course-description We also learn the basics of Adobe Photoshop, Illustrator and InDesign and do projects with
+            .course-stats
+              .stat-item
+                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                | 20 Lessons
+              .stat-item
+                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                  circle(cx="9", cy="7", r="4")
+                  path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+                | 1 Students
+
+      .cta-section
+        p.cta-text
+          | Tận hưởng phương pháp học tập hàng đầu và đạt được những kỹ năng vượt trội! Bạn là người tạo dựng sự nghiệp cho chính mình và chúng tôi sẽ đồng hành cùng bạn trên con đường đó. 
+          a.cta-link(href="#") Register Free Now!
+
+  section.distance-learning-section
+    .section-container
+      .illustration-container
+        img.img-illustration(src="./img/about-img12.png", alt="", style="width:100%")
+      .content-container
+        .section-badge Học từ xa
+        h2.section-title Phát triển kỹ năng của bạn, học một cái gì đó mới và phát triển các kỹ năng của bạn từ bất cứ nơi nào trên thế giới!
+        p.section-subtitle Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+        .features-grid
+          .feature-item
+            .feature-icon
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+            span.feature-text Hướng dẫn chuyên môn
+
+          .feature-item
+            .feature-icon
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                circle(cx="12", cy="12", r="3")
+                path(d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24")
+            span.feature-text Truy cập trọn đời
+
+          .feature-item
+            .feature-icon
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                circle(cx="9", cy="7", r="4")
+                path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+            span.feature-text Học từ xa
+
+          .feature-item
+            .feature-icon
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                path(d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2")
+                rect(x="8", y="2", width="8", height="4", rx="1", ry="1")
+                path(d="m9 14 2 2 4-4")
+            span.feature-text Tự phát triển
+
+        a.view-courses-btn(href="#")
+          i.fa.fa-user(aria-hidden="true")
+          |  Xem tất cả các khóa học
+
+  section.publications-section
+    .bg-decoration.bg-circle-1
+    .bg-decoration.bg-circle-2
+    .particle
+    .particle
+    .particle
+    .particle
+
+    .publications-container
+      .section-badge Tin tức và blog
+      h2.section-title Các ấn phẩm mới nhất của chúng tôi
+      p.section-subtitle Chúng tôi luôn chăm sóc thêm cho các cải tiến kỹ năng của học sinh và cảm thấy hào hứng chia sẻ nghiên cứu và học tập mới nhất của chúng tôi!
+
+      .posts-grid
+        article.post-card
+          .post-image.post-1
+            .category-tag Giáo dục
+          .post-content
+            h3.post-title Tuyển sinh đại học có thể phải đối mặt với các biện pháp kiểm soát khẩn cấp
+            .post-meta
+              .author-info
+                .author-avatar AM
+                span.author-name Alex Morgan
+              .post-date
+                svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
+                  line(x1="16", y1="2", x2="16", y2="6")
+                  line(x1="8", y1="2", x2="8", y2="6")
+                  line(x1="3", y1="10", x2="21", y2="10")
+                | April 30, 2020
+
+        article.post-card
+          .post-image.post-2
+            .category-tag Trực tuyến
+          .post-content
+            h3.post-title Học trực tuyến có thể chuẩn bị cho học sinh thay đổi nhanh chóng
+            .post-meta
+              .author-info
+                .author-avatar ST
+                span.author-name Sarah Taylor
+              .post-date
+                svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
+                  line(x1="16", y1="2", x2="16", y2="6")
+                  line(x1="8", y1="2", x2="8", y2="6")
+                  line(x1="3", y1="10", x2="21", y2="10")
+                | April 29, 2020
+
+        article.post-card
+          .post-image.post-3
+            .category-tag Học hỏi
+          .post-content
+            h3.post-title Khi việc học chuyển sang trực tuyến, các cảnh báo nội dung cũng phải theo đó
+            .post-meta
+              .author-info
+                .author-avatar DW
+                span.author-name David Warner
+              .post-date
+                svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
+                  line(x1="16", y1="2", x2="16", y2="6")
+                  line(x1="8", y1="2", x2="8", y2="6")
+                  line(x1="3", y1="10", x2="21", y2="10")
+                | April 28, 2020
+
+      .view-all-section
+        p.view-all-text
+          | Nhận được thông tin chi tiết ngay bây giờ? 
+          a.view-all-link(href="#") Xem tất cả các bài viết
+
+  section.learning-paths-section
+    .section-container
+      .illustration-container
+        img(src="./img/strategy.png", alt="", style="width:80%")
+      .content-container
+        .section-badge Học từ xa
+        h2.section-title Đi trước với con đường học tập. Giữ sắc nét.
+        p.section-description Với trường đại học mở, bạn có thể học bất cứ khi nào và bất cứ nơi nào bạn chọn. Chúng tôi có sinh viên ở hơn 128 quốc gia và danh tiếng toàn cầu là người tiên phong trong lĩnh vực học tập linh hoạt. Giảng dạy linh hoạt của chúng tôi cũng có nghĩa là, nếu bạn đi du lịch thường xuyên hoặc cần di dời, bạn có thể tiếp tục học bất cứ nơi nào bạn đi.
+        a.view-courses-btn(href="#") Xem các khóa học
