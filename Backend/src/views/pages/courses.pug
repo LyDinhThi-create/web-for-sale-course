@@ -1,0 +1,50 @@
+extends ../layouts/main.pug
+
+block content
+  // Main Content Section
+  section
+    .courses-container
+      .sort_courses
+        select#sort(name="sort")
+          option(value="default") Sort by(Default DESC)
+          option(value="Oldest_first") Oldest first
+          option(value="price_low_high") Sort by price: Low to High
+          option(value="price_high_low") Sort by price : High to Low
+
+      .courses-grid
+        // Course 1: Spa Relaxation Massage
+        each course in courses
+          .course-card
+            .course-image.course-1
+                button.wishlist-btn
+                  svg(width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                    path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+                .course-price $#{course.price}
+
+            .course-content
+                .instructor
+                  .instructor-avatar #{course.instructor.avatar}
+                  span.instructor-name #{course.instructor.name}
+
+                a.course-title(href=`/courses/${course.id}`) #{course.title}
+                p.course-description #{course.description}
+
+                .course-stats
+                  .stat-item
+                    svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                      path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                    | #{course.lessons} Lessons
+
+                  .stat-item
+                    svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                      path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                      circle(cx="9" cy="7" r="4")
+                      path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+                    | #{course.students} Students
+
+      ul.pagination
+        li.pagination-link &laquo; Quay lại
+        li.pagination-link.active 1
+        li.pagination-link 2
+        li.pagination-link 3
+        li.pagination-link Tiếp &raquo;

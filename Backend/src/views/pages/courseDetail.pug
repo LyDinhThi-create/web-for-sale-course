@@ -1,0 +1,135 @@
+extends ../layouts/main.pug
+block styles
+  link(rel="stylesheet", href="/css/courseDetail.css")
+block content
+  .course-page
+    .course-header
+      h1.course-title #{course.title}
+
+    .course-hero
+      .hero-main-image
+
+    .course-container
+      .course-main
+        .course-tabs
+          .tab.active(data-tab="overview") Overview
+          .tab(data-tab="curriculum") Curriculum
+          .tab(data-tab="instructor") Instructor
+          .tab(data-tab="reviews") Reviews
+
+        // Overview Tab
+        .tab-content.active#overview
+          h2.section-title Description
+          each description in course.fullDescription
+            p.description-text #{description}
+          
+          each testimonial in course.testimonials
+            .testimonial "#{testimonial}"
+         
+        // Curriculum Tab
+        .tab-content#curriculum
+          h2.section-title Course Curriculum
+          each item,index in course.curriculum
+            .curriculum-item
+              .curriculum-title #{index+1}. #{item.title}
+              .curriculum-duration Duration: #{item.duration}
+
+        // Instructor Tab
+        .tab-content#instructor
+          h2.section-title About the Instructor
+          .instructor-card
+            .instructor-avatar #{course.instructor.avatar}
+            .instructor-info
+              h3  #{course.instructor.name}
+              p Certified Massage Therapist with 15+ years of experience. Mark has trained thousands of students worldwide and has received numerous awards for excellence in spa therapy education.
+
+        // Reviews Tab
+        .tab-content#reviews
+          h2.section-title Student Reviews
+          .review-card
+            .review-header
+              span.review-author Sarah Johnson
+              span.review-rating ⭐⭐⭐⭐⭐
+            p.review-text This course exceeded all my expectations! The instructor's expertise shines through every lesson.
+          .review-card
+            .review-header
+              span.review-author Michael Chen
+              span.review-rating ⭐⭐⭐⭐⭐
+            p.review-text Best investment I've made in my professional development. Highly recommended!
+          .review-card
+            .review-header
+              span.review-author Emma Wilson
+              span.review-rating ⭐⭐⭐⭐⭐
+            p.review-text The techniques taught in this course are practical and easy to implement. Great value!
+
+      .course-sidebar
+        .course-info-card
+          .price-section
+            .price-label
+              svg.price-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                circle(cx="12", cy="12", r="10")
+                path(d="M12 6v6l4 2")
+              | Price
+            .price-value $#{course.price}
+
+          .course-meta
+            .meta-item
+              .meta-label
+                svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                  circle(cx="9", cy="7", r="4")
+                  path(d="M23 21v-2a4 4 0 0 0-3-3.87")
+                  path(d="M16 3.13a4 4 0 0 1 0 7.75")
+                | Instructor
+              .meta-value #{course.instructor.name}
+
+            .meta-item
+              .meta-label
+                svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                  circle(cx="12", cy="12", r="10")
+                  polyline(points="12 6 12 12 16 14")
+                | Duration
+              .meta-value #{course.duration} total length
+
+            .meta-item
+              .meta-label
+                svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                  path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                | Lessons
+              .meta-value #{course.lessons}
+
+            .meta-item
+              .meta-label
+                svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                  circle(cx="9", cy="7", r="4")
+                  path(d="M23 21v-2a4 4 0 0 0-3-3.87")
+                  path(d="M16 3.13a4 4 0 0 1 0 7.75")
+                | Enrolled
+              .meta-value #{course.students} students
+
+            .meta-item
+              .meta-label
+                svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="#f56565", stroke-width="2")
+                  path(d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z")
+                  circle(cx="12", cy="12", r="3")
+                | Access
+              .meta-value #{course.access}
+
+          button.add-to-cart-btn
+            svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+              circle(cx="9", cy="21", r="1")
+              circle(cx="20", cy="21", r="1")
+              path(d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6")
+            | Add to Cart
+
+          button.share-btn
+            svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+              circle(cx="18", cy="5", r="3")
+              circle(cx="6", cy="12", r="3")
+              circle(cx="18", cy="19", r="3")
+              line(x1="8.59", y1="13.51", x2="15.42", y2="17.49")
+              line(x1="15.41", y1="6.51", x2="8.59", y2="10.49")
+            | Share This Course
+
+      
