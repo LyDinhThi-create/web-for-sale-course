@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const { connectDB } = require("./config/db");
 const dotenv = require("dotenv");
 const courseRoutes = require("./routes/courseRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 dotenv.config();
 const app = express();
 
@@ -16,10 +17,14 @@ app.set("views", path.join(process.cwd(), "src/views"));
 app.set("view engine", "pug");
 
 // ⚙️ Cho phép truy cập file tĩnh (CSS, JS, img)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/courses", courseRoutes);
+app.use("/admin", adminRoutes);
 
+// Trang chủ
 
 app.get("/", (req, res) => {
   res.render("pages/index", { title: "Trang chủ - IT Courses" });

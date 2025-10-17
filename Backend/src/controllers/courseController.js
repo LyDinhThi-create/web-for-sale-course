@@ -2,7 +2,7 @@ const Course = require("../models/Course");
 
 module.exports.getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.find(); 
+    const courses = await Course.find();
     res.render("pages/courses", { title: "Khoa học", courses });
   } catch (err) {
     res.status(500).send("Server Error");

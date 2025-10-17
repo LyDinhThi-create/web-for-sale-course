@@ -1,0 +1,105 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Trang Quản Lý Khóa Học
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN", crossorigin="anonymous")
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css")
+  
+  body
+    nav.navbar.navbar-dark.bg-dark
+      .container-fluid
+        span.navbar-brand.mb-0.h1 Admin - Quản Lý Khóa Học
+
+    main.container.mt-4
+      .d-flex.justify-content-between.align-items-center.mb-3
+        h2 Danh sách khóa học
+        button.btn.btn-primary(type="button", data-bs-toggle="modal", data-bs-target="#courseModal")
+          | Thêm khóa học mới
+      
+      .table-responsive
+        table.table.table-striped.table-hover.align-middle
+          thead.table-dark
+            tr
+              th(scope="col") Tên khóa học
+              th(scope="col") Giảng viên
+              th(scope="col") Giá
+              th(scope="col") Trạng thái
+              th.text-center(scope="col") Hành động
+          tbody#course-table-body
+            //- Dữ liệu khóa học sẽ được chèn vào đây bởi JavaScript
+            each course in courses
+              tr
+                td #{course.title}
+                td #{course.instructor.name}
+                td #{course.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                td
+                  if course.status === 'active'
+                    span.badge.bg-success Hoạt động
+                  else
+                    span.badge.bg-secondary Tạm ẩn
+                td.text-center
+                  button.btn.btn-warning.btn-sm.me-2(type="button", data-bs-toggle="modal", data-bs-target="#courseModal", data-course=JSON.stringify(course)) Sửa
+                  button.btn.btn-danger.btn-sm(type="button", data-course-id=course._id) Xóa
+
+    .modal.fade#courseModal(tabindex="-1", aria-labelledby="courseModalLabel", aria-hidden="true")
+      .modal-dialog.modal-xl
+        .modal-content
+          .modal-header
+            h5.modal-title#courseModalLabel Thông tin khóa học
+            button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+          
+          .modal-body
+            form#course-form
+              input#course-id(type="hidden")
+
+              .mb-3
+                label.form-label(for="course-title") Tên khóa học (title)
+                input.form-control#course-title(type="text", placeholder="VD: Lập trình JavaScript từ Zero đến Hero", required)
+
+              .row.mb-3
+                .col-md-6
+                  label.form-label(for="instructor-name") Tên giảng viên
+                  input.form-control#instructor-name(type="text")
+                .col-md-6
+                  label.form-label(for="instructor-avatar") Link ảnh đại diện giảng viên
+                  input.form-control#instructor-avatar(type="text")
+
+              .row.mb-3
+                .col-md-4
+                  label.form-label(for="course-price") Giá (price)
+                  input.form-control#course-price(type="number", required)
+                .col-md-4
+                  label.form-label(for="course-status") Trạng thái (status)
+                  select.form-select#course-status(required)
+                    option(value="active", selected) Hoạt động (Active)
+                    option(value="inactive") Tạm ẩn (Inactive)
+                .col-md-4
+                  label.form-label(for="course-access") Quyền truy cập
+                  input.form-control#course-access(type="text")
+
+              .mb-3
+                label.form-label(for="course-image") Link ảnh bìa khóa học
+                input.form-control#course-image(type="text")
+
+              .mb-3
+                label.form-label(for="course-description") Mô tả ngắn
+                textarea.form-control#course-description(rows="3")
+
+              .mb-3
+                label.form-label(for="course-fullDescription") Mô tả đầy đủ
+                textarea.form-control#course-fullDescription(rows="5", placeholder="Nhập mỗi đoạn văn trên một dòng.")
+
+              .mb-3.p-3.border.rounded.bg-light
+                label.form-label.fw-bold Chương trình học (curriculum)
+                #curriculum-container
+                button.btn.btn-outline-success.mt-2#add-lesson-btn(type="button")
+                  i.bi.bi-plus-circle
+                  |  Thêm bài học
+
+          .modal-footer
+            button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Hủy
+            button.btn.btn-primary#save-course-btn(type="button") Lưu thay đổi
+script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js")
+script(src="/js/dashboard.js")

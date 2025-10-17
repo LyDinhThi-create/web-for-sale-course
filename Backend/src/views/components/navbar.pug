@@ -10,11 +10,23 @@ header.header
     nav
       ul.nav-menu
         li.nav-item
-          a.nav-link(href="#") Home
-        li.nav-item
+          a.nav-link(href="/") Home
+        li.nav-item.dropdown
           a.nav-link(href="#")
             | Courses 
             i.fa.fa-angle-down(aria-hidden="true")
+          .dropdown-menu
+            .dropdown-header
+              h3.dropdown-title Courses
+            ul.dropdown-list
+              li.dropdown-item
+                a.dropdown-link(href="/courses") Tất cả khóa học
+              li.dropdown-item
+                a.dropdown-link(href="#") Courses Style 2
+              li.dropdown-item
+                a.dropdown-link(href="#") Courses Style 3
+              li.dropdown-item
+                a.dropdown-link(href="#") Courses Style 4
         li.nav-item
           a.nav-link(href="#")
             | Pages 

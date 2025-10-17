@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Quản Lý Khóa Học</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Admin - Quản Lý Khóa Học</span>
+      </div>
+    </nav>
+
+    <main class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Danh sách khóa học</h2>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#courseModal"
+        >
+          Thêm khóa học mới
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Tên khóa học</th>
+              <th scope="col">Giảng viên</th>
+              <th scope="col">Giá</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col" class="text-center">Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="course-table-body">
+            <!-- Dữ liệu khóa học sẽ được chèn vào đây bởi JavaScript -->
+              <tr>
+                        <td>Lập trình JavaScript từ Zero đến Hero</td>
+                        <td>Trần Anh Tuấn</td>
+                        <td>1,200,000 VNĐ</td>
+                        <td><span class="badge bg-success">Hoạt động</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#courseModal">Sửa</button>
+                            <button class="btn btn-danger btn-sm">Xóa</button>
+                        </td>
+                    </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <div
+      class="modal fade"
+      id="courseModal"
+      tabindex="-1"
+      aria-labelledby="courseModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="courseModalLabel">
+              Thông tin khóa học
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="course-form">
+              <input type="hidden" id="course-id" />
+
+              <div class="mb-3">
+                <label for="course-title" class="form-label"
+                  >Tên khóa học (title)</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="course-title"
+                  placeholder="VD: Lập trình JavaScript từ Zero đến Hero"
+                  required
+                />
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="instructor-name" class="form-label"
+                    >Tên giảng viên</label
+                  ><input
+                    type="text"
+                    class="form-control"
+                    id="instructor-name"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="instructor-avatar" class="form-label"
+                    >Link ảnh đại diện giảng viên</label
+                  ><input
+                    type="text"
+                    class="form-control"
+                    id="instructor-avatar"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="course-price" class="form-label"
+                    >Giá (price)</label
+                  ><input
+                    type="number"
+                    class="form-control"
+                    id="course-price"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="course-status" class="form-label"
+                    >Trạng thái (status)</label
+                  >
+                  <select id="course-status" class="form-select" required>
+                    <option value="active" selected>Hoạt động (Active)</option>
+                    <option value="inactive">Tạm ẩn (Inactive)</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="course-access" class="form-label"
+                    >Quyền truy cập</label
+                  ><input type="text" class="form-control" id="course-access" />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="course-image" class="form-label"
+                  >Link ảnh bìa khóa học</label
+                ><input type="text" class="form-control" id="course-image" />
+              </div>
+
+              <div class="mb-3">
+                <label for="course-description" class="form-label"
+                  >Mô tả ngắn</label
+                ><textarea
+                  class="form-control"
+                  id="course-description"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="course-fullDescription" class="form-label"
+                  >Mô tả đầy đủ</label
+                ><textarea
+                  class="form-control"
+                  id="course-fullDescription"
+                  rows="5"
+                  placeholder="Nhập mỗi đoạn văn trên một dòng."
+                ></textarea>
+              </div>
+
+              <div class="mb-3 p-3 border rounded bg-light">
+                <label class="form-label fw-bold"
+                  >Chương trình học (curriculum)</label
+                >
+                <div id="curriculum-container"></div>
+                <button
+                  type="button"
+                  class="btn btn-outline-success mt-2"
+                  id="add-lesson-btn"
+                >
+                  <i class="bi bi-plus-circle"></i> Thêm bài học
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+            <button type="button" class="btn btn-primary" id="save-course-btn">
+              Lưu thay đổi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Phần JavaScript logic giữ nguyên, không cần thay đổi.
+        const curriculumContainer = document.getElementById(
+          "curriculum-container"
+        );
+        const addLessonBtn = document.getElementById("add-lesson-btn");
+
+        const createLessonInput = () => {
+          const newLesson = document.createElement("div");
+          newLesson.classList.add("input-group", "mb-2", "curriculum-item");
+          newLesson.innerHTML = `
+                    <input type="text" class="form-control curriculum-title" placeholder="Tên bài học (title)">
+                    <input type="text" class="form-control curriculum-duration" placeholder="Thời lượng (VD: 10:30)">
+                    <input type="text" class="form-control curriculum-video" placeholder="Link video bài học">
+                    <button class="btn btn-outline-danger remove-lesson-btn" type="button"><i class="bi bi-trash"></i></button>
+                `;
+          curriculumContainer.appendChild(newLesson);
+        };
+
+        document
+          .getElementById("courseModal")
+          .addEventListener("shown.bs.modal", () => {
+            if (curriculumContainer.children.length === 0) createLessonInput();
+          });
+
+        addLessonBtn.addEventListener("click", createLessonInput);
+
+        curriculumContainer.addEventListener("click", (event) => {
+          if (event.target.closest(".remove-lesson-btn")) {
+            event.target.closest(".curriculum-item").remove();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -14,7 +14,6 @@ body {
 /* Header */
 .header {
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
   padding: 1rem 0;
   top: 0;
   left: 0;
@@ -85,18 +84,129 @@ body {
   position: relative;
 }
 
+
+.nav-link:hover {
+  color: #f56565;
+}
+/* Nav Item */
+
+.nav-item.dropdown {
+  position: relative;
+}
+
+/* Nav Link */
 .nav-link {
-  color: #475569;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  color: #1e293b;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+/* Courses link - red color */
+.nav-item:first-child .nav-link {
+  color: #f56565;
 }
 
 .nav-link:hover {
   color: #f56565;
+}
+
+/* Dropdown icon */
+.nav-link i {
+  font-size: 0.875rem;
+  transition: transform 0.3s ease;
+}
+
+.nav-item:hover .nav-link i {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 250px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-top: 3px solid #f56565;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+    visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+.nav-item:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown Header */
+.dropdown-header {
+    padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.dropdown-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f56565;
+}
+
+/* Dropdown List */
+.dropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  margin: 0;
+}
+
+/* Dropdown Link */
+.dropdown-link {
+  display: block;
+  padding: 0.875rem 1.5rem;
+  color: #475569;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dropdown-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #f56565;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.dropdown-link:hover {
+  background: #fef2f2;
+  color: #f56565;
+  padding-left: 2rem;
+}
+
+.dropdown-link:hover::before {
+  transform: scaleY(1);
 }
 
 .cart-icon {
@@ -525,7 +635,11 @@ body {
             background-size: cover;
             background-position: center;
         }
-
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .course-image::before {
             content: '';
             position: absolute;
