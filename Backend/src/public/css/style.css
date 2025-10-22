@@ -108,7 +108,7 @@ body {
 }
 
 /* Courses link - red color */
-.nav-item:first-child .nav-link {
+ .nav-link.active {
   color: #f56565;
 }
 
@@ -311,6 +311,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 2rem;
+    text-decoration: none;
 }
 
 .join-btn:hover {

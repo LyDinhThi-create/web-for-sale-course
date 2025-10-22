@@ -1,0 +1,74 @@
+extends ../layouts/main.pug
+
+block styles
+  link(rel="stylesheet", href="/css/contact.css")
+
+block content
+  .contact-section
+    // Left Column - Contact Details
+    .contact-details
+      .section-badge CONTACT DETAILS
+      h2.section-title Get in Touch
+      p.section-description
+        | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        | eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+        | suspendisse ultrices gravida. Risus commodo viverra.
+
+      .info-cards
+        // Address Card
+        .info-card
+          .info-icon
+            i.fa.fa-map-marker
+          .info-content
+            h3.info-title Our Address
+            p.info-text
+              | 2750 Quadra Street Victoria Road, New York, Canada
+
+        // Contact Card
+        .info-card
+          .info-icon
+            i.fa.fa-phone
+          .info-content
+            h3.info-title Contact
+            p.info-text
+              | Mobile:
+              a.info-link(href="tel:+4445789-5789") (+44) - 45789 - 5789
+              br
+              | Mail:
+              a.info-link(href="mailto:hello@edemy.com") hello@edemy.com
+
+        // Hours Card
+        .info-card
+          .info-icon
+            i.fa.fa-clock-o
+          .info-content
+            h3.info-title Hours of Operation
+            p.info-text
+              | Monday - Friday: 09:00 - 20:00
+              br
+              | Sunday & Saturday: 10:30 - 22:00
+
+    // Right Column - Contact Form
+    .contact-form-wrapper
+      h3.form-title Ready to Get Started?
+      p.form-subtitle
+        | Your email address will not be published. Required fields are marked
+        strong *
+
+      form.contact-form#contactForm
+        .form-row
+          .form-group
+            input.form-input(type="text", placeholder="Your name", required)
+          .form-group
+            input.form-input(type="email", placeholder="Your email address", required)
+
+        .form-row
+          .form-group
+            input.form-input(type="text", placeholder="Your Subject", required)
+          .form-group
+            input.form-input(type="tel", placeholder="Your Phone", required)
+
+        .form-group
+          textarea.form-textarea(placeholder="Your message...", required)
+
+        button.submit-btn(type="submit") Send Message

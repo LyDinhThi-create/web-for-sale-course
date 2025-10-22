@@ -9,7 +9,7 @@ block content
           | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           | eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
           | ipsum suspendisse.
-        button.join-btn
+        a.join-btn(href="/login-register")
           i.fa.fa-user(aria-hidden="true")
           |  Tham gia miễn phí
         .bulbs-decoration
@@ -38,7 +38,7 @@ block content
               path(d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
           h3.feature-title Học các kỹ năng mới nhất
           p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          a.feature-link(href="#")
+          a.feature-link(href="/login-register")
             | Bắt đầu ngay!
             svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
               path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
@@ -49,7 +49,7 @@ block content
               path(d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
           h3.feature-title Học hỏi từ các chuyên gia trong ngành
           p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          a.feature-link(href="#")
+          a.feature-link(href="/login-register")
             | Bắt đầu ngay!
             svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
               path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
@@ -61,7 +61,7 @@ block content
               path(d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z", stroke="currentColor")
           h3.feature-title Học ở bất cứ đâu trên thế giới
           p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          a.feature-link(href="#")
+          a.feature-link(href="/login-register")
             | Bắt đầu ngay!
             svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
               path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
@@ -76,82 +76,36 @@ block content
       p.section-subtitle Khám phá tất cả các khóa học của chúng tôi và chọn khóa học phù hợp nhất để đăng ký và bắt đầu học cùng chúng tôi! Chúng tôi đảm bảo bạn sẽ không bao giờ hối tiếc!
 
       .courses-grid
-        .course-card
-          .course-image.course-1
-            button.wishlist-btn
-              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
-            .course-price $199
-          .course-content
-            .instructor
-              .instructor-avatar JD
-              span.instructor-name John Doe
-            h3.course-title Spa Relaxation Massage Certificate Course
-            p.course-description Wouldn't you just love to know how to do this incredible form of massage? Well, you
-            .course-stats
-              .stat-item
-                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                  path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
-                | 20 Lessons
-              .stat-item
-                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
-                  circle(cx="9", cy="7", r="4")
-                  path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
-                | 15 Students
-
-        .course-card
-          .course-image.course-2
-            button.wishlist-btn
-              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
-            .course-price $19
-          .course-content
-            .instructor
-              .instructor-avatar JD
-              span.instructor-name John Doe
-            h3.course-title Complete Listing Optimization Training
-            p.course-description Are you looking for a Google My Business (GMB) course that shows you how to
-            .course-stats
-              .stat-item
-                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                  path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
-                | 10 Lessons
-              .stat-item
-                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
-                  circle(cx="9", cy="7", r="4")
-                  path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
-                | 18 Students
-
-        .course-card
-          .course-image.course-3
-            button.wishlist-btn
-              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
-            .course-price $99
-          .course-content
-            .instructor
-              .instructor-avatar JD
-              span.instructor-name John Doe
-            h3.course-title Graphic Design Masterclass - Learn GREAT Design
-            p.course-description We also learn the basics of Adobe Photoshop, Illustrator and InDesign and do projects with
-            .course-stats
-              .stat-item
-                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                  path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
-                | 20 Lessons
-              .stat-item
-                svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                  path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
-                  circle(cx="9", cy="7", r="4")
-                  path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
-                | 1 Students
+        each course in featuredCourses
+          .course-card
+            .course-image.course-1
+              img(src=course.image, alt=course.title)
+              button.wishlist-btn
+                svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+              .course-price $#{course.price}
+            .course-content
+              .instructor
+                .instructor-avatar #{course.instructor.avatar}
+                span.instructor-name #{course.instructor.name}
+              a.course-title(href=`/courses/${course.id}`) #{course.title}
+              p.course-description #{course.description}
+              .course-stats
+                .stat-item
+                  svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                    path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                  | #{course.lessonsCount} Lessons
+                .stat-item
+                  svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                    path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                    circle(cx="9", cy="7", r="4")
+                    path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+                  | #{course.students} Students
 
       .cta-section
         p.cta-text
           | Tận hưởng phương pháp học tập hàng đầu và đạt được những kỹ năng vượt trội! Bạn là người tạo dựng sự nghiệp cho chính mình và chúng tôi sẽ đồng hành cùng bạn trên con đường đó. 
-          a.cta-link(href="#") Register Free Now!
+          a.cta-link(href="/login-register") Register Free Now!
 
   section.distance-learning-section
     .section-container
@@ -192,7 +146,7 @@ block content
                 path(d="m9 14 2 2 4-4")
             span.feature-text Tự phát triển
 
-        a.view-courses-btn(href="#")
+        a.view-courses-btn(href="/courses")
           i.fa.fa-user(aria-hidden="true")
           |  Xem tất cả các khóa học
 
@@ -274,4 +228,4 @@ block content
         .section-badge Học từ xa
         h2.section-title Đi trước với con đường học tập. Giữ sắc nét.
         p.section-description Với trường đại học mở, bạn có thể học bất cứ khi nào và bất cứ nơi nào bạn chọn. Chúng tôi có sinh viên ở hơn 128 quốc gia và danh tiếng toàn cầu là người tiên phong trong lĩnh vực học tập linh hoạt. Giảng dạy linh hoạt của chúng tôi cũng có nghĩa là, nếu bạn đi du lịch thường xuyên hoặc cần di dời, bạn có thể tiếp tục học bất cứ nơi nào bạn đi.
-        a.view-courses-btn(href="#") Xem các khóa học
+        a.view-courses-btn(href="/courses") Xem các khóa học

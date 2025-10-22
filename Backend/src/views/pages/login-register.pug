@@ -1,0 +1,44 @@
+extends ../layouts/main.pug
+block styles
+  link(rel="stylesheet", href="/css/login_register.css")
+block content
+  .auth-container
+    //- Login Form
+    .login-section
+      h2.auth-title Login
+      form.login-form#loginForm
+        .form-group
+          label.form-label Email
+          input.form-input(type="email", placeholder="Email", required)
+
+        .form-group
+          label.form-label Password
+          input.form-input(type="password", placeholder="Password", required)
+
+        .login-options
+          .remember-me
+            input(type="checkbox", id="rememberMe")
+            label(for="rememberMe") Remember me
+          a.forgot-password(href="#") Lost your password?
+
+        button.submit-btn(type="submit") Log In
+
+    //- Register Form
+    .register-section
+      h2.auth-title Register
+      form.register-form#registerForm
+        .form-group
+          label.form-label Full Name
+          input.form-input(type="text", placeholder="Full Name", required)
+
+        .form-group
+          label.form-label Email
+          input.form-input(type="email", placeholder="Email", required)
+
+        .form-group
+          label.form-label Password
+          input.form-input(type="password", placeholder="Password", required)
+          p.password-hint
+            | The password should be at least eight characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! " ? $ % ^ & ( )
+
+        button.submit-btn(type="submit") Register

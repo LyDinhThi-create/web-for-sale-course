@@ -1,0 +1,32 @@
+extends ../layouts/main.pug
+
+block styles
+  link(rel="stylesheet", href="/css/blogDetail.css")
+
+block content
+  article.article-card
+    .card-image
+      img(src="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", alt="Một người phụ nữ đang làm việc trên laptop")
+    
+    .card-meta
+      .meta-item
+        i.fas.fa-folder
+        .meta-text
+          span.meta-label Category
+          span.meta-value Fashion
+      .meta-item
+        i.fas.fa-user
+        .meta-text
+          span.meta-label View
+          span.meta-value 813,454
+      .meta-item
+        i.fas.fa-calendar-alt
+        .meta-text
+          span.meta-label Last Updated
+          span.meta-value 25/04/2020
+    
+    .card-content
+      h2.card-title
+        a(href="#") It's Time To Think Differently About Homeschooling
+      p.card-excerpt
+        | Quuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quia non numquam eius modi tempora incidunt ut labore et dolore magnam dolor sit amet, consectetur adipisicing. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.

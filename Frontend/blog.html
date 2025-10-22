@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Grid</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        padding: 3rem 2rem;
+      }
+
+      .blog-section {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      /* Blog Card */
+      .blog-card {
+        border-radius: 3px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .blog-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .blog-card:hover .blog-image {
+        transform: scale(1.05);
+      }
+
+      .blog-image-container {
+        overflow: hidden;
+        position: relative;
+      }
+
+      .blog-content {
+        padding: 2rem;
+      }
+
+      .blog-category {
+        display: inline-block;
+        background: rgba(245, 101, 101, 0.1);
+        color: #f56565;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1rem;
+      }
+
+      .blog-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 1.5rem;
+        line-height: 1.3;
+        transition: color 0.3s ease;
+      }
+
+      .blog-card:hover .blog-title {
+        color: #f56565;
+      }
+
+      .blog-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 1.5rem;
+      }
+
+      .blog-author {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .author-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f56565 0%, #ef4444 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .author-name {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .blog-date {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #64748b;
+        font-size: 0.9rem;
+      }
+
+      .date-icon {
+        width: 16px;
+        height: 16px;
+        color: #f56565;
+      }
+
+      /* Pagination */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 3rem;
+      }
+
+      .pagination-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        color: #64748b;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .pagination-btn:hover {
+        background: #f56565;
+        color: white;
+        border-color: #f56565;
+        transform: translateY(-2px);
+      }
+
+      .pagination-btn.active {
+        background: linear-gradient(135deg, #f56565 0%, #ef4444 100%);
+        color: white;
+        border-color: #f56565;
+      }
+
+      .pagination-btn.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .pagination-btn.disabled:hover {
+        background: #ffffff;
+        color: #64748b;
+        border-color: #e2e8f0;
+        transform: none;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 968px) {
+        .blog-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .blog-image {
+          height: 220px;
+        }
+
+        .blog-content {
+          padding: 1.5rem;
+        }
+
+        .blog-title {
+          font-size: 1.3rem;
+        }
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 2rem 1rem;
+        }
+
+        .blog-image {
+          height: 200px;
+        }
+
+        .blog-content {
+          padding: 1.25rem;
+        }
+
+        .blog-title {
+          font-size: 1.2rem;
+        }
+
+        .blog-meta {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+
+        .pagination {
+          gap: 0.25rem;
+        }
+
+        .pagination-btn {
+          width: 36px;
+          height: 36px;
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .blog-card {
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+      }
+
+      .blog-card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .blog-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .blog-card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .blog-card:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+
+      /* Blog Images - Gradient Placeholders */
+      .blog-img-1 {
+        background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+      }
+
+      .blog-img-2 {
+        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      }
+
+      .blog-img-3 {
+        background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%);
+      }
+
+      .blog-img-4 {
+        background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blog-section">
+      <div class="blog-grid">
+        <!-- Blog Card 1 -->
+        <article class="blog-card">
+          <div class="blog-image-container">
+            <div class="blog-image blog-img-1"></div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-category">Education</span>
+            <h3 class="blog-title">
+              28 Student-Centered Instructional Strategies
+            </h3>
+            <div class="blog-meta">
+              <div class="blog-author">
+                <div class="author-avatar">AM</div>
+                <span class="author-name">Alex Morgan</span>
+              </div>
+              <div class="blog-date">
+                <svg
+                  class="date-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                April 30, 2020
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Blog Card 2 -->
+        <article class="blog-card">
+          <div class="blog-image-container">
+            <div class="blog-image blog-img-2"></div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-category">Education</span>
+            <h3 class="blog-title">
+              4 Steps To Quality Training In Times Of Urgency
+            </h3>
+            <div class="blog-meta">
+              <div class="blog-author">
+                <div class="author-avatar">AM</div>
+                <span class="author-name">Alex Morgan</span>
+              </div>
+              <div class="blog-date">
+                <svg
+                  class="date-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                April 30, 2020
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Blog Card 3 -->
+        <article class="blog-card">
+          <div class="blog-image-container">
+            <div class="blog-image blog-img-3"></div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-category">Education</span>
+            <h3 class="blog-title">
+              100 Blended Learning Resources For Teachers
+            </h3>
+            <div class="blog-meta">
+              <div class="blog-author">
+                <div class="author-avatar">AM</div>
+                <span class="author-name">Alex Morgan</span>
+              </div>
+              <div class="blog-date">
+                <svg
+                  class="date-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                April 30, 2020
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Blog Card 4 -->
+        <article class="blog-card">
+          <div class="blog-image-container">
+            <div class="blog-image blog-img-4"></div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-category">Education</span>
+            <h3 class="blog-title">20 Examples Of Project-Based Learning</h3>
+            <div class="blog-meta">
+              <div class="blog-author">
+                <div class="author-avatar">AM</div>
+                <span class="author-name">Alex Morgan</span>
+              </div>
+              <div class="blog-date">
+                <svg
+                  class="date-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                April 30, 2020
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <a href="#" class="pagination-btn disabled">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </a>
+        <a href="#" class="pagination-btn active">1</a>
+        <a href="#" class="pagination-btn">2</a>
+        <a href="#" class="pagination-btn">3</a>
+        <a href="#" class="pagination-btn">4</a>
+        <a href="#" class="pagination-btn">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Blog card click handler
+        const blogCards = document.querySelectorAll(".blog-card");
+        blogCards.forEach((card) => {
+          card.addEventListener("click", function () {
+            const title = this.querySelector(".blog-title").textContent;
+            console.log("Opening blog post:", title);
+            // In real application, would navigate to blog post page
+          });
+
+          // Add hover effect enhancement
+          card.addEventListener("mouseenter", function () {
+            this.style.transform = "translateY(-5px) scale(1.01)";
+          });
+
+          card.addEventListener("mouseleave", function () {
+            this.style.transform = "translateY(0) scale(1)";
+          });
+        });
+
+        // Pagination handler
+        const paginationBtns = document.querySelectorAll(
+          ".pagination-btn:not(.disabled)"
+        );
+        paginationBtns.forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // Remove active class from all buttons
+            paginationBtns.forEach((b) => b.classList.remove("active"));
+
+            // Add active class to clicked button (if it's a number)
+            if (!this.querySelector("svg")) {
+              this.classList.add("active");
+
+              // Simulate page load
+              const pageNum = this.textContent;
+              console.log("Loading page:", pageNum);
+
+              // Scroll to top smoothly
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+
+              // Show loading animation (optional)
+              blogCards.forEach((card, index) => {
+                card.style.opacity = "0";
+                setTimeout(() => {
+                  card.style.transition = "opacity 0.5s ease";
+                  card.style.opacity = "1";
+                }, index * 100);
+              });
+            }
+          });
+        });
+
+        // Add ripple effect to pagination buttons
+        paginationBtns.forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            if (this.classList.contains("disabled")) return;
+
+            const ripple = document.createElement("span");
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+
+            ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255,255,255,0.6);
+                        transform: scale(0);
+                        animation: rippleEffect 0.6s linear;
+                        left: ${e.clientX - rect.left - size / 2}px;
+                        top: ${e.clientY - rect.top - size / 2}px;
+                        width: ${size}px;
+                        height: ${size}px;
+                        pointer-events: none;
+                    `;
+
+            this.style.position = "relative";
+            this.style.overflow = "hidden";
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+              ripple.remove();
+            }, 600);
+          });
+        });
+      });
+
+      // Add ripple animation style
+      const style = document.createElement("style");
+      style.textContent = `
+            @keyframes rippleEffect {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>

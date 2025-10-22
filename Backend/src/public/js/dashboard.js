@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
     curriculumContainer.innerHTML = "";
     document.getElementById("courseModalLabel").textContent =
       "Thêm khóa học mới";
+    // Thêm 2 dòng này để reset input file và ảnh cũ
+    document.getElementById("course-image-upload").value = null;
+    document.getElementById("course-image").value = "";
   };
 
   const addLessonField = (
@@ -36,21 +39,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   courseModal.addEventListener("show.bs.modal", (event) => {
     resetForm();
-    const course = JSON.parse(event.relatedTarget.getAttribute("data-course"));
-    if (course) {
-      // Chế độ Sửa
+    // Chỗ này cần kiểm tra vì nút "Thêm" không có 'data-course'
+    const button = event.relatedTarget;
+    const courseData = button.getAttribute("data-course");
+    if (courseData) {
+      const course = JSON.parse(courseData); // Chế độ Sửa
       document.getElementById("courseModalLabel").textContent =
         "Chỉnh sửa khóa học";
       document.getElementById("course-id").value = course._id;
       document.getElementById("course-title").value = course.title;
       document.getElementById("instructor-name").value = course.instructor.name;
-      document.getElementById("instructor-avatar").value = course.instructor.avatar;
-      document.getElementById("course-image").value = course.image;
+      document.getElementById("instructor-avatar").value =
+        course.instructor.avatar;
+      // Dùng ô #course-image (readonly) để hiển thị link ảnh cũ
+      document.getElementById("course-image").value = course.image || "";
+
       document.getElementById("course-price").value = course.price;
       document.getElementById("course-description").value = course.description;
       document.getElementById("course-access").value = course.access;
       document.getElementById("course-status").value = course.status;
-      // ... điền các trường khác tương tự
       document.getElementById("course-fullDescription").value =
         course.fullDescription ? course.fullDescription.join("\n") : "";
       if (course.curriculum) course.curriculum.forEach(addLessonField);
@@ -64,52 +71,77 @@ document.addEventListener("DOMContentLoaded", () => {
       e.target.closest(".lesson-group").remove();
   });
 
+  // --- HÀM saveCourseBtn ĐÃ THAY ĐỔI HOÀN TOÀN ---
   saveCourseBtn.addEventListener("click", async () => {
     const courseId = document.getElementById("course-id").value;
+
+    // 1. Tạo đối tượng FormData
+    const formData = new FormData();
+
+    // 2. Thêm file ảnh (nếu người dùng đã chọn)
+    const imageFile = document.getElementById("course-image-upload").files[0];
+    if (imageFile) {
+      // 'imageFile' phải khớp với tên trong upload.single() ở route
+      formData.append("imageFile", imageFile);
+    }
+
+    // 3. Thu thập các giá trị và thêm vào formData
+    formData.append("title", document.getElementById("course-title").value);
+    formData.append(
+      "price",
+      Number(document.getElementById("course-price").value) || 0
+    );
+    formData.append(
+      "description",
+      document.getElementById("course-description").value
+    );
+    formData.append("access", document.getElementById("course-access").value);
+    formData.append("status", document.getElementById("course-status").value);
+
+    // Thêm link ảnh cũ (để 'update' có thể giữ lại nếu không có ảnh mới)
+    formData.append("image", document.getElementById("course-image").value);
+
+    // 4. Thu thập các đối tượng/mảng và JSON.stringify() chúng
+    const instructor = {
+      name: document.getElementById("instructor-name").value,
+      avatar: document.getElementById("instructor-avatar").value,
+    };
+    formData.append("instructor", JSON.stringify(instructor));
 
     const curriculum = [...document.querySelectorAll(".lesson-group")]
       .map((group) => ({
         title: group.querySelector(".lesson-title").value.trim(),
+        // Đừng quên thêm videoUrl nếu bạn đã sửa schema
+        // videoUrl: group.querySelector(".lesson-video").value.trim(),
         duration: group.querySelector(".lesson-duration").value.trim(),
       }))
       .filter((l) => l.title);
+    formData.append("curriculum", JSON.stringify(curriculum));
 
-    const payload = {
-      title: document.getElementById("course-title").value,
-      instructor: {
-        name: document.getElementById("instructor-name").value,
-        avatar: document.getElementById("instructor-avatar").value,
-      },
-      image: document.getElementById("course-image").value,
-      price: Number(document.getElementById("course-price").value) || 0,
-      description: document.getElementById("course-description").value,
-      access: document.getElementById("course-access").value,
-      fullDescription: document
-        .getElementById("course-fullDescription")
-        .value.split("\n")
-        .map((p) => p.trim())
-        .filter((p) => p),
-      status: document.getElementById("course-status").value,
+    const fullDescription = document
+      .getElementById("course-fullDescription")
+      .value.split("\n")
+      .map((p) => p.trim())
+      .filter((p) => p);
+    formData.append("fullDescription", JSON.stringify(fullDescription));
 
-      // ... lấy giá trị các trường khác
-      curriculum,
-    };
-
+    // 5. Xác định URL, Method và gửi Fetch
     const url = courseId ? `/admin/courses/${courseId}` : "/admin/courses";
     const method = courseId ? "PUT" : "POST";
 
     try {
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        // KHÔNG cần 'Content-Type', trình duyệt tự thêm
+        // 'multipart/form-data' khi body là FormData
+        body: formData,
       });
       if (!response.ok) throw new Error("Lỗi máy chủ");
       location.reload();
     } catch (error) {
       alert("Lưu thất bại!");
     }
-  });
+  }); // ... (Phần 'deleteButton' giữ nguyên)
 
   courseTableBody.addEventListener("click", async (event) => {
     const deleteButton = event.target.closest(".btn-danger");

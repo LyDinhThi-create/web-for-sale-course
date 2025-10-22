@@ -80,8 +80,12 @@ html(lang="vi")
                   input.form-control#course-access(type="text")
 
               .mb-3
-                label.form-label(for="course-image") Link ảnh bìa khóa học
-                input.form-control#course-image(type="text")
+                label.form-label(for="course-image-upload") Tải ảnh bìa mới (Bỏ qua nếu không muốn thay đổi)
+                input.form-control#course-image-upload(type="file", accept="image/*")
+
+              .mb-3
+                label.form-label Ảnh bìa hiện tại
+                input.form-control#course-image(type="text", readonly, placeholder="Chưa có ảnh")
 
               .mb-3
                 label.form-label(for="course-description") Mô tả ngắn

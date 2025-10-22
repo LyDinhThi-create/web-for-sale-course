@@ -10,9 +10,11 @@ header.header
     nav
       ul.nav-menu
         li.nav-item
-          a.nav-link(href="/") Home
+          a.nav-link(href="/",
+          class=(activeMenu === 'home' ? 'active' : '')) Home
         li.nav-item.dropdown
-          a.nav-link(href="#")
+          a.nav-link(href="#",
+          class=(activeMenu === 'courses' ? 'active' : ''))
             | Courses 
             i.fa.fa-angle-down(aria-hidden="true")
           .dropdown-menu
@@ -28,18 +30,19 @@ header.header
               li.dropdown-item
                 a.dropdown-link(href="#") Courses Style 4
         li.nav-item
-          a.nav-link(href="#")
-            | Pages 
-            i.fa.fa-angle-down(aria-hidden="true")
-        li.nav-item
-          a.nav-link(href="#")
+          a.nav-link(href="/blog",
+          class=(activeMenu === 'blog' ? 'active' : ''))
             | Blog
             i.fa.fa-angle-down(aria-hidden="true")
+        li.nav-item
+          a.nav-link(href="/contact",
+          class=(activeMenu === 'contact' ? 'active' : ''))
+            | Contact 
         li.nav-item
           .cart-icon
             i.fa.fa-cart-plus(aria-hidden="true")
             span.cart-badge 0
         li.nav-item
-          a.login-btn(href="#")
+          a.login-btn(href="/login-register")
             i.fa.fa-user(aria-hidden="true")
             |  Login/Register
