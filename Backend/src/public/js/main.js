@@ -135,5 +135,5 @@ document.addEventListener("DOMContentLoaded", function () {  document.addEventLi
                     this.style.borderColor = '#e2e8f0';
                 }
             });
-        });
+        });});
 // end login
