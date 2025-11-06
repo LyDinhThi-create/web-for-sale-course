@@ -50,10 +50,12 @@ block content
                       circle(cx="9" cy="7" r="4")
                       path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
                     | #{course.students} Students
-
-      ul.pagination
-        li.pagination-link &laquo; Quay lại
-        li.pagination-link.active 1
-        li.pagination-link 2
-        li.pagination-link 3
-        li.pagination-link Tiếp &raquo;
+      if totalPages > 1
+        ul.pagination
+          li.pagination-link(class= currentPage===1 ? 'disabled' : '') 
+            a(href=`?sort=${currentSort}&page=${currentPage-1}&limit=${limit}`) &laquo; Quay lại
+          each i in Array.from({ length: totalPages }, (_, index) => index + 1)
+            li.pagination-link(class= currentPage===i ? 'active' : '')
+              a(href=`?sort=${currentSort}&page=${i}&limit=${limit}`) #{i}
+          li.pagination-link(class= currentPage===totalPages ? 'disabled' : '') 
+            a(href=`?sort=${currentSort}&page=${currentPage+1}&limit=${limit}`) Tiếp &raquo;

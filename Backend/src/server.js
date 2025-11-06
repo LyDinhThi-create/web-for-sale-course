@@ -27,6 +27,10 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true }, // thời gian sống của cookie (ms)
   })
 );
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
 // Kết nối DB
 connectDB();
 
@@ -49,10 +53,6 @@ app.use("/blog", blogRoutes);
 app.use("/", authRoutes);
 
 // Trang chủ
-app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
-  next();
-});
 
 app.get("/", async (req, res) => {
   const featuredCourses = await Courses.find().limit(3);
