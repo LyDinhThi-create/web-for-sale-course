@@ -7,84 +7,46 @@ block content
   .blog-section
     .blog-grid
       // Blog Card 1
-      article.blog-card
-        .blog-image-container
-          .blog-image.blog-img-1
-        .blog-content
-          span.blog-category Education
-          h3.blog-title
-            | 28 Student-Centered Instructional Strategies
-          .blog-meta
-            .blog-author
-              .author-avatar AM
-              span.author-name Alex Morgan
-            .blog-date
-              svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
-                line(x1="16", y1="2", x2="16", y2="6")
-                line(x1="8", y1="2", x2="8", y2="6")
-                line(x1="3", y1="10", x2="21", y2="10")
-              | April 30, 2020
+      each itemBlog in blogs
+        article.blog-card
+          .blog-image-container
+            img.blog-image(src=itemBlog.image, alt=itemBlog.title)
+          .blog-content
+            span.blog-category #{itemBlog.category}
+            h3.blog-title
+              a(href=`/blog/${itemBlog._id}`) #{itemBlog.title}
+            .blog-meta
+              .blog-author
+                .author-avatar #{itemBlog.instructor.avatar}
+                span.author-name #{itemBlog.instructor.name}
+              .blog-date
+                svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
+                  line(x1="16", y1="2", x2="16", y2="6")
+                  line(x1="8", y1="2", x2="8", y2="6")
+                  line(x1="3", y1="10", x2="21", y2="10")
+                | #{itemBlog.createdAt.toLocaleDateString('vi-VN')}
+                
+      //- article.blog-card
+      //-   .blog-image-container
+      //-     .blog-image.blog-img-1
+      //-   .blog-content
+      //-     span.blog-category Education
+      //-     h3.blog-title
+      //-       | 28 Student-Centered Instructional Strategies
+      //-     .blog-meta
+      //-       .blog-author
+      //-         .author-avatar AM
+      //-         span.author-name Alex Morgan
+      //-       .blog-date
+      //-         svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+      //-           rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
+      //-           line(x1="16", y1="2", x2="16", y2="6")
+      //-           line(x1="8", y1="2", x2="8", y2="6")
+      //-           line(x1="3", y1="10", x2="21", y2="10")
+      //-         | April 30, 2020
 
-      // Blog Card 2
-      article.blog-card
-        .blog-image-container
-          .blog-image.blog-img-2
-        .blog-content
-          span.blog-category Education
-          h3.blog-title
-            | 4 Steps To Quality Training In Times Of Urgency
-          .blog-meta
-            .blog-author
-              .author-avatar AM
-              span.author-name Alex Morgan
-            .blog-date
-              svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
-                line(x1="16", y1="2", x2="16", y2="6")
-                line(x1="8", y1="2", x2="8", y2="6")
-                line(x1="3", y1="10", x2="21", y2="10")
-              | April 30, 2020
-
-      // Blog Card 3
-      article.blog-card
-        .blog-image-container
-          .blog-image.blog-img-3
-        .blog-content
-          span.blog-category Education
-          h3.blog-title
-            | 100 Blended Learning Resources For Teachers
-          .blog-meta
-            .blog-author
-              .author-avatar AM
-              span.author-name Alex Morgan
-            .blog-date
-              svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
-                line(x1="16", y1="2", x2="16", y2="6")
-                line(x1="8", y1="2", x2="8", y2="6")
-                line(x1="3", y1="10", x2="21", y2="10")
-              | April 30, 2020
-
-      // Blog Card 4
-      article.blog-card
-        .blog-image-container
-          .blog-image.blog-img-4
-        .blog-content
-          span.blog-category Education
-          h3.blog-title 20 Examples Of Project-Based Learning
-          .blog-meta
-            .blog-author
-              .author-avatar AM
-              span.author-name Alex Morgan
-            .blog-date
-              svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
-                line(x1="16", y1="2", x2="16", y2="6")
-                line(x1="8", y1="2", x2="8", y2="6")
-                line(x1="3", y1="10", x2="21", y2="10")
-              | April 30, 2020
-
+     
     // Pagination
     .pagination
       a.pagination-btn.disabled(href="#")

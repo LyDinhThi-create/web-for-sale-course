@@ -8,7 +8,7 @@ const courseSchema = new mongoose.Schema(
       name: String,
       avatar: String,
     },
-    lessonsCount: Number,
+    lessonCount: Number,
     students: Number,
     duration: String,
     access: String,
@@ -32,4 +32,5 @@ const courseSchema = new mongoose.Schema(
     timestamps: true, // Tự động thêm createdAt và updatedAt
   }
 );
-module.exports = mongoose.model("Course", courseSchema, "courses");
+module.exports =
+  mongoose.models.Course || mongoose.model("Course", courseSchema, "courses");

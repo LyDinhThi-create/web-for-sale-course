@@ -6,10 +6,18 @@ block content
     .courses-container
       .sort_courses
         select#sort(name="sort")
-          option(value="default") Sort by(Default DESC)
-          option(value="Oldest_first") Oldest first
-          option(value="price_low_high") Sort by price: Low to High
-          option(value="price_high_low") Sort by price : High to Low
+          option(value="createdAt:desc", 
+                selected=(currentSort === 'createdAt:desc' || !currentSort)
+                ) Sort by(Default DESC)
+          option(value="createdAt:asc", 
+                selected=(currentSort === 'createdAt:asc')
+                ) Oldest first
+          option(value="price:asc", 
+                selected=(currentSort === 'price:asc')
+                ) Sort by price: Low to High
+          option(value="price:desc", 
+                selected=(currentSort === 'price:desc')
+                ) Sort by price : High to Low
 
       .courses-grid
         // Course 1: Spa Relaxation Massage
@@ -34,7 +42,7 @@ block content
                   .stat-item
                     svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
                       path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
-                    | #{course.lessonsCount} Lessons
+                    | #{course.lessonCount} Lessons
 
                   .stat-item
                     svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")

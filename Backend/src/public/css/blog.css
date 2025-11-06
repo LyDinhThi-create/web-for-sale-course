@@ -7,6 +7,7 @@
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
+  background: white !important;
 }
 
 .blog-section {
@@ -24,6 +25,7 @@ body {
 
 /* Blog Card */
 .blog-card {
+  width: 100%;
   border-radius: 3px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -34,11 +36,12 @@ body {
   width: 100%;
   height: 250px;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: 0.3s;
 }
 
-.blog-card:hover .blog-image {
-  transform: scale(1.05);
+.blog-card .blog-image:hover {
+  rotate: 5deg;
+  transform: scale(1.2);
 }
 
 .blog-image-container {
@@ -66,13 +69,18 @@ body {
 .blog-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #0f172a;
   margin-bottom: 1.5rem;
   line-height: 1.3;
   transition: color 0.3s ease;
 }
 
-.blog-card:hover .blog-title {
+.blog-title a {
+  text-decoration: none;
+  color: #0f172a;
+  transition: 0.3s;
+}
+
+.blog-title a:hover {
   color: #f56565;
 }
 

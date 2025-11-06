@@ -1,9 +1,9 @@
-const Course = require("../models/Course");
+const Blog = require("../models/Blog");
 
 module.exports.getAllBlog = async (req, res) => {
   try {
-    const courses = await Course.find();
-    res.render("pages/blog", { title: "Blog" });
+    const blogs = await Blog.find({ status: "active" });
+    res.render("pages/blog", { title: "Blog", blogs });
   } catch (err) {
     res.status(500).send("Server Error");
   }
@@ -11,9 +11,10 @@ module.exports.getAllBlog = async (req, res) => {
 
 module.exports.getBlogById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
-    res.render("pages/blogDetail", { title: "Blog Detail" });
+    const blog = await Blog.findById(req.params.id);
+    res.render("pages/blog/:id", { title: "Blog Detail", blog });
   } catch (err) {
-    res.status(404).send("Course not found");
+    res.status(404).send("Blog not found");
   }
 };
+

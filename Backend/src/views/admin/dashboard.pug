@@ -33,7 +33,7 @@ html(lang="vi")
               tr
                 td #{course.title}
                 td #{course.instructor.name}
-                td #{course.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                td #{course.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                 td
                   if course.status === 'active'
                     span.badge.bg-success Hoạt động
@@ -82,10 +82,12 @@ html(lang="vi")
               .mb-3
                 label.form-label(for="course-image-upload") Tải ảnh bìa mới (Bỏ qua nếu không muốn thay đổi)
                 input.form-control#course-image-upload(type="file", accept="image/*")
+                img#image-preview(src="", alt="Xem trước ảnh", style="width: 300px; margin-top: 15px;")
 
               .mb-3
                 label.form-label Ảnh bìa hiện tại
                 input.form-control#course-image(type="text", readonly, placeholder="Chưa có ảnh")
+                img#image-preview-old(src="", alt="Xem trước ảnh", style="width: 300px; margin-top: 15px;")
 
               .mb-3
                 label.form-label(for="course-description") Mô tả ngắn
