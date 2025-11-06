@@ -145,15 +145,19 @@ document.addEventListener("DOMContentLoaded", function () {
 // end login
 //sort course
 // Lắng nghe sự kiện 'change' (thay đổi) trên dropdown
-document.getElementById("sort").addEventListener("change", function () {
-  // Lấy giá trị đã chọn, ví dụ: "price:asc"
-  const sortValue = this.value;
+const sortSelect = document.getElementById("sort");
+if (sortSelect) {
+  sortSelect.addEventListener("change", function () {
+    // Lấy giá trị đã chọn, ví dụ: "price:asc"
+    const sortValue = this.value;
 
-  // Lấy đường dẫn cơ bản của trang
-  const baseUrl = window.location.pathname;
+    // Lấy đường dẫn cơ bản của trang
+    const baseUrl = window.location.pathname;
 
-  // Tự động chuyển hướng trang với query 'sort' mới
-  // Trình duyệt sẽ tải lại trang: /admin/dashboard?sort=price:asc
-  window.location.href = `${baseUrl}?sort=${sortValue}`;
-});
+    // Tự động chuyển hướng trang với query 'sort' mới
+    // Trình duyệt sẽ tải lại trang: /admin/dashboard?sort=price:asc
+    window.location.href = `${baseUrl}?sort=${sortValue}`;
+  });
+}
+
 // end sort

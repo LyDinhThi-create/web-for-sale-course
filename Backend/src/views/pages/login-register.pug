@@ -6,14 +6,14 @@ block content
     //- Login Form
     .login-section
       h2.auth-title Login
-      form.login-form#loginForm
+      form(action="/login-register/login", method="POST").login-form#loginForm
         .form-group
           label.form-label Email
-          input.form-input(type="email", placeholder="Email", required)
+          input.form-input(type="email", placeholder="Email",name="email", required)
 
         .form-group
           label.form-label Password
-          input.form-input(type="password", placeholder="Password", required)
+          input.form-input(type="password", placeholder="Password",name="password", required)
 
         .login-options
           .remember-me
@@ -26,18 +26,18 @@ block content
     //- Register Form
     .register-section
       h2.auth-title Register
-      form.register-form#registerForm
+      form(action="/login-register/register", method="POST").register-form#registerForm
         .form-group
           label.form-label Full Name
-          input.form-input(type="text", placeholder="Full Name", required)
+          input.form-input(type="text", placeholder="Full Name",name="fullname", required)
 
         .form-group
           label.form-label Email
-          input.form-input(type="email", placeholder="Email", required)
+          input.form-input(type="email", placeholder="Email",name="email", required)
 
         .form-group
           label.form-label Password
-          input.form-input(type="password", placeholder="Password", required)
+          input.form-input(type="password", placeholder="Password",name="password", required)
           p.password-hint
             | The password should be at least eight characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! " ? $ % ^ & ( )
 
