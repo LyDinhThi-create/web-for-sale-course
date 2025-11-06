@@ -39,9 +39,9 @@ class AuthController {
          }
          const match = await bcrypt.compare(password, user.password);
          if (!match) {
-            req.flash('errorMsg3', 'Sai mật khẩu');
-            return res.redirect('/login');
-         }         
+            res.status(200).json({ message: 'Mật khẩu không đúng. Vui lòng thử lại.' });
+            
+         }
          req.session.user = {
             _id: user._id,
             name: user.name,
@@ -59,6 +59,10 @@ class AuthController {
   }
     async logout(req, res, next) {
     try {
+        const userId = req.session.user._id;
+        const user = await User.findById(userId);
+        user.statusLogin = false;
+        await user.save();
         req.session.destroy();
         res.redirect('/login-register');
     } catch (err) {
