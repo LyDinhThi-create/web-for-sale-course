@@ -1,0 +1,77 @@
+extends ../layouts/main.pug
+
+block styles
+  link(rel="stylesheet", href="/css/searchCourse.css")
+
+block content
+  div.search_section
+    //- KHỐI KẾT QUẢ KHÓA HỌC
+    div.result_course
+      h2 Kết quả tìm kiếm cho "#{searchTerm}"
+      if courses.length === 0
+        p Không tìm thấy khóa học nào.
+      else
+        .courses-grid
+          each course in courses
+            .course-card
+              .course-image.course-1
+                //- SỬA LẠI: Thêm img(src=...)
+                img(src=course.image, alt=course.title)
+                button.wishlist-btn
+                  svg(width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                    path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+                .course-price $#{course.price}
+
+              .course-content
+                .instructor
+                  //- SỬA LẠI: Dùng thẻ img cho avatar
+                  .instructor-avatar #{course.instructor.avatar}
+                  span.instructor-name #{course.instructor.name}
+
+                a.course-title(href=`/courses/${course._id}`) #{course.title}
+                p.course-description #{course.description}
+
+                .course-stats
+                  .stat-item
+                    svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                      path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                    | #{course.lessonCount} Lessons
+
+                  .stat-item
+                    svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                      path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                      circle(cx="9" cy="7" r="4")
+                      path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+                    //- SỬA LẠI: Thêm .length để đếm số học viên
+                    | #{course.students} Students
+
+    //- KHỐI KẾT QUẢ BLOG
+    //- SỬA LẠI: Thụt lề cho div.result_blog (ngang hàng với div.result_course)
+    div.result_blog
+      h2 Kết quả tìm kiếm cho blog "#{searchTerm}"
+      if blogs.length === 0
+        p Không tìm thấy bài viết nào.
+      else
+        .blogs-grid
+          //- SỬA LẠI: Dùng biến "blog" thay vì "itemBlog"
+          each blog in blogs
+            article.blog-card
+              .blog-image-container
+                img.blog-image(src=blog.image, alt=blog.title)
+              .blog-content
+                span.blog-category #{blog.category}
+                h3.blog-title
+                  a(href=`/blog/${blog._id}`) #{blog.title}
+                .blog-meta
+                  .blog-author
+                    //- SỬA LẠI: Dùng thẻ img và biến "blog"
+                    .author-avatar #{blog.instructor.avatar}
+                    span.author-name #{blog.instructor.name}
+                  .blog-date
+                    svg.date-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                      rect(x="3", y="4", width="18", height="18", rx="2", ry="2")
+                      line(x1="16", y1="2", x2="16", y2="6")
+                      line(x1="8", y1="2", x2="8", y2="6")
+                      line(x1="3", y1="10", x2="21", y2="10")
+                    //- SỬA LẠI: Dùng biến "blog"
+                    | #{blog.createdAt.toLocaleDateString('vi-VN')}

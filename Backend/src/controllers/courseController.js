@@ -1,4 +1,5 @@
 const Course = require("../models/Course");
+const Blog = require("../models/Blog");
 
 module.exports.getAllCourses = async (req, res) => {
   try {
@@ -19,7 +20,10 @@ module.exports.getAllCourses = async (req, res) => {
       sortOptions.createdAt = -1; // Mặc định dự phòng
     } // 4. Thêm .sort() vào câu lệnh find()
 
-    const courses = await Course.find({ status: "active" }).sort(sortOptions).skip(skip).limit(limit); // <--- ÁP DỤNG SORT // 5. Trả về 'currentSort' để Pug biết option nào đang được chọn
+    const courses = await Course.find({ status: "active" })
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(limit); // <--- ÁP DỤNG SORT // 5. Trả về 'currentSort' để Pug biết option nào đang được chọn
     const totalCourses = await Course.countDocuments({ status: "active" });
     // Tính tổng số trang
     const totalPages = Math.ceil(totalCourses / limit);
@@ -52,5 +56,42 @@ module.exports.getCourseById = async (req, res) => {
   } catch (err) {
     console.error("Lỗi tìm khóa học theo ID:", err);
     res.status(404).send("Course not found");
+  }
+};
+// phần tìm kiếm
+module.exports.searchCourse = async (req, res) => {
+  try {
+    // 1. Lấy TỪ KHÓA TÌM KIẾM (string) ra
+    const searchTerm = req.query.q || "";
+
+    // 2. Tạo một ĐỐI TƯỢNG TRUY VẤN (object) rỗng
+    const mongoQuery = { status: "active" };
+
+    // 3. Nếu có từ khóa, thêm điều kiện $or vào ĐỐI TƯỢNG TRUY VẤN
+    if (searchTerm) {
+      mongoQuery.$or = [
+        { title: { $regex: searchTerm, $options: "i" } },
+        { fullDescription: { $regex: searchTerm, $options: "i" } },
+      ];
+    }
+
+    // 4. Sử dụng ĐỐI TƯỢNG TRUY VẤN để tìm kiếm song song
+    // Dùng Promise.all để chạy cả 2 truy vấn cùng lúc, nhanh hơn
+    const [courses, blogs] = await Promise.all([
+      Course.find(mongoQuery), // Dùng chung một đối tượng truy vấn
+      Blog.find(mongoQuery), // Dùng chung một đối tượng truy vấn
+    ]);
+
+    // 5. Render kết quả
+    res.render("pages/searchCourse", {
+      title: `Kết quả tìm kiếm cho "${searchTerm}"`,
+      courses,
+      blogs,
+      searchTerm, // Trả searchTerm về view để hiển thị lại
+    });
+  } catch (err) {
+    console.error("Lỗi tìm kiếm:", err);
+    // 500 (Lỗi máy chủ) phù hợp hơn 404 (Không tìm thấy) khi có lỗi
+    res.status(500).send("Lỗi máy chủ khi thực hiện tìm kiếm");
   }
 };
