@@ -24,7 +24,7 @@ module.exports.getAllBlog = async (req, res) => {
 module.exports.getBlogById = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
-    res.render("pages/blog/:id", { title: "Blog Detail", blog });
+    res.render("pages/blogDetail", { title: "Blog Detail", blog });
   } catch (err) {
     res.status(404).send("Blog not found");
   }

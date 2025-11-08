@@ -13,15 +13,14 @@ class AuthController {
         const user = await User.findOne({email});  
         if(!user||user==null){
             const user = await new User(req.body);
-            await user.save();                      
-            res.redirect('/login-register')
-            res.status(201).json({ message: 'User registered successfully' });
-            
+            await user.save();       
+            req.flash('successMsg', 'Đăng ký thành công! Vui lòng đăng nhập.');               
+            return  res.redirect('/login-register');
         }
         else 
             {
-                   
-                res.status(200).json({ message: 'Email already exists. Please use a different email.' });
+                req.flash('errorMsg', 'Email đã tồn tại. Vui lòng sử dụng email khác.');
+              return  res.redirect('/login-register');
             }    
     }
     catch(err){
@@ -34,13 +33,18 @@ class AuthController {
         const user = await User.findOne({email})       
          if(!user){
             //res.json(user.email);
-            res.status(200).json({ message: 'Email không tồn tại. Vui lòng đăng ký.' });
-            return;
+            // res.status(200).json({ message: 'Email không tồn tại. Vui lòng đăng ký.' });
+            // return;
+            req.flash('errorMsg', 'Email không tồn tại. Vui lòng đăng ký.');
+            return res.redirect('/login-register');
+
          }
          const match = await bcrypt.compare(password, user.password);
          if (!match) {
-            res.status(200).json({ message: 'Mật khẩu không đúng. Vui lòng thử lại.' });
-            
+
+            req.flash('errorMsg', 'Mật khẩu không đúng. Vui lòng thử lại.');
+            return res.redirect('/login-register');
+
          }
          req.session.user = {
             _id: user._id,
@@ -59,8 +63,8 @@ class AuthController {
   }
     async logout(req, res, next) {
     try {
-        const userId = req.session.user._id;
-        const user = await User.findById(userId);
+        const userEmail = req.session.user.email;
+        const user = await User.findOne({ email: userEmail });
         user.statusLogin = false;
         await user.save();
         req.session.destroy();

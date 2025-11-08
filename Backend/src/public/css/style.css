@@ -797,27 +797,19 @@ body {
             margin-bottom: 2rem;
         }
         .pagination li {
-          
+           padding:10px 15px;
+           border:1px solid #ccc;
+           cursor: pointer;
         }
-         .pagination-link.disabled {
-            display: none;
-         }
-         .pagination-link a {
-            padding:10px 15px;
-            border:1px solid #ccc;
-            cursor: pointer;
-            text-decoration: none;
-            color: #f56565;
-
-         }
-        .pagination li.active a {
+        .pagination li.active {
             background: #f56565;
             color: white;
             border-color: #f56565;
         }
-        .pagination li:hover:not(.active) a {
+        .pagination li:hover:not(.active) {
             background: #f8fafc;
             border-color: #f56565;
+            color: #f56565;
         }
        
 

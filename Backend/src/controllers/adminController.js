@@ -2,7 +2,7 @@ const Course = require("../models/Course.js");
 const Blog = require("../models/Blog.js");
 const cloudinary = require("../config/cloudinary.js");
 const stream = require("stream");
-
+const Admin = require("../models/Admin.js");
 // Hàm helper uploadStream (Giữ nguyên)
 const uploadStream = (fileBuffer, folder) => {
   return new Promise((resolve, reject) => {
@@ -168,5 +168,54 @@ module.exports.deleteBlog = async (req, res) => {
     res.status(200).json({ message: "Xóa blog thành công" });
   } catch (error) {
     res.status(500).json({ message: "Không thể xóa blog", error });
+  }
+};
+// [GET] /admin/login
+module.exports.getLogin = async (req, res) => {
+  try {
+    res.render("admin/loginAdmin", { title: "Đăng nhập - Admin" });
+  } catch (err) {
+    res.status(500).send("Lỗi khi tải trang đăng nhập admin");
+  }
+};
+// [POST] /admin/login
+module.exports.loginAdmin = async (req, res) => {
+  try {
+    const { loginname, password } = req.body;
+    const admin = await Admin.findOne({ loginname });
+    if (!admin) {
+      req.flash("errorMsg", "Tên đăng nhập không tồn tại. Vui lòng thử lại.");
+      return res.redirect("/admin/login");
+    }
+    const match = await Admin.findOne({ loginname, password });
+    if (!match) {
+      req.flash("errorMsg", "Mật khẩu không đúng. Vui lòng thử lại.");
+      return res.redirect("/admin/login");
+    }
+    req.session.admin = {
+      _id: admin._id,
+      loginname: admin.loginname,
+      avatar: admin.avatar,
+    };
+    admin.statusLogin = true;
+    await admin.save();
+    res.redirect("/admin/dashboard");
+  } catch (err) {
+    res.status(500).send("Lỗi khi đăng nhập admin");
+  }
+};
+// [POST] /admin/logout
+module.exports.logoutAdmin = async (req, res) => {
+  try {
+    const adminLoginname = req.session.admin.loginname;
+    const admin = await Admin.findOne({ loginname: adminLoginname });
+    if (admin) {
+      admin.statusLogin = false;
+      await admin.save();
+    }
+    req.session.destroy();
+    res.redirect("/admin/login");
+  } catch (err) {
+    res.status(500).send("Lỗi khi đăng xuất admin");
   }
 };

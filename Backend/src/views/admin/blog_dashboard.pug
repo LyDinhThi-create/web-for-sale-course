@@ -14,6 +14,24 @@ html(lang="vi")
       .container-fluid
         span.navbar-brand.mb-0.h1 Admin - Quản Lý Blog
 
+        // === PHẦN MENU MỚI THÊM VÀO GÓC PHẢI ===
+        .d-flex.ms-auto
+          ul.navbar-nav
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle.text-white(href="#", role="button", data-bs-toggle="dropdown", aria-expanded="false")
+                i.bi.bi-person-circle.me-1
+                | Xin chào, Admin
+              ul.dropdown-menu.dropdown-menu-dark.dropdown-menu-end
+                li
+                  a.dropdown-item(href="/admin/dashboard") Quản lý khóa học
+                li
+                  a.dropdown-item(href="/admin/blog") Quản lý blog
+                li
+                  hr.dropdown-divider
+                li
+                  a#logout-admin.dropdown-item(href="#") Đăng xuất
+        // === KẾT THÚC PHẦN MENU MỚI ===
+
     main.container.mt-4
       //- Header
       .d-flex.justify-content-between.align-items-center.mb-3
