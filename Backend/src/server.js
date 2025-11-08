@@ -8,27 +8,27 @@ const adminRoutes = require("./routes/adminRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const { setActiveMenu } = require("./middlewares/authMiddleware");
 const Courses = require("./models/Course");
-const session = require('express-session')
+const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
-const MongoDBStore = require('connect-mongodb-session')(session);
+const MongoDBStore = require("connect-mongodb-session")(session);
 const requireLogin = require("./middlewares/requireLogin");
 dotenv.config();
 const app = express();
 // Thiết lập session middleware
-app.use(session({
-  secret: process.env.SECRET_KEY,  // key dùng để mã hóa session cookie
-  resave: false,               // không lưu session nếu không thay đổi
-  saveUninitialized: false,    // không tạo session nếu chưa login
-  store: new MongoDBStore({
-    url : process.env.MONGODB_URI,
-  colection : 'sessions'}),
-  cookie: { maxAge: 1000 * 60 * 60 * 2,
-            httpOnly: true,
-   }    // thời gian sống của cookie (ms)
-}));
-//// Gán user vào biến global
+app.use(
+  session({
+    secret: process.env.SECRET_KEY, // key dùng để mã hóa session cookie
+    resave: false, // không lưu session nếu không thay đổi
+    saveUninitialized: false, // không tạo session nếu chưa login
+    store: new MongoDBStore({
+      url: process.env.MONGODB_URI,
+      colection: "sessions",
+    }),
+    cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true }, // thời gian sống của cookie (ms)
+  })
+);
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null; 
+  res.locals.user = req.session.user || null;
   next();
 });
 // Kết nối DB
@@ -59,11 +59,15 @@ app.get("/", async (req, res) => {
   res.render("pages/index", {
     title: "Trang chủ - IT Courses",
     featuredCourses,
+    user: req.session.user || null,
   });
 });
 
 app.get("/contact", (req, res) => {
-  res.render("pages/contact", { title: "Liên hệ" });
+  res.render("pages/contact", {
+    title: "Liên hệ",
+    user: req.session.user || null,
+  });
 });
 
 const PORT = 3000;

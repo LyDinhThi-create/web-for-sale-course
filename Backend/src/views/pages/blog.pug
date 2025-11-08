@@ -49,13 +49,14 @@ block content
      
     // Pagination
     .pagination
-      a.pagination-btn.disabled(href="#")
+      a.pagination-btn(class= currentPage===1 ? 'disabled' : '', href=`?page=${currentPage-1}`)
         svg(width="16", height="16", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
           polyline(points="15 18 9 12 15 6")
-      a.pagination-btn.active(href="#") 1
-      a.pagination-btn(href="#") 2
-      a.pagination-btn(href="#") 3
-      a.pagination-btn(href="#") 4
-      a.pagination-btn(href="#")
+      each i in Array.from({ length: totalPages }, (_, index) => index + 1)
+        if currentPage === i
+          a.pagination-btn.active(href=`?page=${i}`) #{i}
+        else
+          a.pagination-btn(href=`?page=${i}`) #{i}
+      a.pagination-btn(class= currentPage===totalPages ? 'disabled' : '', href=`?page=${currentPage+1}`)
         svg(width="16", height="16", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
           polyline(points="9 18 15 12 9 6")
