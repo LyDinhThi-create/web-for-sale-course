@@ -4,6 +4,6 @@ const { getAllBlog, getBlogById } = require("../controllers/blogController");
 const router = express.Router();
 
 router.get("/", getAllBlog);
-router.get("/detail", getBlogById);
+router.get("/:id", getBlogById);
 
 module.exports = router;

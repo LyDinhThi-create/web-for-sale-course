@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Thêm 2 dòng này để reset input file và ảnh cũ
     document.getElementById("course-image-upload").value = null;
     document.getElementById("course-image").value = "";
+    document.getElementById("image-preview").src = "";
+    document.getElementById("image-preview-old").src = "";
   };
 
   const addLessonField = (
@@ -53,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         course.instructor.avatar;
       // Dùng ô #course-image (readonly) để hiển thị link ảnh cũ
       document.getElementById("course-image").value = course.image || "";
+      document.getElementById("image-preview-old").src = course.image || "";
 
       document.getElementById("course-price").value = course.price;
       document.getElementById("course-description").value = course.description;
@@ -160,4 +163,47 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
+});
+// preview image
+document
+  .getElementById("course-image-upload")
+  .addEventListener("change", function (event) {
+    const file = event.target.files[0];
+
+    // Lấy thẻ <img> xem trước
+    const imagePreview = document.getElementById("image-preview");
+
+    if (file) {
+      // Đọc và hiển thị ảnh xem trước
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imagePreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Nếu người dùng bấm 'Cancel', xóa ảnh xem trước và tên file
+      imagePreview.src = "";
+    }
+  });
+//end preview
+document.addEventListener('DOMContentLoaded', (event) => {
+    const logoutAdminBtn = document.getElementById('logout-admin');
+    if (logoutAdminBtn) {
+        logoutAdminBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/admin/logout', {
+                    method: 'POST',
+                });
+                if (response.ok) {
+                    // Đăng xuất thành công, chuyển hướng về trang đăng nhập
+                    window.location.href = '/admin/login';
+                } else {
+                    alert('Đăng xuất thất bại!');
+                }
+            } catch (error) {
+                alert('Đăng xuất thất bại!');
+            }
+        });
+    }
 });
