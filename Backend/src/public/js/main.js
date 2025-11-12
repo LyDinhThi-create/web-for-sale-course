@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const ripple = document.createElement("span");
       const rect = this.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height);
-
       ripple.style.cssText = `
                     position: absolute;
                     border-radius: 50%;
@@ -39,15 +38,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     height: ${size}px;
                     pointer-events: none;
                 `;
-
       this.style.position = "relative";
       this.style.overflow = "hidden";
       this.appendChild(ripple);
+      
 
-      setTimeout(() => {
-        ripple.remove();
-        alert("Course added to cart!");
-      }, 600);
+      const idCourse = new URL(window.location.href).pathname.split('/')[2];
+      console.log(idCourse);
+      const addCartForm = document.getElementById('addCart');
+      addCartForm.action = `/courses/${idCourse}/addCart`;
+      addCartForm.method = 'POST';
+      addCartForm.submit();
+    //   fetch(`/courses/${idCourse}/addCart`, {
+    //     method: 'POST',
+    //     credentials: 'same-origin',
+        
+    //   })
+    //   .then(res => {
+    //     if (res.redirected) {  
+    //       window.location.href = res.url;
+        
+    //     }
+    //     console.log(res.redirected)
+    //     })
+    //   .then(data => {
+    //     console.log(data);
+    //   })
+    //   .catch(err => console.log(err));
     });
 
   // Share button effect

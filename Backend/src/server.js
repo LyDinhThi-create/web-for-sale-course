@@ -39,8 +39,6 @@ const userSession = session({
   }),
   cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true }
 });
-//
-app.use(flash());
 
 // Kết nối DB
 connectDB();
@@ -58,32 +56,38 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(setActiveMenu);
 
 // Routes
-app.use("/courses", userSession,
-  (req,res,next) =>{res.locals.user = req.session.user || null;next();},
- courseRoutes);
-app.use("/admin", adminSession,
-  (req,res,next) =>{res.locals.admin = req.session.admin || null;
+ app.use("/courses", userSession,
+  // apply flash() after session so req.flash is available
+  flash(),
+  (req,res,next) =>{
+    res.locals.user = req.session.user || null;
+    res.locals.successMsg = req.flash('successMsg')[0]||null;
     res.locals.errorMsg = req.flash('errorMsg')[0]||null;
     next();},
- adminRoutes);
+    courseRoutes);
+ app.use("/admin", adminSession,
+  // apply flash() after admin session
+  flash(),
+  (req,res,next) =>{
+    res.locals.admin = req.session.admin || null;
+    res.locals.errorMsg = req.flash('errorMsg')[0]||null;
+    next();},
+    adminRoutes);
 app.use("/blog", userSession,
-  (req,res,next) =>{res.locals.user = req.session.user || null;next();},
+  (req,res,next) =>{
+  res.locals.user = req.session.user || null;next();},
   blogRoutes);
-app.use("/", userSession,
-  (req,res,next) =>{res.locals.user = req.session.user || null;
+ app.use("/", userSession,
+  // apply flash() after session for root/auth routes
+  flash(),
+  (req,res,next) =>{
+  res.locals.user = req.session.user || null;
   res.locals.successMsg = req.flash('successMsg')[0]||null;
   res.locals.errorMsg = req.flash('errorMsg')[0]||null;
   next();},
-   authRoutes);
+  authRoutes);
 
-// Flash message middleware
-app.use((req, res, next) => {
-  res.locals.successMsg = req.flash('successMsg')[0]||null;
-  res.locals.errorMsg = req.flash('errorMsg')[0]||null;
-  res.locals.errorMsg2 = req.flash('errorMsg2')[0]||null;
-  res.locals.infoMsg = req.flash('infoMsg')[0]||null;
-  next();
-});
+
 // Trang chủ
 
 app.get("/", async (req, res) => {

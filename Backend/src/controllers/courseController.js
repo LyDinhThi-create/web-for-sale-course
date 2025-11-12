@@ -1,5 +1,6 @@
 const Course = require("../models/Course");
 const Blog = require("../models/Blog");
+const User = require("../models/User");
 
 module.exports.getAllCourses = async (req, res) => {
   try {
@@ -95,3 +96,39 @@ module.exports.searchCourse = async (req, res) => {
     res.status(500).send("Lỗi máy chủ khi thực hiện tìm kiếm");
   }
 };
+ //[POST] them vao gio hang
+  module.exports.addCart = async (req, res) => {
+    try{
+      
+      if (req.session.user == null) {
+        return res.redirect('/login-register')
+      }
+      const courseId = req.params.id;
+      const course = await Course.findById(courseId);
+      const user = await User.findOne({ email: req.session.user.email  });
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      else if (!course) {
+        return res.status(404).send("Course not found");
+      }
+      else if (user.cart.includes(course._id)) {
+        req.flash('errorMsg', 'Khoa học đã có trong giỏ hàng!');
+        return res.redirect('/courses/'+courseId);
+        
+      }
+      else
+      {
+      user.cart.push(course);
+      await user.save();
+      req.session.user = user;
+      req.session.save();
+      req.flash('successMsg', 'Thêm vào giỏ hàng thành công!');
+      return res.redirect('/courses/'+courseId);
+      }
+    }
+    catch(err){
+      console.error("Lỗi thêm vào giỏ hàng:", err);
+      res.status(500).send("Lỗi thêm vào giỏ hàng");
+    }
+  }

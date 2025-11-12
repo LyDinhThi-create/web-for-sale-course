@@ -51,7 +51,13 @@ class AuthController {
             name: user.name,
             email: user.email,
             avatar: user.avatar,
-
+            role: user.role,
+            statusLogin: user.statusLogin,
+            cart: user.cart,
+            wishlist: user.wishlist,
+            purchasedCourses: user.purchasedCourses,
+            enrolledCourses: user.enrolledCourses,
+            slug: user.slug, 
         };
         user.statusLogin = true;
         await user.save();

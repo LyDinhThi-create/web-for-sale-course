@@ -40,8 +40,11 @@ header.header
             | Contact 
         li.nav-item
           .cart-icon
-            i.fa.fa-cart-plus(aria-hidden="true")
-            span.cart-badge 0
+            i.fa.fa-cart-plus(aria-hidden="true")  
+            if user 
+              span.cart-badge #{user.cart.length}
+            else
+              span.cart-badge 0
         li.nav-item.profile-menu-img
           if user
             img.profile-avatar(
