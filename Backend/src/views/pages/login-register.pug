@@ -3,17 +3,47 @@ block styles
   link(rel="stylesheet", href="/css/login_register.css")
 block content
   .auth-container
+    //- Thông báo thành công
+    if successMsg
+      div#my-notification.notification.notification-success(role="alert")
+        .notification-icon
+          svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+            path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z")
+        .notification-content
+          p.notification-content-title Thành công!
+          p.notification-content-body #{successMsg}
+        .notification-close
+          //- Nút đóng gọi hàm closeNotification với ID của chính nó
+          button.notification-close-button(onclick="closeNotification('my-notification')" aria-label="Đóng")
+            span.sr-only Đóng
+            svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12")
+    //- Thông báo lỗi
+    if errorMsg
+      div#my-notification.notification.notification-error(role="alert")
+        .notification-icon
+          svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+            path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z")
+        .notification-content
+          p.notification-content-title Thất bại!
+          p.notification-content-body #{errorMsg}
+        .notification-close
+          //- Nút đóng gọi hàm closeNotification với ID của chính nó
+          button.notification-close-button(onclick="closeNotification('my-notification')" aria-label="Đóng")
+            span.sr-only Đóng
+            svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12")
     //- Login Form
     .login-section
       h2.auth-title Login
-      form(action="/login-register/login", method="POST").login-form#loginForm
+      form.login-form#loginForm(action="/login-register/login", method="POST")
         .form-group
           label.form-label Email
-          input.form-input(type="email", placeholder="Email",name="email", required)
+          input.form-input(type="email", name="email", placeholder="Email", required)
 
         .form-group
           label.form-label Password
-          input.form-input(type="password", placeholder="Password",name="password", required)
+          input.form-input(type="password", name="password", placeholder="Password", required)
 
         .login-options
           .remember-me
@@ -26,18 +56,18 @@ block content
     //- Register Form
     .register-section
       h2.auth-title Register
-      form(action="/login-register/register", method="POST").register-form#registerForm
+      form.register-form#registerForm(action="/login-register/register", method="POST")
         .form-group
           label.form-label Full Name
-          input.form-input(type="text", placeholder="Full Name",name="fullname", required)
+          input.form-input(type="text", name="fullname", placeholder="Full Name", required)
 
         .form-group
           label.form-label Email
-          input.form-input(type="email", placeholder="Email",name="email", required)
+          input.form-input(type="email", name="email", placeholder="Email", required)
 
         .form-group
           label.form-label Password
-          input.form-input(type="password", placeholder="Password",name="password", required)
+          input.form-input(type="password", name="password", placeholder="Password", required)
           p.password-hint
             | The password should be at least eight characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! " ? $ % ^ & ( )
 

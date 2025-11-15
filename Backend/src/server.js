@@ -13,25 +13,34 @@ const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const requireLogin = require("./middlewares/requireLogin");
+const flash = require("connect-flash");
 dotenv.config();
 const app = express();
 // Thiết lập session middleware
-app.use(
-  session({
-    secret: process.env.SECRET_KEY, // key dùng để mã hóa session cookie
-    resave: false, // không lưu session nếu không thay đổi
-    saveUninitialized: false, // không tạo session nếu chưa login
-    store: new MongoDBStore({
-      url: process.env.MONGODB_URI,
-      colection: "sessions",
-    }),
-    cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true }, // thời gian sống của cookie (ms)
-  })
-);
-app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
-  next();
+const adminSession = session({
+  name: "admin-session",
+  secret: process.env.SECRET_KEY_ADMIN,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoDBStore({
+    url: process.env.MONGODB_URI,
+    collection: "adminSessions",
+  }),
+  cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true },
 });
+
+const userSession = session({
+  name: "user-session",
+  secret: process.env.SECRET_KEY_USER,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoDBStore({
+    url: process.env.MONGODB_URI,
+    collection: "userSessions",
+  }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true },
+});
+
 // Kết nối DB
 connectDB();
 
@@ -48,10 +57,53 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(setActiveMenu);
 
 // Routes
-app.use("/courses", courseRoutes);
-app.use("/admin", adminRoutes);
-app.use("/blog", blogRoutes);
-app.use("/", authRoutes);
+app.use(
+  "/courses",
+  userSession,
+  // apply flash() after session so req.flash is available
+  flash(),
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    res.locals.successMsg = req.flash("successMsg")[0] || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  courseRoutes
+);
+app.use(
+  "/admin",
+  adminSession,
+  // apply flash() after admin session
+  flash(),
+  (req, res, next) => {
+    res.locals.admin = req.session.admin || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  adminRoutes
+);
+app.use(
+  "/blog",
+  userSession,
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+  },
+  blogRoutes
+);
+app.use(
+  "/",
+  userSession,
+  // apply flash() after session for root/auth routes
+  flash(),
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    res.locals.successMsg = req.flash("successMsg")[0] || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  authRoutes
+);
 
 // Trang chủ
 
@@ -68,10 +120,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
-  res.render("pages/contact", {
-    title: "Liên hệ",
-    user: req.session.user || null,
-  });
+  res.render("pages/contact", { title: "Liên hệ" });
 });
 
 const PORT = 3000;

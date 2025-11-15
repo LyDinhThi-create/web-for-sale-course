@@ -186,3 +186,24 @@ document
     }
   });
 //end preview
+document.addEventListener('DOMContentLoaded', (event) => {
+    const logoutAdminBtn = document.getElementById('logout-admin');
+    if (logoutAdminBtn) {
+        logoutAdminBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/admin/logout', {
+                    method: 'POST',
+                });
+                if (response.ok) {
+                    // Đăng xuất thành công, chuyển hướng về trang đăng nhập
+                    window.location.href = '/admin/login';
+                } else {
+                    alert('Đăng xuất thất bại!');
+                }
+            } catch (error) {
+                alert('Đăng xuất thất bại!');
+            }
+        });
+    }
+});

@@ -1,0 +1,272 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Đăng nhập Admin
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin="")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+    style.
+      /* RESET */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Inter', sans-serif;
+          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          color: #333;
+          position: relative;
+      }
+
+      /* LOGIN CONTAINER */
+      .admin-login-container {
+          background: #fff;
+          padding: 2.5rem 3rem;
+          border-radius: 16px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 420px;
+          text-align: center;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .admin-login-container:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+      .admin-login-container h2 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: #2c3e50;
+          margin-bottom: 1rem;
+      }
+      .admin-login-container p {
+          font-size: 0.95rem;
+          color: #7f8c8d;
+          margin-bottom: 2rem;
+      }
+
+      /* INPUTS */
+      .admin-login-input-group {
+          text-align: left;
+          margin-bottom: 1.25rem;
+      }
+      .admin-login-input-group label {
+          display: block;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #34495e;
+          margin-bottom: 0.5rem;
+      }
+      .admin-login-input-group input {
+          width: 100%;
+          padding: 0.9rem 1rem;
+          border: 1px solid #bdc3c7;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .admin-login-input-group input:focus {
+          outline: none;
+          border-color: #3498db;
+          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+      }
+
+      /* OPTIONS */
+      .admin-login-options {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+          font-size: 0.9rem;
+      }
+      .admin-login-remember-me {
+          display: flex;
+          align-items: center;
+          color: #555;
+      }
+      .admin-login-remember-me input[type="checkbox"] {
+          margin-right: 0.5rem;
+          accent-color: #3498db;
+      }
+      .admin-login-forgot-password a {
+          color: #3498db;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.3s ease;
+      }
+      .admin-login-forgot-password a:hover {
+          color: #2980b9;
+          text-decoration: underline;
+      }
+
+      /* BUTTON */
+      .admin-login-button {
+          width: 100%;
+          padding: 0.9rem;
+          border: none;
+          border-radius: 8px;
+          background: linear-gradient(to right, #3498db, #2980b9);
+          color: #fff;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.3s ease, transform 0.2s ease;
+      }
+      .admin-login-button:hover {
+          background: linear-gradient(to right, #2980b9, #3498db);
+          transform: translateY(-2px);
+      }
+      .admin-login-button:active {
+          transform: translateY(0);
+      }
+
+      /* NOTIFICATION */
+      .notification {
+          max-width: 28rem;
+          margin: 0 auto;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          border-left-width: 4px;
+          display: flex;
+          align-items: center;
+          position: absolute;
+          top: 10%;
+          left: 50%;
+          transform: translateX(-50%) translateY(20px);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.5s ease-in-out;
+          z-index: 50;
+      }
+      .notification.show {
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(-50%) translateY(0);
+      }
+      .notification-icon {
+          margin-right: 1rem;
+      }
+      .notification-content {
+          flex-grow: 1;
+      }
+      .notification-content-title {
+          font-weight: 700;
+      }
+      .notification-content-body {
+          font-size: 0.875rem;
+      }
+      .notification-close {
+          margin-left: auto;
+      }
+      .notification-close-button {
+          padding: 0.375rem;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          background-color: transparent;
+          display: inline-flex;
+          height: 2rem;
+          width: 2rem;
+      }
+      .notification-close-button svg {
+          height: 1.25rem;
+          width: 1.25rem;
+      }
+
+      /* VARIANTS */
+      .notification-success { background: #F0FDF4; border-color:#22C55E; color:#15803D; }
+      .notification-error { background: #FEF2F2; border-color:#EF4444; color:#B91C1C; }
+      .notification-warning { background: #FEFCE8; border-color:#EAB308; color:#A16207; }
+
+      /* RESPONSIVE */
+      @media (max-width: 480px) {
+          body {
+              align-items: flex-start;
+              padding-top: 2rem;
+              background: #fff;
+          }
+          .admin-login-container {
+              box-shadow: none;
+              border-radius: 0;
+              padding: 1.5rem;
+              max-width: 100%;
+          }
+          .admin-login-container h2 {
+              font-size: 1.6rem;
+          }
+      }
+
+  body
+    if errorMsg
+      div#my-notification.notification.notification-error(role="alert")
+        .notification-icon
+          svg(xmlns="http://www.w3.org/2000/svg", fill="none", viewBox="0 0 24 24", stroke="currentColor")
+            path(stroke-linecap="round", stroke-linejoin="round", stroke-width="2", d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z")
+        .notification-content
+          p.notification-content-title Thất bại!
+          p.notification-content-body #{errorMsg}
+        .notification-close
+          button.notification-close-button(onclick="closeNotification('my-notification')", aria-label="Đóng")
+            span.sr-only Đóng
+            svg(xmlns="http://www.w3.org/2000/svg", fill="none", viewBox="0 0 24 24", stroke="currentColor")
+              path(stroke-linecap="round", stroke-linejoin="round", stroke-width="2", d="M6 18L18 6M6 6l12 12)")
+
+    .admin-login-container
+      h2 Đăng nhập Admin
+      p Chào mừng bạn trở lại, vui lòng đăng nhập.
+      form#login-form(action="/admin/login", method="POST")
+        .admin-login-input-group
+          label(for="username") Tên đăng nhập
+          input#username(type="text", name="loginname", placeholder="Nhập tên đăng nhập của bạn", required)
+        .admin-login-input-group
+          label(for="password") Mật khẩu
+          input#password(type="password", name="password", placeholder="Nhập mật khẩu của bạn", required)
+        .admin-login-options
+          .admin-login-remember-me
+            input#remember(type="checkbox", name="remember")
+            label(for="remember") Ghi nhớ tôi
+          .admin-login-forgot-password
+            a(href="#") Quên mật khẩu?
+        button.admin-login-button(type="submit") Đăng nhập
+
+    script.
+      const autoCloseTimeouts = {};
+
+      function closeNotification(notificationId) {
+          const notification = document.getElementById(notificationId);
+          if (notification && notification.classList.contains('show')) {
+              notification.classList.remove('show');
+              if (autoCloseTimeouts[notificationId]) {
+                  clearTimeout(autoCloseTimeouts[notificationId]);
+                  delete autoCloseTimeouts[notificationId];
+              }
+              setTimeout(() => { notification.style.display = 'none'; }, 500);
+          }
+      }
+
+      function showNotification(notificationId, timeout = 5000) {
+          const notification = document.getElementById(notificationId);
+          if (notification) {
+              notification.style.display = 'flex';
+              requestAnimationFrame(() => notification.classList.add('show'));
+              if (timeout > 0) {
+                  if (autoCloseTimeouts[notificationId]) clearTimeout(autoCloseTimeouts[notificationId]);
+                  autoCloseTimeouts[notificationId] = setTimeout(() => closeNotification(notificationId), timeout);
+              }
+          }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+          if(document.getElementById('my-notification')) {
+              showNotification('my-notification', 3000);
+          }
+      });

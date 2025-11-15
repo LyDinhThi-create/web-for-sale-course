@@ -11,6 +11,10 @@ const User = new Schema({
     avatar: {type: String},
     role: {type: String, default: 'user'},
     slug: { type: String, slug: "fullname", unique: true },
+    wishlist: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    purchasedCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    enrolledCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    cart: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
     statusLogin: {type: Boolean, default: false},
 
 },{ timestamps: true }

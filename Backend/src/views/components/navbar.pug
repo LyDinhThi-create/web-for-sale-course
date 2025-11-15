@@ -40,8 +40,11 @@ header.header
             | Contact 
         li.nav-item
           .cart-icon
-            i.fa.fa-cart-plus(aria-hidden="true")
-            span.cart-badge 0
+            i.fa.fa-cart-plus(aria-hidden="true")  
+            if user 
+              span.cart-badge #{user.cart.length}
+            else
+              span.cart-badge 0
         li.nav-item.profile-menu-img
           if user
             img.profile-avatar(
@@ -81,7 +84,11 @@ header.header
                       svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
                         path(stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.829 2.131L9.61 16.028c-.22.118-.48.118-.70 0l-6.478-3.488a2.25 2.25 0 0 1-1.183-1.98V9a2.25 2.25 0 0 1 2.25-2.25h15A2.25 2.25 0 0 1 21.75 9Z")
                       span.profile-menu-text My Purchases
-
+                  li.profile-menu-item
+                    a.profile-menu-link(href="#")
+                      svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
+                        path(stroke-linecap="round" stroke-linejoin="round" d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572")
+                      span.profile-menu-text Wishlist
                   li.profile-menu-item
                     a.profile-menu-link(href="#")
                       svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
