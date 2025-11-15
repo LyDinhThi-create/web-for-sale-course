@@ -1,0 +1,16 @@
+.content {
+  display: flex;
+}
+.sibar {
+  width: 200px;
+  background-color: #868686;
+  padding: 20px;
+}
+.sibar .nav-link {
+  color: #fff;
+  margin-bottom: 10px;
+}
+.main-content {
+  flex: 1;
+  padding: 20px;
+}

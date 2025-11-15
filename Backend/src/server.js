@@ -8,6 +8,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const { setActiveMenu } = require("./middlewares/authMiddleware");
 const Courses = require("./models/Course");
+const Blog = require("./models/Blog");
 const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -56,9 +57,12 @@ app.use("/", authRoutes);
 
 app.get("/", async (req, res) => {
   const featuredCourses = await Courses.find().limit(3);
+  const featuredBlogs = await Blog.find().limit(3);
+
   res.render("pages/index", {
     title: "Trang chủ - IT Courses",
     featuredCourses,
+    featuredBlogs,
     user: req.session.user || null,
   });
 });

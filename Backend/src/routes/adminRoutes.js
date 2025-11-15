@@ -4,8 +4,8 @@ const upload = require("../middlewares/uploadMiddleware");
 const router = express.Router();
 
 // Bảo vệ route admin
-router.get("/dashboard", adminController.getDashboard);
-router.get("/blog", adminController.getBlogDashboard);
+router.get("/course", adminController.getCourseAdmin);
+router.get("/blog", adminController.getBlogAdmin);
 
 // Route để tạo khóa học mới
 router.post(

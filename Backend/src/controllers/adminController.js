@@ -20,11 +20,11 @@ const uploadStream = (fileBuffer, folder) => {
 };
 
 // getDashboard (Giữ nguyên)
-module.exports.getDashboard = async (req, res) => {
+module.exports.getCourseAdmin = async (req, res) => {
   try {
     const [courseCount] = await Promise.all([Course.countDocuments()]);
     const courses = await Course.find();
-    res.render("admin/dashboard", {
+    res.render("admin/course_admin", {
       title: "Bảng điều khiển - Admin",
       courseCount,
       courses,
@@ -34,11 +34,11 @@ module.exports.getDashboard = async (req, res) => {
   }
 };
 // trang blog
-module.exports.getBlogDashboard = async (req, res) => {
+module.exports.getBlogAdmin = async (req, res) => {
   try {
     const [blogCount] = await Promise.all([Blog.countDocuments()]);
     const blogs = await Blog.find();
-    res.render("admin/blog_dashboard", {
+    res.render("admin/blog_admin", {
       title: "Bảng Blog - Admin",
       blogCount,
       blogs,
