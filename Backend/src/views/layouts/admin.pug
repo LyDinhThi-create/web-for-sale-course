@@ -9,12 +9,13 @@ html
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css")
     block styles
   body
-    
-
-    //- Navbar
-    nav.navbar.navbar-dark.bg-dark
-      .container-fluid
-        span.navbar-brand.mb-0.h1 Admin
+    .container-fluid
+        span.navbar-brand.mb-0.h1 Admin - Quản Lý Khóa Học
+        .d-flex.ms-auto
+            .logout_content
+              i.bi.bi-person-circle.me-1
+                | Xin chào, Admin
+              a#logout-admin(href="#") Đăng xuất
     .content
       .sibar 
         ul.nav.flex-column.nav-pills.mt-4
@@ -26,4 +27,5 @@ html
           block content
     
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js")
+    script(src="/js/admin.js")
     block scripts

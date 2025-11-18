@@ -139,10 +139,19 @@ document.addEventListener("DOMContentLoaded", () => {
         // 'multipart/form-data' khi body là FormData
         body: formData,
       });
-      if (!response.ok) throw new Error("Lỗi máy chủ");
-      location.reload();
+      if (response.ok) {
+        location.reload();
+      } else {
+        // Nếu server trả về lỗi (4xx, 5xx) trước khi timeout
+        const errorData = await response.json();
+        let errorMessage =
+          "Lỗi khi lưu/cập nhật khóa học. Vui lòng kiểm tra lại dữ liệu.";
+        if (errorData.message) errorMessage = errorData.message;
+
+        throw new Error(errorMessage);
+      }
     } catch (error) {
-      alert("Lưu thất bại!");
+      // alert("Lưu thất bại!");
     }
   }); // ... (Phần 'deleteButton' giữ nguyên)
 
@@ -186,24 +195,24 @@ document
     }
   });
 //end preview
-document.addEventListener('DOMContentLoaded', (event) => {
-    const logoutAdminBtn = document.getElementById('logout-admin');
-    if (logoutAdminBtn) {
-        logoutAdminBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            try {
-                const response = await fetch('/admin/logout', {
-                    method: 'POST',
-                });
-                if (response.ok) {
-                    // Đăng xuất thành công, chuyển hướng về trang đăng nhập
-                    window.location.href = '/admin/login';
-                } else {
-                    alert('Đăng xuất thất bại!');
-                }
-            } catch (error) {
-                alert('Đăng xuất thất bại!');
-            }
+document.addEventListener("DOMContentLoaded", (event) => {
+  const logoutAdminBtn = document.getElementById("logout-admin");
+  if (logoutAdminBtn) {
+    logoutAdminBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch("/admin/logout", {
+          method: "POST",
         });
-    }
+        if (response.ok) {
+          // Đăng xuất thành công, chuyển hướng về trang đăng nhập
+          window.location.href = "/admin/login";
+        } else {
+          alert("Đăng xuất thất bại!");
+        }
+      } catch (error) {
+        alert("Đăng xuất thất bại!");
+      }
+    });
+  }
 });

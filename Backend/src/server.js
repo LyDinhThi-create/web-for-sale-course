@@ -124,6 +124,14 @@ app.get("/contact", (req, res) => {
 });
 
 const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+// THIẾT LẬP GIỚI HẠN TIMEOUT (Ví dụ: 120,000 ms = 2 phút)
+// Lý do 2 phút là để đảm bảo việc upload tệp lớn có đủ thời gian
+server.setTimeout(150000);
+
+// (Tùy chọn) Tăng giới hạn timeout cho kết nối socket
+// Điều này đôi khi cần thiết cho các phiên truyền dữ liệu lớn
+server.keepAliveTimeout = 125000;
+server.headersTimeout = 125000;
