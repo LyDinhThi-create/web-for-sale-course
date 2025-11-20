@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const courseRoutes = require("./routes/courseRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const blogRoutes = require("./routes/blogRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 const { setActiveMenu } = require("./middlewares/authMiddleware");
 const Courses = require("./models/Course");
 const Blog = require("./models/Blog");
@@ -14,6 +15,9 @@ const authRoutes = require("./routes/authRoutes");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const requireLogin = require("./middlewares/requireLogin");
 const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
+const cartMiddleware = require("./middlewares/cartMiddleware");
+
 dotenv.config();
 const app = express();
 // Thiết lập session middleware
@@ -55,6 +59,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Sử dụng middleware để thiết lập menu active
 app.use(setActiveMenu);
+app.use(cookieParser());
+app.use(cartMiddleware.cartId);
 
 // Routes
 app.use(
@@ -91,6 +97,7 @@ app.use(
   },
   blogRoutes
 );
+app.use("/cart", userSession, cartRoutes);
 app.use(
   "/",
   userSession,

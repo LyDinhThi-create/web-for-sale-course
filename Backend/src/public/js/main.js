@@ -23,47 +23,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const addToCartBtn = document.querySelector(".add-to-cart-btn");
   if (addToCartBtn) {
     addToCartBtn.addEventListener("click", function (e) {
-      const ripple = document.createElement("span");
-      const rect = this.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      ripple.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: rgba(255,255,255,0.6);
-                    transform: scale(0);
-                    animation: rippleEffect 0.6s linear;
-                    left: ${e.clientX - rect.left - size / 2}px;
-                    top: ${e.clientY - rect.top - size / 2}px;
-                    width: ${size}px;
-                    height: ${size}px;
-                    pointer-events: none;
-                `;
-      this.style.position = "relative";
-      this.style.overflow = "hidden";
-      this.appendChild(ripple);
+      const courseId = this.getAttribute("data-id");
+      // 3. Gọi Fetch API
+      fetch(`/cart/add/${courseId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json()) // Chuyển phản hồi sang JSON
+        .then((data) => {
+          // 4. Xử lý kết quả trả về từ Controller
+          if (data.code == 200) {
+            // Thành công -> Hiện thông báo
+            const badge = document.querySelector(".cart-badge");
+            if (badge) {
+              badge.innerHTML = data.newCount; // Cập nhật số ngay lập tức!
+              console.log("Cập nhật số lượng giỏ hàng:", data.newCount);
+            }
+            alert(data.message);
 
-      const idCourse = new URL(window.location.href).pathname.split("/")[2];
-      console.log(idCourse);
-      const addCartForm = document.getElementById("addCart");
-      addCartForm.action = `/courses/${idCourse}/addCart`;
-      addCartForm.method = "POST";
-      addCartForm.submit();
-      //   fetch(`/courses/${idCourse}/addCart`, {
-      //     method: 'POST',
-      //     credentials: 'same-origin',
-
-      //   })
-      //   .then(res => {
-      //     if (res.redirected) {
-      //       window.location.href = res.url;
-
-      //     }
-      //     console.log(res.redirected)
-      //     })
-      //   .then(data => {
-      //     console.log(data);
-      //   })
-      //   .catch(err => console.log(err));
+            // (Nâng cao: Tại đây bạn có thể viết code để cập nhật số nhỏ trên icon giỏ hàng mà không cần F5)
+          } else if (data.code == 400) {
+            // Đã tồn tại -> Hiện cảnh báo
+            alert(data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Lỗi:", error);
+        });
     });
   }
 
