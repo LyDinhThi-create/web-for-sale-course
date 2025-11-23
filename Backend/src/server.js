@@ -97,7 +97,15 @@ app.use(
   },
   blogRoutes
 );
-app.use("/cart", userSession, cartRoutes);
+app.use(
+  "/cart",
+  userSession,
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+  },
+  cartRoutes
+);
 app.use(
   "/",
   userSession,
