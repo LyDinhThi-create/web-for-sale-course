@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { video } = require("../config/cloudinary");
 
 const courseSchema = new mongoose.Schema(
   {
@@ -24,6 +25,7 @@ const courseSchema = new mongoose.Schema(
       {
         title: String,
         duration: String,
+        videoUrl: String,
       },
     ],
     image: String,

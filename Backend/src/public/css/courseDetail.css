@@ -538,3 +538,25 @@ body {
 .notification-warning .notification-close-button:hover {
   background-color: #fef9c3; /* hover:bg-yellow-200 */
 }
+ .learning-btn{
+  text-decoration: none;
+    width: 100%;
+    background: linear-gradient(135deg, #60ec4b 0%, #cbf05c 100%);
+    color: rgb(0, 0, 0);
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.learning-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 101, 101, 0.3);
+}

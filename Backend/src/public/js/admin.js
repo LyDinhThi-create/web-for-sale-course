@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .map((group) => ({
           title: group.querySelector(".lesson-title").value.trim(),
           // Đừng quên thêm videoUrl nếu bạn đã sửa schema
-          // videoUrl: group.querySelector(".lesson-video").value.trim(),
+          videoUrl: group.querySelector(".lesson-video").value.trim(),
           duration: group.querySelector(".lesson-duration").value.trim(),
         }))
         .filter((l) => l.title);

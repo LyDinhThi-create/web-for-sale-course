@@ -30,7 +30,7 @@ block content
 
             td.action-col
               a.delete-btn(data-course-id=course.id)
-                i.fa-solid.fa-trash-can
+                i.fa-solid.fa-trash-can(data-course-id=course.id)
 
     .cart-totals-container
       .cart-totals
@@ -40,6 +40,6 @@ block content
           span.total-amount#cart-total-price $#{totalPrice}
         button.checkout-btn
           i.fa-solid.fa-cart-shopping
-          |  Proceed to Checkout
+          |  Buy Now
 block scripts
   script(src="/js/cart.js")

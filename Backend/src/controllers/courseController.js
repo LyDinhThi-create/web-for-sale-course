@@ -9,8 +9,7 @@ module.exports.getAllCourses = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6; // Mặc định 6 khóa học/trang
     const skip = (page - 1) * limit; // Tính số document cần bỏ qua
-    const userId = req.session.user._id;
-    const user = await User.findById(userId);
+    
     // 2. Tách chuỗi (ví dụ: "price:asc" -> [sortBy='price', order='asc'])
     const [sortBy, order] = currentSort.split(":");
 
@@ -32,7 +31,6 @@ module.exports.getAllCourses = async (req, res) => {
 
     res.render("pages/courses", {
       title: "Khoa học",
-      user: user,
       courses,
       currentSort: currentSort, // <--- TRẢ VỀ PUG
       currentPage: page,
@@ -131,4 +129,14 @@ module.exports.addCart = async (req, res) => {
 module.exports.getTopCourses = async (req, res) => {
   const courses = await Course.find();
   res.render("pages/topcourse", { title: "Các khóa học hàng đầu", courses });
+};
+// learn page
+module.exports.getLearningPage = async (req, res) => {
+  try {
+    const courses = await Course.findById(req.params.id);
+    res.render("pages/learning", { title: "Trang học tập", courses });
+  } catch (err) {
+    console.error("Lỗi tải trang học tập:", err);
+    res.status(500).send("Lỗi tải trang học tập");
+  }
 };
