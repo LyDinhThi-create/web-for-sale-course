@@ -15,7 +15,9 @@ html
             .logout_content
               i.bi.bi-person-circle.me-1
                 | Xin chào, Admin
-              a#logout-admin(href="#") Đăng xuất
+              button#logout-admin.btn.btn-outline-danger(onclick="logoutAdmin()")
+                i.bi.bi-box-arrow-right
+                |  Đăng xuất
     .content
       .sibar 
         ul.nav.flex-column.nav-pills.mt-4

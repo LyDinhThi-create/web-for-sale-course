@@ -206,11 +206,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //end preview
-  document.addEventListener("DOMContentLoaded", (event) => {
-    const logoutAdminBtn = document.getElementById("logout-admin");
-    if (logoutAdminBtn) {
-      logoutAdminBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
+  // logout admin
+    
+    const logoutAdmin = async function logoutAdmin(){
         try {
           const response = await fetch("/admin/logout", {
             method: "POST",
@@ -224,8 +222,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
           alert("Đăng xuất thất bại!");
         }
-      });
-    }
-  });
+      }
+      const logoutBtn = document.getElementById("logout-admin");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", logoutAdmin);
+      }
+  //end logout admin
 });
 
