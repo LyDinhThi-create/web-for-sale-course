@@ -1,0 +1,151 @@
+extends ../layouts/admin.pug
+
+block styles
+  link(rel="stylesheet", href="/css/dashboard.css")
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+
+block content
+  .container
+    //- Header Section
+    .header
+      h1
+        i.fa-solid.fa-chart-line
+        |  Dashboard Admin
+      p Tổng quan hoạt động kinh doanh khóa học.
+
+    //- Time Filter Section
+    .time-filter
+      button.active(onclick="changeTimeRange('7days', this)") 7 ngày
+      button(onclick="changeTimeRange('30days', this)") 30 ngày
+      button(onclick="changeTimeRange('90days', this)") 90 ngày
+      button(onclick="changeTimeRange('year', this)") Năm nay
+
+    //- Stats Grid Section
+    .stats-grid
+      //- Card 1: Doanh thu
+      .stat-card
+        .stat-header
+          .stat-icon.blue
+            i.fa-solid.fa-sack-dollar
+          span.stat-change.up
+            i.fa-solid.fa-arrow-trend-up
+            |  +12.5%
+        .stat-title Tổng Doanh Thu
+        .stat-value ₫458,000,000
+
+      //- Card 2: Học viên mới
+      .stat-card
+        .stat-header
+          .stat-icon.green
+            i.fa-solid.fa-user-group
+          span.stat-change.up +8.2%
+        .stat-title Học Viên Mới
+        .stat-value 1,234
+
+      //- Card 3: Khóa học đã bán
+      .stat-card
+        .stat-header
+          .stat-icon.purple
+            i.fa-solid.fa-cart-shopping
+          span.stat-change.up +15.3%
+        .stat-title Khóa Học Đã Bán
+        .stat-value 3,456
+
+      //- Card 4: Tỷ lệ hoàn thành
+      .stat-card
+        .stat-header
+          .stat-icon.orange
+            i.fa-solid.fa-graduation-cap
+          span.stat-change.up +3.1%
+        .stat-title Tỷ Lệ Hoàn Thành
+        .stat-value 68%
+
+    //- Charts Grid Section
+    .charts-grid
+      .chart-card
+        .chart-title Doanh Thu 7 Ngày Qua
+        canvas#revenueChart
+
+      .chart-card
+        .chart-title Phân Loại Khóa Học
+        canvas#categoryChart
+
+    //- Content Grid (Table + Activity)
+    .content-grid
+      //- Table Section
+      .table-card
+        .chart-title Khóa Học Bán Chạy Nhất
+        .table-responsive
+          table
+            thead
+              tr
+                th Tên Khóa Học
+                th Học Viên
+                th Doanh Thu
+                th Đánh Giá
+            tbody
+              tr
+                td
+                  .course-name
+                    i.fa-brands.fa-react(style="color: #61dbfb; font-size: 20px")
+                    |  React & Node.js Full Stack
+                td 1,234
+                td ₫98.0M
+                td
+                  span.rating-badge 4.8
+              tr
+                td
+                  .course-name
+                    i.fa-brands.fa-python(style="color: #ffd43b; font-size: 20px")
+                    |  Python cho Data Science
+                td 987
+                td ₫78.0M
+                td
+                  span.rating-badge 4.9
+              tr
+                td
+                  .course-name
+                    i.fa-solid.fa-bullhorn(style="color: #f59e0b; font-size: 18px")
+                    |  Digital Marketing 2024
+                td 856
+                td ₫65.0M
+                td
+                  span.rating-badge 4.7
+
+      //- Activity Section
+      .activity-card
+        .chart-title Hoạt Động Gần Đây
+        
+        .activity-item
+          .activity-icon.purchase
+            i.fa-solid.fa-cart-plus
+          .activity-content
+            .activity-action
+              span.activity-user Nguyễn Văn A
+              |  đã mua
+            .activity-course React Advanced
+            .activity-time 5 phút trước
+
+        .activity-item
+          .activity-icon.complete
+            i.fa-solid.fa-check
+          .activity-content
+            .activity-action
+              span.activity-user Trần Thị B
+              |  hoàn thành
+            .activity-course Python Basics
+            .activity-time 15 phút trước
+
+        .activity-item
+          .activity-icon.review
+            i.fa-solid.fa-star
+          .activity-content
+            .activity-action
+              span.activity-user Lê Văn C
+              |  đánh giá 5*
+            .activity-course Digital Marketing
+            .activity-time 30 phút trước
+
+block scripts
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js")
+  script(src="/js/dashboard.js")

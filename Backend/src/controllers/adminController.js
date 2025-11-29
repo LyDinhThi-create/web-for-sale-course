@@ -3,6 +3,7 @@ const Blog = require("../models/Blog.js");
 const cloudinary = require("../config/cloudinary.js");
 const stream = require("stream");
 const Admin = require("../models/Admin.js");
+const User = require("../models/User.js");
 // Hàm helper uploadStream (Giữ nguyên)
 const uploadStream = (fileBuffer, folder) => {
   return new Promise((resolve, reject) => {
@@ -243,5 +244,69 @@ module.exports.logoutAdmin = async (req, res) => {
     res.redirect("/admin/login");
   } catch (err) {
     res.status(500).send("Lỗi khi đăng xuất admin");
+  }
+};
+// [GET] /admin/dashboard
+module.exports.getDashboard = async (req, res) => {
+  try {
+    res.render("admin/dashboard", {
+      title: "Trang chủ - Admin",
+    });
+  } catch (err) {
+    res.status(500).send("Lỗi khi tải trang chủ admin");
+  }
+};
+
+// [GET] /admin/users
+module.exports.getUsers = async (req, res) => {
+  try {
+    // 1. Bộ lọc tìm kiếm & Trạng thái
+    let find = {
+      deleted: false,
+    };
+
+    if (req.query.status) {
+      find.status = req.query.status;
+    }
+
+    if (req.query.keyword) {
+      const regex = new RegExp(req.query.keyword, "i");
+      find.fullName = regex;
+    }
+
+    // 2. Phân trang
+    const pagination = {
+      currentPage: 1,
+      limitItems: 10,
+    };
+
+    if (req.query.page) {
+      pagination.currentPage = parseInt(req.query.page);
+    }
+
+    pagination.skip = (pagination.currentPage - 1) * pagination.limitItems;
+
+    // Đếm tổng số lượng để tính số trang
+    const countUsers = await User.countDocuments(find);
+    const totalPage = Math.ceil(countUsers / pagination.limitItems);
+
+    // 3. Lấy dữ liệu
+    const users = await User.find(find)
+      .limit(pagination.limitItems)
+      .skip(pagination.skip)
+      .sort({ createdAt: -1 }); // Người mới nhất lên đầu
+
+    res.render("admin/user_admin", {
+      Title: "Quản lý học viên",
+      users: users,
+      pagination: {
+        ...pagination,
+        totalPage: totalPage,
+      },
+      keyword: req.query.keyword || "",
+    });
+  } catch (error) {
+    console.log(error);
+    res.redirect("/admin/dashboard");
   }
 };

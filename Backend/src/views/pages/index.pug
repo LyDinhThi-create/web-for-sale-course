@@ -9,9 +9,10 @@ block content
           | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           | eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
           | ipsum suspendisse.
-        a.join-btn(href="/login-register")
-          i.fa.fa-user(aria-hidden="true")
-          |  Tham gia miễn phí
+        if !user
+          a.join-btn(href="/login-register")
+            i.fa.fa-user(aria-hidden="true")
+            |  Tham gia miễn phí
         .bulbs-decoration
           img(src="/images/bulb.png", alt="")
       .hero-illustration
@@ -38,10 +39,11 @@ block content
               path(d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
           h3.feature-title Học các kỹ năng mới nhất
           p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          a.feature-link(href="/login-register")
-            | Bắt đầu ngay!
-            svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
-              path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+          if !user
+            a.feature-link(href="/login-register")
+              | Bắt đầu ngay!
+              svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
+                path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
 
         .feature-card
           .feature-icon
@@ -49,10 +51,11 @@ block content
               path(d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
           h3.feature-title Học hỏi từ các chuyên gia trong ngành
           p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          a.feature-link(href="/login-register")
-            | Bắt đầu ngay!
-            svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
-              path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+          if !user
+            a.feature-link(href="/login-register")
+              | Bắt đầu ngay!
+              svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
+                path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
 
         .feature-card
           .feature-icon
@@ -61,10 +64,11 @@ block content
               path(d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z", stroke="currentColor")
           h3.feature-title Học ở bất cứ đâu trên thế giới
           p.feature-description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          a.feature-link(href="/login-register")
-            | Bắt đầu ngay!
-            svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
-              path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
+          if !user
+            a.feature-link(href="/login-register")
+              | Bắt đầu ngay!
+              svg(width="16", height="16", viewBox="0 0 24 24", fill="none")
+                path(d="M7 17l10-10M17 7H7v10", stroke="currentColor", stroke-linecap="round", stroke-linejoin="round")
 
   section.courses-section
     .bg-decoration.bg-circle-1
@@ -105,7 +109,8 @@ block content
       .cta-section
         p.cta-text
           | Tận hưởng phương pháp học tập hàng đầu và đạt được những kỹ năng vượt trội! Bạn là người tạo dựng sự nghiệp cho chính mình và chúng tôi sẽ đồng hành cùng bạn trên con đường đó. 
-          a.cta-link(href="/login-register") Register Free Now!
+          if !user
+            a.cta-link(href="/login-register") Register Free Now!
 
   section.distance-learning-section
     .section-container
@@ -188,7 +193,7 @@ block content
       .view-all-section
         p.view-all-text
           | Nhận được thông tin chi tiết ngay bây giờ? 
-          a.view-all-link(href="#") Xem tất cả các bài viết
+          a.view-all-link(href="/blog") Xem tất cả các bài viết
 
   section.learning-paths-section
     .section-container

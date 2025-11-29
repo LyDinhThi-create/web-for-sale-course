@@ -15,7 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Show corresponding content
       const tabId = this.getAttribute("data-tab");
-      document.getElementById(tabId).classList.add("active");
+      if (tabId) {
+        document.getElementById(tabId).classList.add("active");
+      }
     });
   });
 
@@ -247,4 +249,49 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
   //end search
+  // wishlist
+  // Lấy tất cả các nút wishlist
+  const wishlistButtons = document.querySelectorAll(".wishlist-btn");
+  if (wishlistButtons.length === 0) {
+  } else {
+    wishlistButtons.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault(); // Chặn thẻ a hoặc hành vi mặc định
+
+        const courseId = this.getAttribute("data-id");
+        const btnElement = this;
+
+        // Gọi API lên server
+        fetch(`/user/toggle/${courseId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.code === 200) {
+              // Thành công -> Đổi giao diện
+              if (data.action === "add") {
+                btnElement.classList.add("active"); // Thêm class để tô đỏ
+                // alert("Đã thêm vào yêu thích!");
+              } else {
+                btnElement.classList.remove("active"); // Xóa class để bỏ đỏ
+                // alert("Đã xóa khỏi yêu thích!");
+              }
+            } else {
+              alert("Có lỗi xảy ra hoặc bạn chưa đăng nhập!");
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+    });
+  }
+
+  //end wishlist
+  // account setting
+  
+  // end account setting
 });

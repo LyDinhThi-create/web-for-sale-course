@@ -7,6 +7,7 @@ const courseRoutes = require("./routes/courseRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const cartRoutes = require("./routes/cartRoutes");
+const userRoutes = require("./routes/userRoutes");
 const { setActiveMenu } = require("./middlewares/authMiddleware");
 const Courses = require("./models/Course");
 const Blog = require("./models/Blog");
@@ -107,6 +108,17 @@ app.use(
   cartRoutes
 );
 app.use(
+  "/user",
+  userSession,
+  requireLogin,
+  flash(),
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+  },
+  userRoutes
+);
+app.use(
   "/",
   userSession,
   // apply flash() after session for root/auth routes
@@ -125,7 +137,6 @@ app.use(
 app.get("/", async (req, res) => {
   const featuredCourses = await Courses.find().limit(3);
   const featuredBlogs = await Blog.find().limit(3);
-
   res.render("pages/index", {
     title: "Trang chủ - IT Courses",
     featuredCourses,
@@ -135,7 +146,10 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
-  res.render("pages/contact", { title: "Liên hệ" });
+  res.render("pages/contact", {
+    title: "Liên hệ",
+    user: req.session.user || null,
+  });
 });
 
 const PORT = 3000;

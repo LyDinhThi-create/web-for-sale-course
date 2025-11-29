@@ -46,4 +46,8 @@ router.delete("/blogs/:id", adminController.deleteBlog);
 router.post("/login", adminController.loginAdmin);
 // router post logout admin
 router.post("/logout", adminController.logoutAdmin);
+// router get dashboard admin
+router.get("/dashboard", requireLoginAdmin, adminController.getDashboard);
+// router get user
+router.get("/user", requireLoginAdmin, adminController.getUsers);
 module.exports = router;
