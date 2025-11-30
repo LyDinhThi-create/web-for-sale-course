@@ -1,0 +1,120 @@
+.content {
+  display: flex;
+}
+/* Thiết lập chung cho Sidebar */
+.sibar {
+  /* Chiều rộng cố định cho sidebar */
+  width: 250px;
+  /* Chiều cao 100% của viewport (hoặc 100% của container cha) */
+  height: 100vh;
+  /* Màu nền tối hoặc màu khác biệt */
+  background-color: #343a40;
+  /* Thêm padding cho nội dung bên trong */
+  padding: 1rem 0;
+  /* Thêm bóng đổ nhẹ để tạo chiều sâu */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  /* Đảm bảo nội dung bên trong cuộn được nếu quá dài */
+  overflow-y: auto;
+}
+
+/* Kiểu cho danh sách điều hướng (Bootstrap .nav.flex-column.nav-pills) */
+.sibar ul.nav {
+  padding: 0 1rem; /* Đặt padding ngang để tạo khoảng cách */
+}
+
+/* Kiểu cho từng mục (li) */
+.sibar .nav-item {
+  margin-bottom: 0.5rem; /* Khoảng cách giữa các mục */
+}
+
+/* Kiểu cho liên kết (a.nav-link) */
+.sibar .nav-link {
+  /* Màu chữ mặc định là màu sáng */
+  color: #f8f9fa;
+  /* Đảm bảo liên kết chiếm toàn bộ chiều rộng của nav-item */
+  display: block;
+  /* Cỡ chữ và độ dày */
+  font-size: 1rem;
+  font-weight: 500;
+  /* Loại bỏ màu nền mặc định của nav-link (nếu không dùng nav-pills active) */
+  background-color: transparent;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hiệu ứng Hover */
+.sibar .nav-link:hover {
+  background-color: #495057; /* Màu nền tối hơn khi hover */
+  color: #fff;
+}
+
+/* Kiểu cho liên kết đang hoạt động (Khi bạn thêm class .active vào liên kết tương ứng) */
+.sibar .nav-link.active {
+  /* Màu nền xanh lam nổi bật */
+  background-color: #007bff;
+  /* Màu chữ trắng */
+  color: #fff;
+  font-weight: 600;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Thiết lập cho thanh điều hướng chính */
+.container-fluid {
+  /* Thiết lập màu nền và padding cơ bản */
+  background-color: #343a40; /* Ví dụ: Nền màu tối */
+  color: white; /* Màu chữ mặc định là trắng */
+  padding: 0.5rem 1rem;
+  min-height: 56px;
+
+  /* Kích hoạt Flexbox để căn chỉnh các mục */
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Kiểu cho thương hiệu/tiêu đề */
+.navbar-brand.mb-0.h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f8f9fa; /* Màu trắng sáng cho tiêu đề */
+  margin-bottom: 0 !important;
+}
+
+/* Container cho nội dung Admin và Đăng xuất (dùng d-flex và ms-auto của Bootstrap) */
+.d-flex.ms-auto {
+  /* ms-auto (margin-start: auto) đã đẩy nó sang phải */
+  align-items: center;
+}
+
+/* Kiểu cho nội dung chào mừng và đăng xuất */
+.logout_content {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #f8f9fa; /* Màu chữ sáng */
+}
+
+/* Kiểu cho icon người dùng */
+.logout_content i.bi.bi-person-circle.me-1 {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Kiểu cho liên kết Đăng xuất */
+a#logout-admin {
+  /* Đặt màu, loại bỏ gạch chân và thêm khoảng cách */
+  color: #dc3545; /* Màu đỏ nổi bật */
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 0.75rem; /* Khoảng cách giữa 'Xin chào, Admin' và 'Đăng xuất' */
+  transition: color 0.3s ease;
+}
+
+a#logout-admin:hover {
+  color: #ffc107; /* Màu vàng khi hover */
+  text-decoration: underline;
+}

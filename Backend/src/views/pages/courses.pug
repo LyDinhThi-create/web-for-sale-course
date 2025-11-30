@@ -21,13 +21,21 @@ block content
 
       .courses-grid
         // Course 1: Spa Relaxation Massage
+        - var wishlistStringIds = user && user.wishlist ? user.wishlist.map(id => id.toString()) : [];
         each course in courses
           .course-card
             .course-image.course-1
                 img(src=course.image, alt=course.title)
-                button.wishlist-btn
-                  svg(width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
-                    path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+        
+                //- Logic kiểm tra: Nếu user đã đăng nhập VÀ id khóa học nằm trong wishlist của user
+                //- Cách sửa: Ép kiểu toString() cho cả 2 vế
+                - var isInWishlist = wishlistStringIds.includes(course.id.toString());
+                
+                //- Thêm class 'active' nếu đã like, thêm data-id để lấy ID
+                button.wishlist-btn(class= isInWishlist ? 'active' : '', data-id=course._id)
+                    svg(width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                        path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
+                
                 .course-price $#{course.price}
 
             .course-content

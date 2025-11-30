@@ -6,41 +6,45 @@ const dotenv = require("dotenv");
 const courseRoutes = require("./routes/courseRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const blogRoutes = require("./routes/blogRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const userRoutes = require("./routes/userRoutes");
 const { setActiveMenu } = require("./middlewares/authMiddleware");
 const Courses = require("./models/Course");
-const session = require('express-session')
+const Blog = require("./models/Blog");
+const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
-const MongoDBStore = require('connect-mongodb-session')(session);
+const MongoDBStore = require("connect-mongodb-session")(session);
 const requireLogin = require("./middlewares/requireLogin");
-const flash = require('connect-flash')
+const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
+const cartMiddleware = require("./middlewares/cartMiddleware");
+
 dotenv.config();
 const app = express();
-// Thiết lập session middleware 
+// Thiết lập session middleware
 const adminSession = session({
-  name: 'admin-session',
+  name: "admin-session",
   secret: process.env.SECRET_KEY_ADMIN,
   resave: false,
   saveUninitialized: false,
   store: new MongoDBStore({
     url: process.env.MONGODB_URI,
-    collection: 'adminSessions'
+    collection: "adminSessions",
   }),
-  cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true }
+  cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true },
 });
 
 const userSession = session({
-  name: 'user-session',
+  name: "user-session",
   secret: process.env.SECRET_KEY_USER,
   resave: false,
   saveUninitialized: false,
   store: new MongoDBStore({
     url: process.env.MONGODB_URI,
-    collection: 'userSessions'
+    collection: "userSessions",
   }),
-  cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true }
+  cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true },
 });
-//
-app.use(flash());
 
 // Kết nối DB
 connectDB();
@@ -56,49 +60,107 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Sử dụng middleware để thiết lập menu active
 app.use(setActiveMenu);
+app.use(cookieParser());
+app.use(cartMiddleware.cartId);
 
 // Routes
-app.use("/courses", userSession,
-  (req,res,next) =>{res.locals.user = req.session.user || null;next();},
- courseRoutes);
-app.use("/admin", adminSession,
-  (req,res,next) =>{res.locals.admin = req.session.admin || null;
-    res.locals.errorMsg = req.flash('errorMsg')[0]||null;
-    next();},
- adminRoutes);
-app.use("/blog", userSession,
-  (req,res,next) =>{res.locals.user = req.session.user || null;next();},
-  blogRoutes);
-app.use("/", userSession,
-  (req,res,next) =>{res.locals.user = req.session.user || null;
-  res.locals.successMsg = req.flash('successMsg')[0]||null;
-  res.locals.errorMsg = req.flash('errorMsg')[0]||null;
-  next();},
-   authRoutes);
+app.use(
+  "/courses",
+  userSession,
+  // apply flash() after session so req.flash is available
+  flash(),
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    res.locals.successMsg = req.flash("successMsg")[0] || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  courseRoutes
+);
+app.use(
+  "/admin",
+  adminSession,
+  // apply flash() after admin session
+  flash(),
+  (req, res, next) => {
+    res.locals.admin = req.session.admin || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  adminRoutes
+);
+app.use(
+  "/blog",
+  userSession,
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+  },
+  blogRoutes
+);
+app.use(
+  "/cart",
+  userSession,
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+  },
+  cartRoutes
+);
+app.use(
+  "/user",
+  userSession,
+  requireLogin,
+  flash(),
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+  },
+  userRoutes
+);
+app.use(
+  "/",
+  userSession,
+  // apply flash() after session for root/auth routes
+  flash(),
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    res.locals.successMsg = req.flash("successMsg")[0] || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  authRoutes
+);
 
-// Flash message middleware
-app.use((req, res, next) => {
-  res.locals.successMsg = req.flash('successMsg')[0]||null;
-  res.locals.errorMsg = req.flash('errorMsg')[0]||null;
-  res.locals.errorMsg2 = req.flash('errorMsg2')[0]||null;
-  res.locals.infoMsg = req.flash('infoMsg')[0]||null;
-  next();
-});
 // Trang chủ
 
 app.get("/", async (req, res) => {
   const featuredCourses = await Courses.find().limit(3);
+  const featuredBlogs = await Blog.find().limit(3);
   res.render("pages/index", {
     title: "Trang chủ - IT Courses",
     featuredCourses,
+    featuredBlogs,
+    user: req.session.user || null,
   });
 });
 
 app.get("/contact", (req, res) => {
-  res.render("pages/contact", { title: "Liên hệ" });
+  res.render("pages/contact", {
+    title: "Liên hệ",
+    user: req.session.user || null,
+  });
 });
 
 const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+// THIẾT LẬP GIỚI HẠN TIMEOUT (Ví dụ: 120,000 ms = 2 phút)
+// Lý do 2 phút là để đảm bảo việc upload tệp lớn có đủ thời gian
+server.setTimeout(150000);
+
+// (Tùy chọn) Tăng giới hạn timeout cho kết nối socket
+// Điều này đôi khi cần thiết cho các phiên truyền dữ liệu lớn
+server.keepAliveTimeout = 125000;
+server.headersTimeout = 125000;

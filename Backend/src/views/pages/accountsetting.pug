@@ -1,0 +1,88 @@
+extends ../layouts/main.pug
+
+block styles
+  link(rel="stylesheet", href="/css/accountsetting.css")
+
+block content
+  .container
+    //- Header nằm BÊN TRONG container
+    .header-section
+      h1 Cài đặt tài khoản
+      p Quản lý thông tin cá nhân và bảo mật của bạn
+
+    //- Tabs nằm BÊN TRONG container
+    .tabs
+      div#tab-profile.tab.active
+        | Thông tin cá nhân
+      div#tab-security.tab Bảo mật
+
+    //- Content nằm BÊN TRONG container
+    .content
+      #alert-success.alert.alert-success
+      #alert-danger.alert.alert-danger
+
+      // Profile Tab
+      #profile.tab-content.active
+        .avatar-section
+          .avatar #{user.fullname.charAt(0).toUpperCase()}
+          button.btn.btn-secondary Thay đổi ảnh đại diện
+
+        form#profileForm
+          .two-column
+            .form-group
+              label Họ và tên
+              input#firstName(type="text", value=user.fullname, required)
+
+          .form-group
+            label Email
+            input#email(type="email", value=user.email, required)
+
+          .form-group
+            label Số điện thoại
+            input#phone(type="tel", value=user.phone)
+
+          .form-group.checkbox
+            label Nhận thông báo qua email
+            input#emailNotifications(type="checkbox", checked)
+
+          .form-group.checkbox
+            label Nhận email khuyến mãi
+            input#marketingEmails(type="checkbox")
+
+          button.btn.btn-primary(type="submit") Lưu thay đổi
+          button.btn.btn-secondary(type="button", onclick="resetForm('profileForm')")
+            | Hủy
+
+      // Security Tab
+      #security.tab-content
+        h2(style="margin-bottom: 30px; color: #333") Đổi mật khẩu
+
+        form#passwordForm
+          .form-group
+            label Mật khẩu hiện tại
+            input#currentPassword(type="password", required)
+
+          .form-group
+            label Mật khẩu mới
+            input#newPassword(type="password", required)
+
+          .form-group
+            label Xác nhận mật khẩu mới
+            input#confirmPassword(type="password", required)
+
+          .password-requirements
+            h4 Yêu cầu mật khẩu:
+            ul
+              li Tối thiểu 8 ký tự
+              li Ít nhất một chữ hoa
+              li Ít nhất một chữ thường
+              li Ít nhất một số
+              li Ít nhất một ký tự đặc biệt (@$!%*?&)
+
+          button.btn.btn-primary(type="submit", style="margin-top: 20px")
+            | Đổi mật khẩu
+          button.btn.btn-secondary(type="button", onclick="resetForm('passwordForm')")
+            | Hủy
+
+block scripts
+  script(src="/js/accountsetting.js")

@@ -1,0 +1,45 @@
+extends ../layouts/main.pug
+
+block styles
+  link(rel="stylesheet", href="/css/cart.css")
+
+block content
+  .container
+    table.cart-table
+      thead
+        tr
+          th.thumb-col THUMB
+          th TITLE
+          th PRICE
+          th.action-col
+      tbody#cart-items-container
+        each course in courses
+          tr.cart-item(data-id=course.id)
+            td.thumb-col
+              .product-thumb
+                //- Nếu có link ảnh thật thì dùng img, chưa có thì giữ nguyên icon
+                if course.image
+                  img(src=course.image, alt=course.title)
+                else
+                  i.fa-regular.fa-image(style="color:#ccc;")
+
+            td.title-col
+              h3 #{course.title}
+
+            td.price-col $#{course.price}
+
+            td.action-col
+              a.delete-btn(data-course-id=course.id)
+                i.fa-solid.fa-trash-can(data-course-id=course.id)
+
+    .cart-totals-container
+      .cart-totals
+        h2 Cart Totals
+        .total-row
+          span.total-label Total
+          span.total-amount#cart-total-price $#{totalPrice}
+        button.checkout-btn
+          i.fa-solid.fa-cart-shopping
+          |  Buy Now
+block scripts
+  script(src="/js/cart.js")

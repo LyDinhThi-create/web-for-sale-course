@@ -5,16 +5,19 @@ const requireLoginAdmin = require("../middlewares/requireLoginAdmin");
 const router = express.Router();
 
 // Bảo vệ route admin
-router.get("/dashboard", requireLoginAdmin, adminController.getDashboard);
-router.get("/blog", requireLoginAdmin, adminController.getBlogDashboard);
-router.get("/login",
-  (req, res,next) =>{
-    if (req.session.admin){
-      return res.redirect('/admin/dashboard');
+router.get("/course", requireLoginAdmin, adminController.getCourseAdmin);
+router.get("/blog", requireLoginAdmin, adminController.getBlogAdmin);
+router.get(
+  "/login",
+  (req, res, next) => {
+    if (req.session.admin) {
+      return res.redirect("/admin/course");
     }
     next();
   },
-  adminController.getLogin);
+  adminController.getLogin
+);
+
 // Route để tạo khóa học mới
 router.post(
   "/courses",
@@ -43,4 +46,8 @@ router.delete("/blogs/:id", adminController.deleteBlog);
 router.post("/login", adminController.loginAdmin);
 // router post logout admin
 router.post("/logout", adminController.logoutAdmin);
+// router get dashboard admin
+router.get("/dashboard", requireLoginAdmin, adminController.getDashboard);
+// router get user
+router.get("/user", requireLoginAdmin, adminController.getUsers);
 module.exports = router;

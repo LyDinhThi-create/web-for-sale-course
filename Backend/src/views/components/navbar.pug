@@ -1,6 +1,7 @@
 header.header
   .nav-container
-    a.logo(href="/") eDemy
+    a.logo(href="/") 
+      img(src="https://res.cloudinary.com/dq9m78p2b/image/upload/v1764310135/courses/etjsivncroc9x7twv594.png" alt="Logo")
 
     .search-box
       input.search-input(type="text" placeholder="Search for anything")
@@ -24,7 +25,7 @@ header.header
               li.dropdown-item
                 a.dropdown-link(href="/courses") Tất cả khóa học
               li.dropdown-item
-                a.dropdown-link(href="#") Courses Style 2
+                a.dropdown-link(href="/courses/top-courses") Khóa học hàng đầu
               li.dropdown-item
                 a.dropdown-link(href="#") Courses Style 3
               li.dropdown-item
@@ -40,23 +41,22 @@ header.header
             | Contact 
         li.nav-item
           .cart-icon
-            i.fa.fa-cart-plus(aria-hidden="true")
-            span.cart-badge 0
+            a(href="/cart")
+              i.fa.fa-shopping-cart(aria-hidden="true") 
+            span.cart-badge #{countCart}
         li.nav-item.profile-menu-img
           if user
-            img.profile-avatar(
-              src=user.avatar
-              alt="User Avatar"
-              onerror="this.src='https://placehold.co/40x40/E0E7FF/4F46E5?text=C'"
-            )
+            if user.avatar
+              img.avatar-circle(src=user.avatar, style="object-fit: cover")
+            else
+              .avatar-circle #{user.fullname.charAt(0).toUpperCase()}
             .profile-dropdown
               // Phần Header Hồ Sơ
               .profile-header
-                img.profile-avatar(
-                  src=user.avatar
-                  alt="User Avatar"
-                  onerror="this.src='https://placehold.co/40x40/E0E7FF/4F46E5?text=C'"
-                )
+                if user.avatar
+                  img.avatar-circle(src=user.avatar, style="object-fit: cover")
+                else
+                  .avatar-circle #{user.fullname.charAt(0).toUpperCase()}
                 .user-info
                   .user-name #{user.fullname}
                   .user-email #{user.email}
@@ -67,27 +67,21 @@ header.header
                   li.profile-menu-item
                     a.profile-menu-link(href="#")
                       svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
-                        path(stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 8.25V6ZM3.75 13.5A2.25 2.25 0 0 1 6 11.25h2.25A2.25 2.25 0 0 1 10.5 13.5v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25v-2.25ZM13.5 6A2.25 2.25 0 0 1 15.75 3.75h2.25A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25A2.25 2.25 0 0 1 13.5 8.25V6ZM13.5 13.5A2.25 2.25 0 0 1 15.75 11.25h2.25A2.25 2.25 0 0 1 20.25 13.5v2.25a2.25 2.25 0 0 1-2.25 2.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z")
-                      span.profile-menu-text My Courses
-
-                  li.profile-menu-item
-                    a.profile-menu-link(href="#")
-                      svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
                         path(stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25")
                       span.profile-menu-text My Learning
 
                   li.profile-menu-item
-                    a.profile-menu-link(href="#")
+                    a.profile-menu-link(href="/user/my-purchases")
                       svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
                         path(stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.829 2.131L9.61 16.028c-.22.118-.48.118-.70 0l-6.478-3.488a2.25 2.25 0 0 1-1.183-1.98V9a2.25 2.25 0 0 1 2.25-2.25h15A2.25 2.25 0 0 1 21.75 9Z")
                       span.profile-menu-text My Purchases
                   li.profile-menu-item
-                    a.profile-menu-link(href="#")
+                    a.profile-menu-link(href="/user/wish-list")
                       svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
                         path(stroke-linecap="round" stroke-linejoin="round" d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572")
                       span.profile-menu-text Wishlist
                   li.profile-menu-item
-                    a.profile-menu-link(href="#")
+                    a.profile-menu-link(href="/user/account-setting")
                       svg.profile-menu-icon(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor")
                         path(stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.125 22.5h-12.25a1.875 1.875 0 0 1-1.374-2.382Z")
                       span.profile-menu-text Account settings

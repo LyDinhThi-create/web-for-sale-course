@@ -1,0 +1,105 @@
+extends ../layouts/admin.pug
+block content
+    main.container.mt-4
+      //- Header
+      .d-flex.justify-content-between.align-items-center.mb-3
+        h2 Danh sách bài blog
+        button.btn.btn-primary(type="button", data-bs-toggle="modal", data-bs-target="#blogModal")
+          | Thêm bài blog mới
+      
+      //- Bảng danh sách Blog
+      .table-responsive
+        table.table.table-striped.table-hover.align-middle
+          thead.table-dark
+            tr
+              th(scope="col") Tiêu đề (title)
+              th(scope="col") Tác giả
+              th(scope="col") Danh mục (category)
+              th(scope="col") Lượt xem (viewCount)
+              th(scope="col") Trạng thái
+              th.text-center(scope="col") Hành động
+          tbody#blog-table-body
+            //- Dữ liệu sẽ được lặp qua đây
+            //- Giả sử biến truyền vào là 'blogs'
+            each blog in blogs
+              tr
+                td #{blog.title}
+                td #{blog.instructor.name}
+                td #{blog.category}
+                td #{blog.viewCount}
+                td
+                  if blog.status === 'active'
+                    span.badge.bg-success Hoạt động
+                  else
+                    span.badge.bg-secondary Tạm ẩn
+                td.text-center
+                  //- Nút Sửa: Truyền toàn bộ data vào modal
+                  button.btn.btn-warning.btn-sm.me-2(type="button", data-bs-toggle="modal", data-bs-target="#blogModal", data-blog=JSON.stringify(blog)) Sửa
+                  //- Nút Xóa: Chỉ cần ID
+                  button.btn.btn-danger.btn-sm(type="button", data-blog-id=blog._id) Xóa
+
+    //- Modal Thêm/Sửa Blog
+    .modal.fade#blogModal(tabindex="-1", aria-labelledby="blogModalLabel", aria-hidden="true")
+      .modal-dialog.modal-xl
+        .modal-content
+          .modal-header
+            h5.modal-title#blogModalLabel Thông tin bài blog
+            button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+          
+          .modal-body
+            form#blog-form
+              //- Input ẩn để lưu ID khi chỉnh sửa
+              input#blog-id(type="hidden")
+
+              //- Tiêu đề
+              .mb-3
+                label.form-label(for="blog-title") Tiêu đề (title)
+                input.form-control#blog-title(type="text", placeholder="VD: 10 mẹo học lập trình hiệu quả", required)
+
+              //- Tác giả (Instructor)
+              .row.mb-3
+                .col-md-6
+                  label.form-label(for="instructor-name") Tên tác giả
+                  input.form-control#instructor-name(type="text")
+                .col-md-6
+                  label.form-label(for="instructor-avatar") Link ảnh đại diện tác giả
+                  input.form-control#instructor-avatar(type="text")
+
+              //- Danh mục và Lượt xem
+              .row.mb-3
+                .col-md-4
+                  label.form-label(for="blog-category") Danh mục (category)
+                  input.form-control#blog-category(type="text", placeholder="VD: Lập trình, Đời sống...")
+                .col-md-4
+                  label.form-label(for="blog-viewCount") Lượt xem (viewCount)
+                  input.form-control#blog-viewCount(type="number", readonly, placeholder="Lượt xem tự động đếm")
+                .col-md-4
+                  label.form-label(for="blog-status") Trạng thái (status)
+                  select.form-select#blog-status(required)
+                    option(value="active", selected) Hoạt động (Active)
+                    option(value="inactive") Tạm ẩn (Inactive)
+
+              //- Tải ảnh mới
+              .mb-3
+                label.form-label(for="blog-image-upload") Tải ảnh bìa mới (Bỏ qua nếu không muốn thay đổi)
+                input.form-control#blog-image-upload(type="file", accept="image/*")
+                img#image-preview(src="", alt="Xem trước ảnh", style="width: 300px; margin-top: 15px;")
+
+              //- Ảnh bìa hiện tại
+              .mb-3
+                label.form-label Ảnh bìa hiện tại (image)
+                input.form-control#blog-image(type="text", readonly, placeholder="Chưa có ảnh")
+                img#image-preview-old(src="", alt="Xem trước ảnh", style="width: 300px; margin-top: 15px;")
+              
+              //- Mô tả đầy đủ (fullDescription)
+              .mb-3
+                label.form-label(for="blog-fullDescription") Nội dung (fullDescription)
+                textarea.form-control#blog-fullDescription(rows="10", placeholder="Nhập nội dung bài blog...")
+
+          //- Modal Footer
+          .modal-footer
+            button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Hủy
+            button.btn.btn-primary#save-blog-btn(type="button") Lưu thay đổi
+
+block scripts
+  script(src="/js/blog_admin.js")

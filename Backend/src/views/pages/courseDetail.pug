@@ -2,6 +2,35 @@ extends ../layouts/main.pug
 block styles
   link(rel="stylesheet", href="/css/courseDetail.css")
 block content
+  form#addCart
+  if successMsg
+      div#my-notification.notification.notification-success(role="alert")
+        .notification-icon
+          svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+            path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z")
+        .notification-content
+          p.notification-content-title Thành công!
+          p.notification-content-body #{successMsg}
+        .notification-close
+          //- Nút đóng gọi hàm closeNotification với ID của chính nó
+          button.notification-close-button(onclick="closeNotification('my-notification')" aria-label="Đóng")
+            span.sr-only Đóng
+            svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12")
+  if errorMsg
+      div#my-notification.notification.notification-warning(role="alert")
+        .notification-icon
+          svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+            path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z")
+        .notification-content
+          p.notification-content-title Cảnh báo!
+          p.notification-content-body #{errorMsg}
+        .notification-close
+          //- Nút đóng gọi hàm closeNotification với ID của chính nó
+          button.notification-close-button(onclick="closeNotification('my-notification')" aria-label="Đóng")
+            span.sr-only Đóng
+            svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12")
   .course-page
     .course-header
       h1.course-title #{course.title}
@@ -116,13 +145,26 @@ block content
                   circle(cx="12", cy="12", r="3")
                 | Access
               .meta-value #{course.access}
-
-          button.add-to-cart-btn
-            svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-              circle(cx="9", cy="21", r="1")
-              circle(cx="20", cy="21", r="1")
-              path(d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6")
-            | Add to Cart
+          if user
+            if (user.enrolledCourses).toString().includes(course._id)
+              a.learning-btn(data-id=course._id href=`/courses/learning/${course._id}`)
+                  path(d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6")
+                  | Go to Learning                
+            else 
+              button.add-to-cart-btn(data-id=course._id)
+                svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                  circle(cx="9", cy="21", r="1")
+                  circle(cx="20", cy="21", r="1")
+                  path(d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6")
+                | Add to Cart
+               
+          else
+            a.login-to-cart-btn(href="/login-register")
+              svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
+                circle(cx="9", cy="21", r="1")
+                circle(cx="20", cy="21", r="1")
+                path(d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6")
+              |  Add to Cart
 
           button.share-btn
             svg(width="20", height="20", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")

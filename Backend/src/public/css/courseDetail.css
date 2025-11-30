@@ -230,6 +230,28 @@ body {
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
+.login-to-cart-btn {
+  text-decoration: none;
+  width: 100%;
+  background: linear-gradient(135deg, #f56565 0%, #ef4444 100%);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.login-to-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 101, 101, 0.3);
+}
 
 .add-to-cart-btn:hover {
   transform: translateY(-2px);
@@ -373,4 +395,168 @@ body {
     overflow-x: auto;
     gap: 1rem;
   }
+}
+.notification {
+  max-width: 28rem; /* max-w-md */
+  margin-left: auto;
+  margin-right: auto; /* mx-auto */
+  padding: 1rem; /* p-4 */
+  border-radius: 0.5rem; /* rounded-lg */
+  /* shadow-md */
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border-left-width: 4px; /* border-l-4 */
+  display: flex; /* flex */
+  /* Animation styles */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-in-out;
+  visibility: hidden;
+  position: absolute;
+  z-index: 50;
+  top: 10%;
+  left: 35%;
+}
+
+/* Lớp "show" để kích hoạt animation */
+.notification.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Các lớp con bên trong thông báo */
+.notification-icon {
+  padding-top: 0.25rem; /* py-1 */
+  padding-bottom: 0.25rem;
+}
+
+.notification-icon svg {
+  height: 1.5rem; /* h-6 */
+  width: 1.5rem; /* w-6 */
+  margin-right: 1rem; /* mr-4 */
+}
+
+.notification-content {
+  flex-grow: 1; /* flex-grow */
+}
+
+.notification-content-title {
+  font-weight: 700; /* font-bold */
+}
+
+.notification-content-body {
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+}
+
+.notification-close {
+  margin-left: auto; /* ml-auto */
+  padding-left: 0.75rem; /* pl-3 */
+}
+
+.notification-close-button {
+  /* -mx-1.5 -my-1.5 (đã áp dụng qua p-1.5) */
+  padding: 0.375rem; /* p-1.5 */
+  border-radius: 0.5rem; /* rounded-lg */
+  display: inline-flex; /* inline-flex */
+  height: 2rem; /* h-8 */
+  width: 2rem; /* w-8 */
+  border: none; /* Xóa viền nút mặc định */
+  cursor: pointer;
+  background-color: transparent; /* Nền trong suốt ban đầu */
+}
+
+.notification-close-button:focus {
+  /* focus:ring-2 */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--focus-ring-color, #9ca3af); /* Mặc định là màu xám */
+}
+
+.notification-close-button svg {
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+}
+
+/* Cần thiết cho nút SVG không bị co lại */
+.notification-close-button span.sr-only {
+  display: none;
+}
+
+/* --- Biến thể màu sắc --- */
+
+/* Thành công (Success) - Xanh lá */
+.notification-success {
+  background-color: #f0fdf4; /* bg-green-100 */
+  border-color: #22c55e; /* border-green-500 */
+  color: #15803d; /* text-green-700 */
+}
+.notification-success .notification-icon svg {
+  color: #22c55e; /* text-green-500 */
+}
+.notification-success .notification-close-button {
+  background-color: #f0fdf4; /* bg-green-100 */
+  color: #16a34a; /* text-green-500 */
+  --focus-ring-color: #4ade80; /* focus:ring-green-400 */
+}
+.notification-success .notification-close-button:hover {
+  background-color: #dcfce7; /* hover:bg-green-200 */
+}
+
+/* Lỗi (Error) - Đỏ */
+.notification-error {
+  background-color: #fef2f2; /* bg-red-100 */
+  border-color: #ef4444; /* border-red-500 */
+  color: #b91c1c; /* text-red-700 */
+}
+.notification-error .notification-icon svg {
+  color: #ef4444; /* text-red-500 */
+}
+.notification-error .notification-close-button {
+  background-color: #fef2f2; /* bg-red-100 */
+  color: #ef4444; /* text-red-500 */
+  --focus-ring-color: #f87171; /* focus:ring-red-400 */
+}
+.notification-error .notification-close-button:hover {
+  background-color: #fee2e2; /* hover:bg-red-200 */
+}
+
+/* Cảnh báo (Warning) - Vàng */
+.notification-warning {
+  background-color: #fefce8; /* bg-yellow-100 */
+  border-color: #eab308; /* border-yellow-500 */
+  color: #a16207; /* text-yellow-700 */
+}
+.notification-warning .notification-icon svg {
+  color: #eab308; /* text-yellow-500 */
+}
+.notification-warning .notification-close-button {
+  background-color: #fefce8; /* bg-yellow-100 */
+  color: #eab308; /* text-yellow-500 */
+  --focus-ring-color: #facc15; /* focus:ring-yellow-400 */
+}
+.notification-warning .notification-close-button:hover {
+  background-color: #fef9c3; /* hover:bg-yellow-200 */
+}
+ .learning-btn{
+  text-decoration: none;
+    width: 100%;
+    background: linear-gradient(135deg, #60ec4b 0%, #cbf05c 100%);
+    color: rgb(0, 0, 0);
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.learning-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 101, 101, 0.3);
 }

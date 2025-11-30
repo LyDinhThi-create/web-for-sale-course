@@ -1,5 +1,6 @@
 const Course = require("../models/Course");
 const Blog = require("../models/Blog");
+const User = require("../models/User");
 
 module.exports.getAllCourses = async (req, res) => {
   try {
@@ -8,7 +9,7 @@ module.exports.getAllCourses = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6; // Mặc định 6 khóa học/trang
     const skip = (page - 1) * limit; // Tính số document cần bỏ qua
-
+    
     // 2. Tách chuỗi (ví dụ: "price:asc" -> [sortBy='price', order='asc'])
     const [sortBy, order] = currentSort.split(":");
 
@@ -93,5 +94,49 @@ module.exports.searchCourse = async (req, res) => {
     console.error("Lỗi tìm kiếm:", err);
     // 500 (Lỗi máy chủ) phù hợp hơn 404 (Không tìm thấy) khi có lỗi
     res.status(500).send("Lỗi máy chủ khi thực hiện tìm kiếm");
+  }
+};
+//[POST] them vao gio hang
+module.exports.addCart = async (req, res) => {
+  try {
+    if (req.session.user == null) {
+      return res.redirect("/login-register");
+    }
+    const courseId = req.params.id;
+    const course = await Course.findById(courseId);
+    const user = await User.findOne({ email: req.session.user.email });
+    if (!user) {
+      return res.status(404).send("User not found");
+    } else if (!course) {
+      return res.status(404).send("Course not found");
+    } else if (user.cart.includes(course._id)) {
+      req.flash("errorMsg", "Khoa học đã có trong giỏ hàng!");
+      return res.redirect("/courses/" + courseId);
+    } else {
+      user.cart.push(course);
+      await user.save();
+      req.session.user = user;
+      req.session.save();
+      req.flash("successMsg", "Thêm vào giỏ hàng thành công!");
+      return res.redirect("/courses/" + courseId);
+    }
+  } catch (err) {
+    console.error("Lỗi thêm vào giỏ hàng:", err);
+    res.status(500).send("Lỗi thêm vào giỏ hàng");
+  }
+};
+// khóa học hàng đầu
+module.exports.getTopCourses = async (req, res) => {
+  const courses = await Course.find();
+  res.render("pages/topcourse", { title: "Các khóa học hàng đầu", courses });
+};
+// learn page
+module.exports.getLearningPage = async (req, res) => {
+  try {
+    const courses = await Course.findById(req.params.id);
+    res.render("pages/learning", { title: "Trang học tập", courses });
+  } catch (err) {
+    console.error("Lỗi tải trang học tập:", err);
+    res.status(500).send("Lỗi tải trang học tập");
   }
 };

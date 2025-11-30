@@ -1,0 +1,107 @@
+extends ../layouts/main.pug
+
+block styles
+  script(src="https://cdn.tailwindcss.com")
+  link(rel="stylesheet", href="/css/learning.css")
+
+block content
+  //- Wrapper chính giúp component tự quản lý và responsive
+  div(class="relative w-full h-screen overflow-hidden flex")
+    
+    //- Phần chính: Trình phát video và thông tin
+    main(class="flex-1 flex flex-col h-screen transition-all duration-300 ease-in-out")
+      
+      //- Nút mở sidebar trên mobile
+      div(class="absolute top-4 right-6 z-10 md:hidden")
+        button#mobile-sidebar-toggle(class="p-2 rounded-full bg-white/70 backdrop-blur-sm text-gray-700 focus:outline-none")
+          svg(class="w-6 h-6", fill="none", stroke="currentColor", viewBox="0 0 24 24", xmlns="http://www.w3.org/2000/svg")
+            path(stroke-linecap="round", stroke-linejoin="round", stroke-width="2", d="M4 6h16M4 12h16M4 18h7")
+
+      #main-scroller(class="flex-1 overflow-y-auto custom-scrollbar")
+        #content-wrapper(class="w-full max-w-5xl mx-auto p-4 md:p-8 transition-all duration-300 ease-in-out")
+          #video-section-container(class="w-full mx-auto transition-all duration-300 ease-in-out")
+            
+            //- Trình phát video
+            div(class="aspect-video w-full rounded-xl overflow-hidden shadow-2xl bg-black")
+              iframe#video-player(
+                class="w-full h-full",
+                src=`https://www.youtube.com/embed/${courses.curriculum[0].videoUrl}?rel=0&modestbranding=1&autoplay=1`,
+                title="YouTube video player",
+                frameborder="0",
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+                allowfullscreen
+              )
+
+            //- Phần mô tả với nền tùy chỉnh
+            div(class="mt-8 bg-[#fff8f8] p-6 md:p-8 rounded-xl")
+              
+              //- Tiêu đề và điều khiển
+              div(class="flex flex-col md:flex-row justify-between items-start md:items-center")
+                h1#video-title(class="text-xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-0") #{courses.curriculum[0].title} 
+                div(class="flex space-x-3 mt-4 md:mt-0")
+                  button(class="px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 hover:bg-gray-300 transition-colors") < BÀI TRƯỚC
+                  button(class="px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-white bg-[#fe4a55] hover:bg-red-600 transition-colors") BÀI TIẾP THEO >
+              
+              //- Mô tả bài học
+              div(class="mt-8")
+                h3(class="text-lg md:text-xl font-bold text-gray-800 mb-3") Mô tả
+                p(class="text-sm md:text-base text-gray-600 leading-relaxed")
+                  | Chào mừng bạn đến với khóa học! Trong video này, chúng ta sẽ cùng nhau tìm hiểu tổng quan về những gì sẽ học và thực hiện các bước cài đặt môi trường cần thiết để chuẩn bị cho các bài học tiếp theo. Hãy đảm bảo bạn làm theo từng bước để tránh các lỗi không mong muốn nhé.
+
+    //- Sidebar: Danh sách bài học
+    aside#lesson-sidebar(class="fixed top-0 right-0 h-full bg-[#fff8f8] border-l border-gray-200 flex flex-col shrink-0 transition-all duration-300 ease-in-out transform translate-x-full md:relative md:translate-x-0 md:w-[400px] z-50 w-full")
+      
+      //- Dạng mở rộng
+      #sidebar-expanded(class="flex flex-col h-full")
+        div(class="p-4 flex items-center justify-between border-b border-gray-200")
+          div
+            h2(class="text-xl font-bold text-gray-900") Nội dung khóa học
+            p(class="text-sm text-gray-500 mt-1") #{courses.curriculum.length} bài học • #{Math.ceil(courses.curriculum.reduce((total, lesson) => total + parseInt(lesson.duration), 0))} phút
+          
+          //- Nút đóng trên mobile / thu gọn trên desktop
+          button#sidebar-toggle-hide(class="text-gray-500 hover:text-gray-800 focus:outline-none p-2 rounded-full hover:bg-gray-200")
+            //- Icon X cho mobile
+            svg(class="w-6 h-6 md:hidden", fill="none", stroke="currentColor", viewBox="0 0 24 24", xmlns="http://www.w3.org/2000/svg")
+              path(stroke-linecap="round", stroke-linejoin="round", stroke-width="2", d="M6 18L18 6M6 6l12 12")
+            //- Icon hamburger cho desktop
+            svg(class="w-6 h-6 hidden md:block", fill="none", stroke="currentColor", viewBox="0 0 24 24", xmlns="http://www.w3.org/2000/svg")
+              path(stroke-linecap="round", stroke-linejoin="round", stroke-width="2", d="M4 6h16M4 12h16M4 18h16")
+        
+        #lesson-list(class="flex-1 overflow-y-auto custom-scrollbar p-3")
+          
+          each curriculum, index in courses.curriculum 
+            div(
+              class=`lesson-item flex items-center p-4 rounded-lg cursor-pointer hover:bg-red-100 transition-colors ${index === 0 ? 'active' : ''}`,
+              data-video-id=`${curriculum._id}`,
+              data-duration=`${curriculum.duration}`,
+              data-video-url=`${curriculum.videoUrl}`,
+              data-title=`${index + 1}. ${curriculum.title}`
+            )
+              //- Icon Play
+              div(class="lesson-icon text-gray-400 mr-4")
+                svg(class="h-6 w-6", xmlns="http://www.w3.org/2000/svg", fill="none", viewBox="0 0 24 24", stroke="currentColor", stroke-width="2")
+                  path(stroke-linecap="round", stroke-linejoin="round", d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z")
+                  path(stroke-linecap="round", stroke-linejoin="round", d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z")
+
+              //- Nội dung text
+              div(class="flex-1")
+                h3(class="font-semibold text-sm leading-tight")= `${index + 1}. ${curriculum.title}`
+                p(class="lesson-duration text-xs text-gray-500 mt-1")= curriculum.duration
+
+              //- Icon trạng thái (Checkmark)
+              div(class="lesson-status text-[#fe4a55]")
+                svg(class="h-5 w-5", xmlns="http://www.w3.org/2000/svg", viewBox="0 0 20 20", fill="currentColor")
+                  path(fill-rule="evenodd", d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z", clip-rule="evenodd")          
+
+      //- Dạng thu gọn (chỉ cho desktop)
+      #sidebar-collapsed(class="hidden h-full py-4 cursor-pointer md:flex md:flex-col md:items-center md:justify-between")
+        button#sidebar-toggle-show(class="text-gray-500 hover:text-gray-800 focus:outline-none p-2 rounded-full hover:bg-gray-200")
+          svg(class="w-6 h-6", fill="none", stroke="currentColor", viewBox="0 0 24 24", xmlns="http://www.w3.org/2000/svg")
+            path(stroke-linecap="round", stroke-linejoin="round", stroke-width="2", d="M15 19l-7-7 7-7")
+        
+        p(class="vertical-text text-sm text-gray-500 font-semibold tracking-wider ") Click để mở danh sách
+        div(class="w-6 h-6") 
+
+block scripts
+  script(src="/js/learning.js")
+

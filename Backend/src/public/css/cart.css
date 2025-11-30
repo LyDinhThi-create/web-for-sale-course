@@ -1,0 +1,177 @@
+/* --- CSS --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #fff;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 2rem;
+}
+
+/* -- Table Styles -- */
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 50px;
+  border-top: 1px solid #eee;
+}
+
+.cart-table th {
+  text-align: left;
+  padding: 15px 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+  border-bottom: 1px solid #eee;
+  color: #111;
+}
+
+.cart-table td {
+  padding: 20px 0;
+  vertical-align: middle;
+  border-bottom: 1px solid #eee;
+}
+
+/* Cột Thumb (Ảnh) */
+.thumb-col {
+  width: 100px;
+}
+
+.product-thumb {
+  width: 60px;
+  height: 60px;
+  background-color: #f9f9f9; /* Placeholder màu xám */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eee;
+}
+
+.product-thumb img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Cột Title */
+.title-col h3 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #0e1b4d; /* Màu xanh đậm giống hình */
+}
+
+/* Cột Price */
+.price-col {
+  font-weight: 500;
+  color: #555;
+  width: 150px;
+}
+
+/* Cột Delete Action */
+.action-col {
+  width: 50px;
+  text-align: right;
+}
+
+.delete-btn {
+  background: #fff5f5;
+  border: 1px solid #ffdede;
+  color: #ff4d4d;
+  width: 35px;
+  height: 35px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* -- Cart Totals Card -- */
+.cart-totals-container {
+  display: flex;
+  justify-content: center; /* Căn giữa card */
+}
+
+.cart-totals {
+  background: white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.cart-totals h2 {
+  font-size: 22px;
+  color: #0e1b4d;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0; /* Đường gạch mờ tùy chọn */
+}
+
+.total-label {
+  font-size: 18px;
+  font-weight: 500;
+  color: #0e1b4d;
+}
+
+.total-amount {
+  font-size: 20px;
+  color: #0e1b4d;
+  font-weight: 400;
+}
+
+.checkout-btn {
+  width: 100%;
+  background-color: #ff5252; /* Màu đỏ cam giống hình */
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.3s;
+}
+
+.checkout-btn:hover {
+  background-color: #e04848;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 600px) {
+  .cart-table th,
+  .cart-table td {
+    font-size: 13px;
+  }
+  .cart-totals {
+    padding: 20px;
+  }
+}

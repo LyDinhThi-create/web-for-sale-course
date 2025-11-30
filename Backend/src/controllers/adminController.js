@@ -3,6 +3,7 @@ const Blog = require("../models/Blog.js");
 const cloudinary = require("../config/cloudinary.js");
 const stream = require("stream");
 const Admin = require("../models/Admin.js");
+const User = require("../models/User.js");
 // Hàm helper uploadStream (Giữ nguyên)
 const uploadStream = (fileBuffer, folder) => {
   return new Promise((resolve, reject) => {
@@ -18,13 +19,33 @@ const uploadStream = (fileBuffer, folder) => {
     bufferStream.pipe(upload);
   });
 };
+// Thay thế hàm parse cũ bằng hàm này trong cả hai controller:
+const safeParseJSON = (data) => {
+  // 1. Nếu đã là object hoặc array, trả về luôn (không cần parse)
+  if (typeof data === "object" && data !== null) return data;
+
+  // 2. Nếu là chuỗi rỗng, không parse để tránh lỗi SyntaxError
+  if (typeof data === "string" && data.trim() === "") return undefined;
+
+  // 3. Nếu là chuỗi, thử parse
+  if (typeof data === "string") {
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      // Log lỗi parse nhưng trả về undefined/data gốc để DB tự xử lý
+      console.error("LỖI CÚ PHÁP JSON:", e.message, "Dữ liệu:", data);
+      return undefined;
+    }
+  }
+  return data;
+};
 
 // getDashboard (Giữ nguyên)
-module.exports.getDashboard = async (req, res) => {
+module.exports.getCourseAdmin = async (req, res) => {
   try {
     const [courseCount] = await Promise.all([Course.countDocuments()]);
     const courses = await Course.find();
-    res.render("admin/dashboard", {
+    res.render("admin/course_admin", {
       title: "Bảng điều khiển - Admin",
       courseCount,
       courses,
@@ -34,11 +55,11 @@ module.exports.getDashboard = async (req, res) => {
   }
 };
 // trang blog
-module.exports.getBlogDashboard = async (req, res) => {
+module.exports.getBlogAdmin = async (req, res) => {
   try {
     const [blogCount] = await Promise.all([Blog.countDocuments()]);
     const blogs = await Blog.find();
-    res.render("admin/blog_dashboard", {
+    res.render("admin/blog_admin", {
       title: "Bảng Blog - Admin",
       blogCount,
       blogs,
@@ -52,16 +73,19 @@ module.exports.getBlogDashboard = async (req, res) => {
 module.exports.createCourse = async (req, res) => {
   try {
     const body = { ...req.body };
-    if (body.instructor) body.instructor = JSON.parse(body.instructor);
-    if (body.curriculum) body.curriculum = JSON.parse(body.curriculum);
+    if (body.instructor) body.instructor = safeParseJSON(body.instructor);
+    if (body.curriculum) body.curriculum = safeParseJSON(body.curriculum);
     if (body.fullDescription)
-      body.fullDescription = JSON.parse(body.fullDescription);
+      body.fullDescription = safeParseJSON(body.fullDescription);
 
     if (req.file) {
       const uploadResult = await uploadStream(req.file.buffer, "courses");
       body.image = uploadResult.secure_url;
     } // SỬA Ở ĐÂY: Dùng 'body' thay vì 'req.body'
-
+    // Bỏ qua các trường có giá trị là undefined nếu Schema không yêu cầu
+    Object.keys(body).forEach(
+      (key) => body[key] === undefined && delete body[key]
+    );
     const newCourse = await Course.create(body);
 
     res.status(201).json(newCourse);
@@ -75,16 +99,19 @@ module.exports.createCourse = async (req, res) => {
 module.exports.updateCourse = async (req, res) => {
   try {
     const body = { ...req.body };
-    if (body.instructor) body.instructor = JSON.parse(body.instructor);
-    if (body.curriculum) body.curriculum = JSON.parse(body.curriculum);
+    if (body.instructor) body.instructor = safeParseJSON(body.instructor);
+    if (body.curriculum) body.curriculum = safeParseJSON(body.curriculum);
     if (body.fullDescription)
-      body.fullDescription = JSON.parse(body.fullDescription);
+      body.fullDescription = safeParseJSON(body.fullDescription);
 
     if (req.file) {
       const uploadResult = await uploadStream(req.file.buffer, "courses");
       body.image = uploadResult.secure_url;
     } // SỬA Ở ĐÂY: Dùng 'body' thay vì 'req.body'
-
+    // Bỏ qua các trường có giá trị là undefined nếu Schema không yêu cầu
+    Object.keys(body).forEach(
+      (key) => body[key] === undefined && delete body[key]
+    );
     const updatedCourse = await Course.findByIdAndUpdate(req.params.id, body, {
       new: true,
       runValidators: true,
@@ -199,7 +226,7 @@ module.exports.loginAdmin = async (req, res) => {
     };
     admin.statusLogin = true;
     await admin.save();
-    res.redirect("/admin/dashboard");
+    res.redirect("/admin/course");
   } catch (err) {
     res.status(500).send("Lỗi khi đăng nhập admin");
   }
@@ -217,5 +244,69 @@ module.exports.logoutAdmin = async (req, res) => {
     res.redirect("/admin/login");
   } catch (err) {
     res.status(500).send("Lỗi khi đăng xuất admin");
+  }
+};
+// [GET] /admin/dashboard
+module.exports.getDashboard = async (req, res) => {
+  try {
+    res.render("admin/dashboard", {
+      title: "Trang chủ - Admin",
+    });
+  } catch (err) {
+    res.status(500).send("Lỗi khi tải trang chủ admin");
+  }
+};
+
+// [GET] /admin/users
+module.exports.getUsers = async (req, res) => {
+  try {
+    // 1. Bộ lọc tìm kiếm & Trạng thái
+    let find = {
+      deleted: false,
+    };
+
+    if (req.query.status) {
+      find.status = req.query.status;
+    }
+
+    if (req.query.keyword) {
+      const regex = new RegExp(req.query.keyword, "i");
+      find.fullName = regex;
+    }
+
+    // 2. Phân trang
+    const pagination = {
+      currentPage: 1,
+      limitItems: 10,
+    };
+
+    if (req.query.page) {
+      pagination.currentPage = parseInt(req.query.page);
+    }
+
+    pagination.skip = (pagination.currentPage - 1) * pagination.limitItems;
+
+    // Đếm tổng số lượng để tính số trang
+    const countUsers = await User.countDocuments(find);
+    const totalPage = Math.ceil(countUsers / pagination.limitItems);
+
+    // 3. Lấy dữ liệu
+    const users = await User.find(find)
+      .limit(pagination.limitItems)
+      .skip(pagination.skip)
+      .sort({ createdAt: -1 }); // Người mới nhất lên đầu
+
+    res.render("admin/user_admin", {
+      Title: "Quản lý học viên",
+      users: users,
+      pagination: {
+        ...pagination,
+        totalPage: totalPage,
+      },
+      keyword: req.query.keyword || "",
+    });
+  } catch (error) {
+    console.log(error);
+    res.redirect("/admin/dashboard");
   }
 };
