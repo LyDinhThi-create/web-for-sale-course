@@ -15,8 +15,8 @@ block content
       tbody#cart-items-container
         each course in courses
           tr.cart-item(data-id=course.id)
-            td.thumb-col
-              .product-thumb
+            td.thumb-col 
+              a(href=`/courses/${course.id}`).product-thumb
                 //- Nếu có link ảnh thật thì dùng img, chưa có thì giữ nguyên icon
                 if course.image
                   img(src=course.image, alt=course.title)
@@ -24,7 +24,8 @@ block content
                   i.fa-regular.fa-image(style="color:#ccc;")
 
             td.title-col
-              h3 #{course.title}
+              a.product-title(href=`/courses/${course.id}`,style="text-decoration: none;") #{course.title}
+              
 
             td.price-col $#{course.price}
 

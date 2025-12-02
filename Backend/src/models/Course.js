@@ -10,7 +10,7 @@ const courseSchema = new mongoose.Schema(
       avatar: String,
     },
     lessonCount: Number,
-    students: Number,
+    students: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     duration: String,
     access: String,
     description: String,

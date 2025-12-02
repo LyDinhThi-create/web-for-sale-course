@@ -3,6 +3,18 @@ const User = require("../models/User");
 const Course = require("../models/Course");
 const bcrypt = require("bcryptjs");
 
+module.exports.getMyLearning = async (req, res) => {
+  try {
+    const userId = req.session.user._id;
+    const orders = await Order.find({ userId }).populate("courseId");
+    const courses = await Course.find();
+    res.render("pages/myLearning", { orders, courses });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+
 module.exports.getMyPurchases = async (req, res) => {
   try {
     const userId = req.session.user._id;
@@ -43,6 +55,9 @@ module.exports.toggleWishlist = async (req, res) => {
       await User.findByIdAndUpdate(userId, {
         $pull: { wishlist: courseId },
       });
+      await user.save();  
+      req.session.user=user;
+      await req.session.save();
       return res.json({
         code: 200,
         message: "Đã xóa khỏi yêu thích",
@@ -53,6 +68,9 @@ module.exports.toggleWishlist = async (req, res) => {
       await User.findByIdAndUpdate(userId, {
         $addToSet: { wishlist: courseId },
       });
+      await user.save();  
+      req.session.user=user;
+      await req.session.save();
       return res.json({
         code: 200,
         message: "Đã thêm vào yêu thích",

@@ -1,3 +1,4 @@
+const { request } = require("express");
 const Cart = require("../models/cart.js");
 const Course = require("../models/Course.js");
 const User = require("../models/User.js");
@@ -50,7 +51,6 @@ module.exports.addCourseCart = async (req, res) => {
 
     await Cart.updateOne({ _id: cartId }, { $push: { course: objectCart } });
     const totalCourse = cart.course.length + 1;
-
     // Trả về JSON thành công
     return res.json({
       code: 200,
@@ -74,7 +74,7 @@ module.exports.deleteCourseCart = async (req, res) => {
     };
 
     await Cart.updateOne({ _id: cartId }, { $pull: { course: objectCart } });
-
+    
     // Trả về JSON thành công
     return res.json({
       code: 200,
@@ -90,7 +90,7 @@ module.exports.deleteCourseCart = async (req, res) => {
 };
 
 module.exports.checkoutCart = async (req, res) => {
-  try {
+  try {  
     const cartId = req.cookies.cartId;
     const cart = await Cart.findOne({
       _id: cartId,
@@ -110,8 +110,15 @@ module.exports.checkoutCart = async (req, res) => {
       if (!user.purchasedCourses.includes(course._id)) {
         user.purchasedCourses.push(course._id);
         user.enrolledCourses.push(course._id);
+
+      const course_study = await Course.findById(course._id);
+      if (!course_study.students.includes(user._id)) { 
+        course_study.students.push(user._id);
+        }
+      await course_study.save();
       }
     }
+    
     await user.save();
     req.session.user = user;  
     await req.session.save();

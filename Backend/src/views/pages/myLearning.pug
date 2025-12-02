@@ -9,9 +9,9 @@ block content
         .breadcrumb
           a(href="/") Home
           span /
-          span My Purchases
+          span My Learning
         
-        h1.page-title Các khóa học đã mua
+        h1.page-title Các khóa học đang học
 
         //- Icon trang trí dấu X màu xanh
         .decor-icon
@@ -21,15 +21,14 @@ block content
         // Course 1: Spa Relaxation Massage
         - var wishlistStringIds = user && user.wishlist ? user.wishlist.map(id => id.toString()) : [];
         each course in courses
-          if (user.purchasedCourses).toString().includes(course.id)
+          if (user.enrolledCourses).toString().includes(course.id)
             .course-card
               .course-image.course-1
                   img(src=course.image, alt=course.title)
                   - var isInWishlist = wishlistStringIds.includes(course.id.toString());
-                  button.wishlist-btn(class= isInWishlist ? 'active' : '',data-id=course._id)
+                  button.wishlist-btn(class= isInWishlist ? 'active' : '', data-id=course._id)
                     svg(width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
                       path(d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z")
-                 
                   .course-price $#{course.price}
 
               .course-content

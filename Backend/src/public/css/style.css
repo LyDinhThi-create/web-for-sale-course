@@ -1593,6 +1593,7 @@ body {
             display: flex;
             align-items: center;
             padding: 1rem;
+            justify-content: space-evenly;
             border-bottom: 1px solid #f3f4f6;
         }
 
