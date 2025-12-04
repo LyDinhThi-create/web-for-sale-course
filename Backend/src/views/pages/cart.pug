@@ -38,7 +38,7 @@ block content
         h2 Cart Totals
         .total-row
           span.total-label Total
-          span.total-amount#cart-total-price $#{totalPrice}
+          span.total-amount#cart-total-price(total-Price= totalPrice) $#{totalPrice}
         button.checkout-btn
           i.fa-solid.fa-cart-shopping
           |  Buy Now

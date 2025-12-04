@@ -3,6 +3,18 @@ extends ../layouts/main.pug
 block content
   // Main Content Section
   section
+    .page-header
+      .container
+        .breadcrumb
+          a(href="/") Home
+          span /
+          span course
+        
+        h1.page-title Danh sách khóa học
+
+        //- Icon trang trí dấu X màu xanh
+        .decor-icon
+          i.fa-solid.fa-plus
     .courses-container
       .sort_courses
         select#sort(name="sort")

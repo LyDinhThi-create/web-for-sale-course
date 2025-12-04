@@ -95,16 +95,17 @@ block content
               a.course-title(href=`/courses/${course.id}`) #{course.title}
               p.course-description #{course.description}
               .course-stats
-                .stat-item
-                  svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                    path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
-                  | #{course.lessonsCount} Lessons
-                .stat-item
-                  svg.stat-icon(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
-                    path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
-                    circle(cx="9", cy="7", r="4")
-                    path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
-                  | #{course.students} Students
+                  .stat-item
+                    svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                      path(d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z")
+                    | #{course.lessonCount} Lessons
+
+                  .stat-item
+                    svg.stat-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+                      path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                      circle(cx="9" cy="7" r="4")
+                      path(d="m22 21-3-3m0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0")
+                    | #{course.students.length} Students
 
       .cta-section
         p.cta-text

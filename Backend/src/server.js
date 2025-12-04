@@ -8,6 +8,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const userRoutes = require("./routes/userRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 const { setActiveMenu } = require("./middlewares/authMiddleware");
 const Courses = require("./models/Course");
 const Blog = require("./models/Blog");
@@ -131,6 +132,15 @@ app.use(
   },
   authRoutes
 );
+app.use(
+  "/payment",
+  userSession,
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+  },
+  paymentRoutes
+);  
 
 // Trang chủ
 
