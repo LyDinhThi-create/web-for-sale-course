@@ -9,7 +9,7 @@ new Chart(revenueCtx, {
     labels: ["20/11", "21/11", "22/11", "23/11", "24/11", "25/11", "26/11"],
     datasets: [
       {
-        label: "Doanh thu (Triệu ₫)",
+        label: "Doanh thu ($)",
         data: [32, 38, 35, 42, 48, 55, 62],
         borderColor: "#3B82F6",
         backgroundColor: "rgba(59, 130, 246, 0.1)",

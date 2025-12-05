@@ -220,17 +220,29 @@ document.addEventListener("DOMContentLoaded", function () {
   //sort course
   // Lắng nghe sự kiện 'change' (thay đổi) trên dropdown
   const sortSelect = document.getElementById("sort");
+
   if (sortSelect) {
     sortSelect.addEventListener("change", function () {
-      // Lấy giá trị đã chọn, ví dụ: "price:asc"
       const sortValue = this.value;
 
-      // Lấy đường dẫn cơ bản của trang
-      const baseUrl = window.location.pathname;
+      // 1. Tạo một đối tượng URL dựa trên đường dẫn hiện tại của trình duyệt
+      // Ví dụ hiện tại là: http://localhost:3000/courses?category=Web&page=2
+      const url = new URL(window.location.href);
 
-      // Tự động chuyển hướng trang với query 'sort' mới
-      // Trình duyệt sẽ tải lại trang: /admin/dashboard?sort=price:asc
-      window.location.href = `${baseUrl}?sort=${sortValue}`;
+      // 2. Sử dụng searchParams để set lại giá trị 'sort'
+      // Hàm .set() sẽ tự động thêm mới nếu chưa có, hoặc ghi đè nếu đã có.
+      // Các tham số khác (như category) sẽ được giữ nguyên.
+      url.searchParams.set("sort", sortValue);
+
+      // 3. (Khuyên dùng) Nên reset về trang 1 khi thay đổi cách sắp xếp
+      // Tránh trường hợp đang ở trang 5, sort xong dữ liệu thay đổi làm trang 5 bị rỗng
+      if (url.searchParams.get("page")) {
+        url.searchParams.set("page", 1);
+      }
+
+      // 4. Chuyển hướng đến URL mới đã được xử lý
+      // Ví dụ kết quả: http://localhost:3000/courses?category=Web&page=1&sort=price:desc
+      window.location.href = url.toString();
     });
   }
 
@@ -292,7 +304,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //end wishlist
   // account setting
-  
+
   // end account setting
-  
 });

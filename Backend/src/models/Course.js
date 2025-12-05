@@ -16,6 +16,7 @@ const courseSchema = new mongoose.Schema(
     description: String,
     fullDescription: [String],
     testimonials: [String],
+    category: String,
     status: {
       type: String,
       enum: ["active", "inactive"],

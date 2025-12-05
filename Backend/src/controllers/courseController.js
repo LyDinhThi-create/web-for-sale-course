@@ -5,11 +5,12 @@ const User = require("../models/User");
 module.exports.getAllCourses = async (req, res) => {
   try {
     // 1. Lấy tham số 'sort' từ URL, mặc định là 'mới nhất'
+    const category = req.query.category || "";
     const currentSort = req.query.sort || "createdAt:desc";
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6; // Mặc định 6 khóa học/trang
     const skip = (page - 1) * limit; // Tính số document cần bỏ qua
-    
+
     // 2. Tách chuỗi (ví dụ: "price:asc" -> [sortBy='price', order='asc'])
     const [sortBy, order] = currentSort.split(":");
 
@@ -20,12 +21,18 @@ module.exports.getAllCourses = async (req, res) => {
     } else {
       sortOptions.createdAt = -1; // Mặc định dự phòng
     } // 4. Thêm .sort() vào câu lệnh find()
+    // Mặc định luôn lấy status: 'active'
+    const filter = { status: "active" };
 
-    const courses = await Course.find({ status: "active" })
+    // Nếu có category trên URL, thêm nó vào bộ lọc
+    if (category) {
+      filter.category = category;
+    }
+    const courses = await Course.find(filter)
       .sort(sortOptions)
       .skip(skip)
       .limit(limit); // <--- ÁP DỤNG SORT // 5. Trả về 'currentSort' để Pug biết option nào đang được chọn
-    const totalCourses = await Course.countDocuments({ status: "active" });
+    const totalCourses = await Course.countDocuments(filter);
     // Tính tổng số trang
     const totalPages = Math.ceil(totalCourses / limit);
 
@@ -126,10 +133,7 @@ module.exports.addCart = async (req, res) => {
   }
 };
 // khóa học hàng đầu
-module.exports.getTopCourses = async (req, res) => {
-  const courses = await Course.find();
-  res.render("pages/topcourse", { title: "Các khóa học hàng đầu", courses });
-};
+
 // learn page
 module.exports.getLearningPage = async (req, res) => {
   try {

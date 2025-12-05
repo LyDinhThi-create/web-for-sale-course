@@ -249,11 +249,107 @@ module.exports.logoutAdmin = async (req, res) => {
 // [GET] /admin/dashboard
 module.exports.getDashboard = async (req, res) => {
   try {
+    // Chúng ta chạy song song các tác vụ thống kê
+    const [statsData, topCoursesData, recentActivityData, totalStudents] =
+      await Promise.all([
+        // A. TÍNH DOANH THU & SỐ LƯỢNG BÁN
+        // Logic: Lấy tất cả user -> Tách mảng purchasedCourses -> Join sang Course lấy giá -> Cộng lại
+        User.aggregate([
+          { $match: { role: "user" } }, // Chỉ lấy user thường
+          { $unwind: "$purchasedCourses" }, // Tách mảng ID ra từng dòng
+          {
+            $lookup: {
+              from: "courses", // Tên collection trong MongoDB (thường là số nhiều)
+              localField: "purchasedCourses", // ID trong bảng User
+              foreignField: "_id", // ID trong bảng Course
+              as: "courseDetails",
+            },
+          },
+          { $unwind: "$courseDetails" }, // Tách mảng kết quả lookup
+          {
+            $group: {
+              _id: null,
+              totalRevenue: { $sum: "$courseDetails.price" }, // Cộng giá tiền từ bảng Course
+              totalSold: { $sum: 1 }, // Đếm số lượng khóa học đã bán
+            },
+          },
+        ]),
+
+        // B. TOP KHÓA HỌC BÁN CHẠY
+        User.aggregate([
+          { $unwind: "$purchasedCourses" },
+          {
+            $group: {
+              _id: "$purchasedCourses", // Group theo ID khóa học
+              sold: { $sum: 1 },
+            },
+          },
+          { $sort: { sold: -1 } }, // Sắp xếp giảm dần
+          { $limit: 5 },
+          {
+            $lookup: {
+              from: "courses",
+              localField: "_id",
+              foreignField: "_id",
+              as: "courseInfo",
+            },
+          },
+          { $unwind: "$courseInfo" },
+          {
+            $project: {
+              title: "$courseInfo.title",
+              price: "$courseInfo.price",
+              image: "$courseInfo.image", // Nếu cần hiển thị ảnh
+              sold: 1,
+              revenue: { $multiply: ["$sold", "$courseInfo.price"] }, // Doanh thu ước tính
+            },
+          },
+        ]),
+
+        // C. HOẠT ĐỘNG GẦN ĐÂY
+        // Vì mảng purchasedCourses chỉ chứa ID (không có ngày mua),
+        // ta tạm thời lấy danh sách User mới cập nhật (có thể là mới mua hàng)
+        User.find({
+          role: "user",
+          purchasedCourses: { $exists: true, $not: { $size: 0 } },
+        })
+          .sort({ updatedAt: -1 }) // Sắp xếp theo ngày cập nhật gần nhất
+          .limit(5)
+          .populate("purchasedCourses", "title price"), // Populate để lấy tên khóa học
+
+        // D. Tổng số học viên
+        User.countDocuments({ role: "user" }),
+      ]);
+
+    // Xử lý dữ liệu stats (đề phòng mảng rỗng)
+    const stats = {
+      revenue: statsData.length > 0 ? statsData[0].totalRevenue : 0,
+      sold: statsData.length > 0 ? statsData[0].totalSold : 0,
+      students: totalStudents,
+      completionRate: 0, // Cần logic khác để tính cái này
+    };
+
+    // Chuẩn bị dữ liệu biểu đồ (Chart Data)
+    // Lưu ý: Do cấu trúc dữ liệu không lưu "ngày mua" trong purchasedCourses,
+    // ta không thể vẽ biểu đồ doanh thu theo ngày chính xác 100%.
+    // Dưới đây là ví dụ giả lập hoặc bạn cần thay đổi schema để lưu ngày mua.
+    // Tạm thời để trống hoặc fake data để không lỗi giao diện
+    const chartLabels = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
+    const chartValues = [0, 0, 0, 0, 0, 0, 0];
+
     res.render("admin/dashboard", {
-      title: "Trang chủ - Admin",
+      title: "Admin Dashboard",
+      stats,
+      topCourses: topCoursesData,
+      activities: recentActivityData,
+      chartData: {
+        labels: JSON.stringify(chartLabels),
+        data: JSON.stringify(chartValues),
+      },
     });
-  } catch (err) {
-    res.status(500).send("Lỗi khi tải trang chủ admin");
+  } catch (error) {
+    console.error("Dashboard Error:", error);
+    res.status(500).send("Lỗi Server: " + error.message);
   }
 };
 
@@ -304,9 +400,40 @@ module.exports.getUsers = async (req, res) => {
         totalPage: totalPage,
       },
       keyword: req.query.keyword || "",
+      status: req.query.status || "",
     });
   } catch (error) {
     console.log(error);
     res.redirect("/admin/dashboard");
+  }
+};
+
+// [PUT] /admin/users/:id/status
+module.exports.updateUserStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { status: status },
+      { new: true }
+    );    
+    res.status(200).json({ message: "Cập nhật trạng thái thành công", user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi khi cập nhật trạng thái người dùng" });
+  }
+};
+// [Delete] /admin/users/:id
+module.exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { deleted: true },
+      { new: true }
+    );
+    res.status(200).json({ message: "Xóa người dùng thanh cong", user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi khi xóa người dùng" });
   }
 };

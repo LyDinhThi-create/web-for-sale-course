@@ -50,4 +50,8 @@ router.post("/logout", adminController.logoutAdmin);
 router.get("/dashboard", requireLoginAdmin, adminController.getDashboard);
 // router get user
 router.get("/user", requireLoginAdmin, adminController.getUsers);
+// router put user
+router.put("/user/:id/status", requireLoginAdmin, adminController.updateUserStatus);
+// router delete user
+router.delete("/user/:id", requireLoginAdmin, adminController.deleteUser);
 module.exports = router;

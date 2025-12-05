@@ -15,7 +15,6 @@ router.get("/learning/:id", requireLogin, getLearningPage);
 router.post("/:id/addCart", requireLogin, addCart);
 router.get("/", getAllCourses);
 router.get("/search", searchCourse);
-router.get("/top-courses", getTopCourses);
 router.get("/:id", getCourseById);
 
 module.exports = router;

@@ -171,8 +171,8 @@ block content
                     
                     td
                       //- Giả sử user có trường courses_owned là mảng ID
-                      if user.courses_owned
-                        span.badge.bg-light.text-dark #{user.courses_owned.length} khóa
+                      if user.purchasedCourses && user.purchasedCourses.length > 0
+                        span.badge.bg-light.text-dark #{user.purchasedCourses.length} khóa
                       else 
                         span.badge.bg-light.text-dark 0 khóa
 
@@ -185,10 +185,7 @@ block content
                       else
                         span.status-badge.status-inactive Dừng hoạt động
                     
-                    td
-                      a.action-btn(href=`/admin/users/edit/${user.id}`, title="Chỉnh sửa")
-                        i.fa-regular.fa-pen-to-square
-                      
+                    td 
                       button.action-btn(onclick=`changeStatus('${user.id}', '${user.status}')`, title="Đổi trạng thái")
                          i.fa-solid.fa-rotate
                       
@@ -217,11 +214,6 @@ block content
               li.page-item(class=pagination.currentPage == pagination.totalPage ? "disabled" : "")
                 button.page-link(onclick=`changePage(${pagination.currentPage + 1})`)
                   i.fa-solid.fa-chevron-right
-
-    //- Form ẩn để xử lý logic JS
-    form#form-change-status(method="POST", action="", data-path="/admin/users/change-status")
-    form#form-delete-item(method="POST", action="", data-path="/admin/users/delete")
-
 block scripts
   script.
     // 1. Xử lý Lọc trạng thái (Giữ nguyên các param khác)
@@ -246,21 +238,48 @@ block scripts
     // 3. Xử lý đổi trạng thái (Active <-> Inactive)
     function changeStatus(id, currentStatus) {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-      const formChangeStatus = document.querySelector("#form-change-status");
-      const path = formChangeStatus.getAttribute("data-path");
-
-      formChangeStatus.action = `${path}/${newStatus}/${id}?_method=PATCH`;
-      formChangeStatus.submit();
+      const isConfirm = confirm(`Bạn có chắc chắn muốn đổi trạng thái học viên này thành "${newStatus}"?`);
+      if(isConfirm) {
+        fetch(`/admin/user/${id}/status`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: newStatus }),
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('Đổi trạng thái thành công!');
+            window.location.reload();
+          } else {
+            alert('Đã có lỗi xảy ra khi đổi trạng thái.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Đã có lỗi xảy ra khi đổi trạng thái.');
+        });
+      }
     }
 
     // 4. Xử lý xóa User (Cần SweetAlert2 để đẹp hơn)
     function deleteUser(id) {
-      const isConfirm = confirm("Bạn có chắc chắn muốn xóa học viên này?");
+      const isConfirm = confirm('Bạn có chắc chắn muốn xóa học viên này? Hành động này không thể hoàn tác.');
       if(isConfirm) {
-        const formDeleteItem = document.querySelector("#form-delete-item");
-        const path = formDeleteItem.getAttribute("data-path");
-        
-        formDeleteItem.action = `${path}/${id}?_method=DELETE`;
-        formDeleteItem.submit();
+        fetch(`/admin/user/${id}`, {
+          method: 'DELETE',
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('Xóa học viên thành công!');
+            window.location.reload();
+          } else {
+            alert('Đã có lỗi xảy ra khi xóa học viên.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Đã có lỗi xảy ra khi xóa học viên.');
+        });
       }
     }
