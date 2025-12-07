@@ -22,27 +22,37 @@ const cartMiddleware = require("./middlewares/cartMiddleware");
 
 dotenv.config();
 const app = express();
+
+// --- 1. SỬA LỖI STORE SESSION (Dùng uri thay vì url) ---
+const storeAdmin = new MongoDBStore({
+  uri: process.env.MONGO_URI, // <--- SỬA THÀNH 'uri'
+  collection: "adminSessions",
+});
+const storeUser = new MongoDBStore({
+  uri: process.env.MONGO_URI, // <--- SỬA THÀNH 'uri'
+  collection: "userSessions",
+});
+
+// Bắt lỗi kết nối Store để không sập app
+storeAdmin.on('error', function(error) { console.log('Admin Session Store Error:', error); });
+storeUser.on('error', function(error) { console.log('User Session Store Error:', error); });
+
 // Thiết lập session middleware
 const adminSession = session({
   name: "admin-session",
-  secret: process.env.SECRET_KEY_ADMIN,
+  secret: process.env.SECRET_KEY_ADMIN || "admin_secret", // Fallback nếu quên env
   resave: false,
   saveUninitialized: false,
-  store: new MongoDBStore({
-    url: process.env.MONGO_URI,
-    collection: "adminSessions",
-  }),
+  store: storeAdmin,
   cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true },
 });
+
 const userSession = session({
   name: "user-session",
-  secret: process.env.SECRET_KEY_USER,
+  secret: process.env.SECRET_KEY_USER || "user_secret", // Fallback nếu quên env
   resave: false,
   saveUninitialized: false,
-  store: new MongoDBStore({
-    url: process.env.MONGO_URI,
-    collection: "userSessions",
-  }),
+  store: storeUser,
   cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true },
 });
 
@@ -63,11 +73,25 @@ app.use(setActiveMenu);
 app.use(cookieParser());
 app.use(cartMiddleware.cartId);
 
-// Routes
+// --- ROUTES ---
+
+// Admin Routes
+app.use(
+  "/admin",
+  adminSession,
+  flash(),
+  (req, res, next) => {
+    res.locals.admin = req.session.admin || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  adminRoutes
+);
+
+// Course Routes
 app.use(
   "/courses",
   userSession,
-  // apply flash() after session so req.flash is available
   flash(),
   (req, res, next) => {
     res.locals.user = req.session.user || null;
@@ -77,18 +101,8 @@ app.use(
   },
   courseRoutes
 );
-app.use(
-  "/admin",
-  adminSession,
-  // apply flash() after admin session
-  flash(),
-  (req, res, next) => {
-    res.locals.admin = req.session.admin || null;
-    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
-    next();
-  },
-  adminRoutes
-);
+
+// Blog Routes
 app.use(
   "/blog",
   userSession,
@@ -98,6 +112,8 @@ app.use(
   },
   blogRoutes
 );
+
+// Cart Routes
 app.use(
   "/cart",
   userSession,
@@ -107,6 +123,8 @@ app.use(
   },
   cartRoutes
 );
+
+// User Profile Routes
 app.use(
   "/user",
   userSession,
@@ -118,19 +136,8 @@ app.use(
   },
   userRoutes
 );
-app.use(
-  "/",
-  userSession,
-  // apply flash() after session for root/auth routes
-  flash(),
-  (req, res, next) => {
-    res.locals.user = req.session.user || null;
-    res.locals.successMsg = req.flash("successMsg")[0] || null;
-    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
-    next();
-  },
-  authRoutes
-);
+
+// Payment Routes
 app.use(
   "/payment",
   userSession,
@@ -141,20 +148,40 @@ app.use(
   paymentRoutes
 );
 
-// Trang chủ
+// Auth Routes (Login/Register)
+app.use(
+  "/", // Lưu ý: Route này phải đặt gần cuối để tránh ghi đè các route khác
+  userSession, 
+  flash(),
+  (req, res, next) => {
+    res.locals.user = req.session.user || null;
+    res.locals.successMsg = req.flash("successMsg")[0] || null;
+    res.locals.errorMsg = req.flash("errorMsg")[0] || null;
+    next();
+  },
+  authRoutes
+);
 
-app.get("/", async (req, res) => {
-  const featuredCourses = await Courses.find().limit(3);
-  const featuredBlogs = await Blog.find().limit(3);
-  res.render("pages/index", {
-    title: "Trang chủ - IT Courses",
-    featuredCourses,
-    featuredBlogs,
-    user: req.session.user || null,
-  });
+// --- 2. SỬA LỖI TRANG CHỦ & CONTACT (Thêm userSession) ---
+// Nếu không có userSession, req.session sẽ là undefined -> Lỗi
+
+app.get("/", userSession, async (req, res) => {
+  try {
+    const featuredCourses = await Courses.find().limit(3);
+    const featuredBlogs = await Blog.find().limit(3);
+    res.render("pages/index", {
+      title: "Trang chủ - IT Courses",
+      featuredCourses,
+      featuredBlogs,
+      user: req.session.user || null, // Bây giờ req.session đã an toàn
+    });
+  } catch (error) {
+    console.error("Home Error:", error);
+    res.status(500).send("Server Error");
+  }
 });
 
-app.get("/contact", (req, res) => {
+app.get("/contact", userSession, (req, res) => {
   res.render("pages/contact", {
     title: "Liên hệ",
     user: req.session.user || null,
@@ -165,11 +192,7 @@ const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-// THIẾT LẬP GIỚI HẠN TIMEOUT (Ví dụ: 120,000 ms = 2 phút)
-// Lý do 2 phút là để đảm bảo việc upload tệp lớn có đủ thời gian
-server.setTimeout(150000);
 
-// (Tùy chọn) Tăng giới hạn timeout cho kết nối socket
-// Điều này đôi khi cần thiết cho các phiên truyền dữ liệu lớn
+server.setTimeout(150000);
 server.keepAliveTimeout = 125000;
 server.headersTimeout = 125000;
