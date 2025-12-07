@@ -4,7 +4,7 @@ const User = require("../models/User");
 const Cart = require("../models/cart");
 const Course = require("../models/Course");
 
-const currentHost = "https://edemy-lxer.onrender.com/";
+const currentHost = "https://edemy-lxer.onrender.com";
 const config = {
   accessKey: "F8BBA842ECF85",
   secretKey: "K951B6PE1waDMi640xX08PD3vg6EkVlz",
