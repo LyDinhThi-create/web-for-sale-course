@@ -34,7 +34,6 @@ const adminSession = session({
   }),
   cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true },
 });
-git
 const userSession = session({
   name: "user-session",
   secret: process.env.SECRET_KEY_USER,
