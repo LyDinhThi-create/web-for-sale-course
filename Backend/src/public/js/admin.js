@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (saveCourseBtn) {
     saveCourseBtn.addEventListener("click", async () => {
       const courseId = document.getElementById("course-id").value;
-
+      event.preventDefault();
       // 1. Tạo đối tượng FormData
       const formData = new FormData();
 
@@ -174,9 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             if (!response.ok) throw new Error("Lỗi máy chủ");
             location.reload();
-          } catch (error) {
-            alert("Xóa thất bại!");
-          }
+          } catch (error) {}
         }
       }
     });
@@ -207,26 +205,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //end preview
   // logout admin
-    
-    const logoutAdmin = async function logoutAdmin(){
-        try {
-          const response = await fetch("/admin/logout", {
-            method: "POST",
-          });
-          if (response.ok) {
-            // Đăng xuất thành công, chuyển hướng về trang đăng nhập
-            window.location.href = "/admin/login";
-          } else {
-            alert("Đăng xuất thất bại!");
-          }
-        } catch (error) {
-          alert("Đăng xuất thất bại!");
-        }
+
+  const logoutAdmin = async function logoutAdmin() {
+    try {
+      const response = await fetch("/admin/logout", {
+        method: "POST",
+      });
+      if (response.ok) {
+        // Đăng xuất thành công, chuyển hướng về trang đăng nhập
+        window.location.href = "/admin/login";
+      } else {
+        alert("Đăng xuất thất bại!");
       }
-      const logoutBtn = document.getElementById("logout-admin");
-      if (logoutBtn) {
-        logoutBtn.addEventListener("click", logoutAdmin);
-      }
+    } catch (error) {
+      alert("Đăng xuất thất bại!");
+    }
+  };
+  const logoutBtn = document.getElementById("logout-admin");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", logoutAdmin);
+  }
   //end logout admin
 });
-
