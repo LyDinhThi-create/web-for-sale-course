@@ -29,19 +29,19 @@ const adminSession = session({
   resave: false,
   saveUninitialized: false,
   store: new MongoDBStore({
-    url: process.env.MONGODB_URI,
+    url: process.env.MONGO_URI,
     collection: "adminSessions",
   }),
   cookie: { maxAge: 1000 * 60 * 60 * 2, httpOnly: true },
 });
-
+git
 const userSession = session({
   name: "user-session",
   secret: process.env.SECRET_KEY_USER,
   resave: false,
   saveUninitialized: false,
   store: new MongoDBStore({
-    url: process.env.MONGODB_URI,
+    url: process.env.MONGO_URI,
     collection: "userSessions",
   }),
   cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true },
@@ -140,7 +140,7 @@ app.use(
     next();
   },
   paymentRoutes
-);  
+);
 
 // Trang chủ
 
