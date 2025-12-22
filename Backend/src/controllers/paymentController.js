@@ -197,7 +197,7 @@ exports.callbackVNPAY = async (req, res) => {
   console.log("VNPAY Callback Params:", req.query);
 
   try {
-    let vnp_Params = req.query;
+    let vnp_Params = { ...req.query }; // <--- Dùng Spread Operator để tạo object chuẩn
     const secureHash = vnp_Params["vnp_SecureHash"];
 
     // Xóa 2 tham số này để kiểm tra lại chữ ký
@@ -282,7 +282,8 @@ function sortObject(obj) {
   let str = [];
   let key;
   for (key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    // Thay obj.hasOwnProperty(key) bằng cách gọi trực tiếp từ Object.prototype
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       str.push(encodeURIComponent(key));
     }
   }
