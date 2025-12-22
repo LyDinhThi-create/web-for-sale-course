@@ -103,3 +103,36 @@ checkoutButton.addEventListener("click", async () => {
     alert("Có lỗi xảy ra.");
   }
 });
+// Xử lý sự kiện cho nút Thanh Toán VNPAY
+const checkoutButtonVNPAY = document.querySelector(".checkout-btn-vnpay");
+// Ví dụ: Bắt sự kiện click nút thanh toán
+checkoutButtonVNPAY.addEventListener("click", async () => {
+  // ... logic lấy amount, orderInfo ...
+  const totalPriceElement = document.getElementById("cart-total-price");
+  const totalPrice = totalPriceElement.getAttribute("total-Price");
+  const amount = parseInt(totalPrice.replace(/\D/g, ""), 10) * 25000;
+
+  try {
+    const response = await fetch("/payment/create-url-vnpay", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: amount, // Ví dụ số tiền
+        orderInfo: "Thanh toan khoa hoc ",
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // ✅ VNPAY trả về link trong biến 'payUrl'
+      // Chuyển hướng người dùng sang trang nhập thẻ VNPAY
+      window.location.href = data.payUrl;
+    } else {
+      alert("Lỗi tạo thanh toán: " + data.message);
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Có lỗi xảy ra");
+  }
+});

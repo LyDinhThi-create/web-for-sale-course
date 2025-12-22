@@ -11,4 +11,9 @@ router.get('/callback', paymentController.callback);
 // Route xử lý IPN (MoMo gọi ngầm)
 router.post('/notify', paymentController.notify);
 
+//VNPAY
+router.post('/create-url-vnpay', paymentController.createPaymentVNPAY);
+router.get('/callback-vnpay', paymentController.callbackVNPAY);
+router.post('/notify-vnpay', paymentController.notifyVNPAY);
+
 module.exports = router;
