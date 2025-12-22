@@ -9,8 +9,8 @@ const Course = require("../models/Course");
 const currentHost = "https://edemy-lxer.onrender.com";
 const tmnCode = "QN93A2JM"; // <--- Thay mã TmnCode của bạn vào đây
 const secretKey = "C47ZHCLNAZVGYV0VDDJ76N8WED3YN3OO"; // <--- Thay HashSecret của bạn vào đây
-const vnpUrl = " https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-const returnUrl = `${currentHost}/payment/callback`;
+const vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+const returnUrl = `${currentHost}/payment/callback-vnpay`;
 const config = {
   accessKey: "F8BBA842ECF85",
   secretKey: "K951B6PE1waDMi640xX08PD3vg6EkVlz",
